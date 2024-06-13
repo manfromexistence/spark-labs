@@ -4,7 +4,6 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-// import { Button } from "../ui/button";
 import { Button } from "../button";
 import VariantCarousel from "./variant-carousel";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
@@ -52,7 +51,7 @@ export default function IntroText() {
             variants={FADE_DOWN_ANIMATION_VARIANTS}
             className="mt-10 flex items-center justify-center "
           >
-            <Link href="/registation" className="z-50 mr-6">
+            <Link href="/register" className="z-50 mr-6">
               {/* <Button variant={"secondary"}>Spark Labs</Button> */}
               <Button variant="expandIcon" Icon={ArrowRightIcon} iconPlacement="right">
                 Spark Labs

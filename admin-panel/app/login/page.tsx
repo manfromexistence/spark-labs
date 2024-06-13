@@ -295,24 +295,26 @@ const Login: NextPage = () => {
 
 
         docs.map((users: any) => {
-          if (users.acccountType === "Client") {
+          if (users.acccountType === "student") {
             user.uid === users.userId && toast({
-              title: "This is a user account!",
-              description: `Please be carefull to the database. Any suspicius activity will lead to Account Ban.Signed User ${users.name}`,
+              title: "Student logged in successfully!",
+              description: `Continue Using Spark Labs Lovely User ${users.surname}`,
             })
           }
 
-          if (users.accountType === "Admin") {
+          if (users.accountType === "teacher") {
             user.uid === users.userId && toast({
-              title: "Admin signed in successfully!",
-              description: `Continue Using Ustudy ${users.name}`,
+              title: "Teacher signed in successfully!",
+              description: `Continue Using Spark Labs ${users.surname}`,
             })
-            router.push('/universities')
           }
-
         })
-
+        // toast({
+        //   title: "User logged in successfully!",
+        //   description: `Continue Using Ustudy Lovely User.`,
+        // })
         // router.push('/calculator')
+        router.push('/home')
       })
       .catch((error) => {
         toast({

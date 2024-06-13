@@ -316,25 +316,34 @@ const Register: NextPage = () => {
     const userDetails = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
 
-        accountType === "student" ? await addDoc(collection(db, "students"), {
+        // accountType === "student" ? await addDoc(collection(db, "students"), {
+        //     userName: userName,
+        //     surname: surname,
+        //     avater: avater,
+        //     email: email,
+        //     region: region,
+        //     userId: userId.uid
+        // }) : await addDoc(collection(db, "teachers"), {
+        //     userName: userName,
+        //     surname: surname,
+        //     avater: avater,
+        //     email: email,
+        //     region: region,
+        //     userId: userId.uid
+        // });
+        const Create = await addDoc(collection(db, "users"), {
             userName: userName,
             surname: surname,
             avater: avater,
             email: email,
             region: region,
-            userId: userId.uid
-        }) : await addDoc(collection(db, "teachers"), {
-            userName: userName,
-            surname: surname,
-            avater: avater,
-            email: email,
-            region: region,
-            userId: userId.uid
-        });
+            userId: userId.uid,
+            accountType: accountType
+        })
 
         toast({
-            title: "Admin signed up successfully!",
-            description: `Continue Using Ustudy ${userId.uid}`,
+            title: "User registered up successfully!",
+            description: `Continue Using Spark Labs ${surname}`,
         });
 
         setUserDetailsDialog(false);

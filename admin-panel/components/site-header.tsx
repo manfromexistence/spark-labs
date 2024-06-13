@@ -154,7 +154,7 @@ export function SiteHeader() {
             <div className="w-full h-auto flex items-center justify-end">
               <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                 <div className="auth-button relative bg-background p-2 w-fit rounded-md text-center leading-tight">
-                  {pathname === "/login" ? "Thanks for loging In!" : pathname === "/register" ? "Thanks for creating an account!" : "Login"}
+                  {pathname === "/login" ? "Thanks for logging In!" : pathname === "/register" ? "Thanks for creating an account!" : "Login"}
                 </div>
               </div>
             </div>

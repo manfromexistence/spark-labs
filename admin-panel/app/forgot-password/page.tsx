@@ -36,12 +36,13 @@ import { X } from "lucide-react"
 import { set } from 'date-fns';
 import { useRouter } from 'next/navigation'
 const firebaseConfig = {
-  apiKey: "AIzaSyAj8jpnqU9Xo1YXVFJh-wCdulweO5z--H8",
-  authDomain: "ustudy-96678.firebaseapp.com",
-  projectId: "ustudy-96678",
-  storageBucket: "ustudy-96678.appspot.com",
-  messagingSenderId: "581632635532",
-  appId: "1:581632635532:web:51ccda7d7adce6689a81a9",
+  apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
+  authDomain: "snap-workspace.firebaseapp.com",
+  projectId: "snap-workspace",
+  storageBucket: "snap-workspace.appspot.com",
+  messagingSenderId: "1092527848130",
+  appId: "1:1092527848130:web:a6ad15060f8d379b43595b",
+  measurementId: "G-JVEZGJHL8H"
 }
 
 const app = initializeApp(firebaseConfig)

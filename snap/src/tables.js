@@ -337,7 +337,7 @@ TableCellMorph.prototype.render = function (ctx) {
                 : (this.shouldBeList() ? orphaned
                         : (this.isOvershooting() ? 'white'
                                 : (isNil(this.data) ? empty : 'white')))),
-        foreground = !this.isLabel && this.shouldBeList()? 'white' : 'black',
+        foreground = !this.isLabel && this.shouldBeList()? 'white' : 'white',
         width = this.width(),
         height = this.height(),
         txtWidth,

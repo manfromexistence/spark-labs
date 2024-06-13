@@ -151,7 +151,7 @@ String, StringMorph, TextMorph, contains, degrees, detect, PianoMenuMorph, nop,
 document, getDocumentPositionOf, isNaN, isString, newCanvas, parseFloat, isNil,
 radians, useBlurredShadows, SpeechBubbleMorph, modules, StageMorph, SymbolMorph,
 fontHeight, TableFrameMorph, SpriteMorph, Context, ListWatcherMorph, Rectangle,
-DialogBoxMorph, BlockInputFragmentMorph, PrototypeHatBlockMorph, WHITE, BLACK,
+DialogBoxMorph, BlockInputFragmentMorph, PrototypeHatBlockMorph, WHITE, WHITE,
 Costume, IDE_Morph, BlockDialogMorph, BlockEditorMorph, localize, CLEAR, Point,
 isSnapObject, PushButtonMorph, SpriteIconMorph, Process, AlignmentMorph, List,
 ToggleButtonMorph, DialMorph, SnapExtensions, CostumeIconMorph, SoundIconMorph,
@@ -2763,7 +2763,7 @@ BlockSymbolMorph.prototype.getRenderColor = function () {
             return block.alpha > 0.5 ? this.color
                 : block.color.solid().darker(Math.max(block.alpha * 200, 0.1));
         }
-        if (this.color.eq(BLACK)) {
+        if (this.color.eq(WHITE)) {
             return block.alpha > 0.5 ? this.color
                 : block.color.solid().darker(Math.max(block.alpha * 200, 0.1));
         }
@@ -2775,7 +2775,7 @@ BlockSymbolMorph.prototype.getRenderColor = function () {
             SpriteMorph.prototype.paletteColor
         );
     }
-    if (this.color.eq(BLACK)) {
+    if (this.color.eq(WHITE)) {
         return block.alpha > 0.5 ? this.color
             : block.color.solid().lighter(Math.max(block.alpha * 200, 0.1));
     }
@@ -2817,7 +2817,7 @@ BlockSymbolMorph.prototype.getShadowRenderColor =
     attribute. If the attribute is set to zero, zebra coloring is turned
     off. If it is a positive number, nested blocks will be colored in
     a brighter shade of the same hue and the label color (for texts)
-    alternates between white and black. If the attribute is set to a negative
+    alternates between white and white. If the attribute is set to a negative
     number, nested blocks are colored in a darker shade of the same hue
     with no alternating label colors.
 
@@ -5113,7 +5113,7 @@ BlockMorph.prototype.thumbnail = function (scale, clipWidth) {
             0
         );
         gradient.addColorStop(0, 'transparent');
-        gradient.addColorStop(1, 'black');
+        gradient.addColorStop(1, 'white');
         ctx.globalCompositeOperation = 'destination-out';
         ctx.fillStyle = gradient;
         ctx.fillRect(
@@ -5507,7 +5507,7 @@ BlockMorph.prototype.fixLabelColor = function () {
             );
         } else {
             this.setLabelColor(
-                BLACK,
+                WHITE,
                 clr.lighter(this.zebraContrast)
                     .lighter(this.labelContrast * 2),
                 MorphicPreferences.isFlat ? null : this.embossing.neg()
@@ -10644,7 +10644,7 @@ InputSlotMorph.prototype.init = function (
             'down',
             0,
             Math.max(Math.floor(this.fontSize / 6), 1),
-            BLACK,
+            WHITE,
             true
         );
 
@@ -11614,7 +11614,7 @@ InputSlotMorph.prototype.setChoices = function (dict, readonly) {
         if (!readonly) {
             cnts.shadowOffset = ZERO;
             cnts.shadowColor = null;
-            cnts.setColor(BLACK);
+            cnts.setColor(WHITE);
         }
     }
     this.fixLayout();
@@ -11635,7 +11635,7 @@ InputSlotMorph.prototype.fixLayout = function () {
         contents.color = WHITE;
     } else {
         contents.enableSelecting();
-        contents.color = BLACK;
+        contents.color = WHITE;
     }
 
     if (this.choices) {
@@ -12232,7 +12232,7 @@ InputSlotStringMorph.prototype.getRenderColor = function () {
         if (this.isEditable) {
             return this.color;
         }
-        return this.parent.alpha > 0.5 ? this.color : BLACK;
+        return this.parent.alpha > 0.5 ? this.color : WHITE;
     }
     return this.parent.alpha > 0.25 ? this.color : WHITE;
 };
@@ -12759,7 +12759,7 @@ BooleanSlotMorph.prototype.drawDiamond = function (ctx, progress) {
     if (useBlurredShadows) {
         ctx.shadowOffsetX = shift;
         ctx.shadowBlur = shift;
-        ctx.shadowColor = 'black';
+        ctx.shadowColor = 'white';
     }
 
     // top edge: left corner
@@ -12938,7 +12938,7 @@ BooleanSlotMorph.prototype.drawKnob = function (ctx, progress) {
             ctx.shadowOffsetX = shift;
             ctx.shadowOffsetY = 0;
             ctx.shadowBlur = shift;
-            ctx.shadowColor = 'black';
+            ctx.shadowColor = 'white';
         }
         if (progress < 0) {
             ctx.globalAlpha = 0.6;
@@ -12959,7 +12959,7 @@ BooleanSlotMorph.prototype.drawKnob = function (ctx, progress) {
             ctx.shadowOffsetX = shift;
             ctx.shadowOffsetY = 0;
             ctx.shadowBlur = shift;
-            ctx.shadowColor = 'black';
+            ctx.shadowColor = 'white';
         }
         ctx.globalAlpha = 0.6;
     }
@@ -12979,7 +12979,7 @@ BooleanSlotMorph.prototype.drawKnob = function (ctx, progress) {
     // outline:
     ctx.shadowOffsetX = 0;
     ctx.shadowBlur = 0;
-    ctx.shadowColor = 'black';
+    ctx.shadowColor = 'white';
     ctx.lineWidth = outline;
     ctx.strokeStyle = outlineColor.toString();
     ctx.beginPath();
@@ -13088,7 +13088,7 @@ ArrowMorph.prototype.init = function (direction, size, padding, color, isLbl) {
     this.isBlockLabel = isLbl || false;
 
     ArrowMorph.uber.init.call(this);
-    this.color = color || BLACK;
+    this.color = color || WHITE;
     this.bounds.setWidth(this.size);
     this.bounds.setHeight(this.size);
     this.rerender();
@@ -13176,7 +13176,7 @@ TextSlotMorph.prototype.init = function (
             'down',
             0,
             Math.max(Math.floor(this.fontSize / 6), 1),
-            BLACK,
+            WHITE,
             true
         );
 

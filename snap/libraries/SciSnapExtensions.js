@@ -59,7 +59,7 @@ SnapExtensions.primitives.set(
           this.width(),
           0
           );
-        gradient.addColorStop(0, 'black');
+        gradient.addColorStop(0, 'white');
         gradient.addColorStop(0.5, myself.frameColor.toString());
         ctx.fillStyle = MorphicPreferences.isFlat ?
           myself.frameColor.toString() : gradient;
@@ -84,7 +84,7 @@ SnapExtensions.primitives.set(
         myself.snapMenu();
       };
 
-      this.logo.color = BLACK;
+      this.logo.color = WHITE;
       this.logo.setExtent(new Point(200, 28)); // dimensions are fixed
       this.add(this.logo);
     };

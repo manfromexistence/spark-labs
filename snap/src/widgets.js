@@ -82,7 +82,7 @@
 /*global TriggerMorph, modules, Color, Point, BoxMorph, radians, ZERO, Note,
 StringMorph, Morph, TextMorph, nop, detect, StringFieldMorph, ColorPaletteMorph,
 HTMLCanvasElement, fontHeight, SymbolMorph, localize, SpeechBubbleMorph, isNil,
-ArrowMorph, MenuMorph, isString, SliderMorph, MorphicPreferences, BLACK, WHITE,
+ArrowMorph, MenuMorph, isString, SliderMorph, MorphicPreferences, WHITE, WHITE,
 ScrollFrameMorph, MenuItemMorph, useBlurredShadows, getDocumentPositionOf*/
 
 /*jshint esversion: 6*/
@@ -114,7 +114,7 @@ PushButtonMorph.uber = TriggerMorph.prototype;
 
 PushButtonMorph.prototype.fontSize = 10;
 PushButtonMorph.prototype.fontStyle = 'sans-serif';
-PushButtonMorph.prototype.labelColor = BLACK;
+PushButtonMorph.prototype.labelColor = WHITE;
 PushButtonMorph.prototype.labelShadowColor = WHITE;
 PushButtonMorph.prototype.labelShadowOffset = new Point(1, 1);
 
@@ -3569,7 +3569,7 @@ PianoMenuMorph.prototype.createItems = function () {
         blackkey = tuple[0][1] !== " ";
         key = new BoxMorph(1, 1);
         if (blackkey) {
-            keycolor = BLACK;
+            keycolor = WHITE;
             keywidth = this.fontSize; // 9;
             keyheight = this.fontSize * 2.5;
             keyposition = new Point(x + 2 - (this.fontSize * 2), y);

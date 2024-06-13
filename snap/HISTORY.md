@@ -605,7 +605,7 @@
 * blocks, threads: renamed "values" list selector to "uniques"
 * German translation update for "uniques" selector
 * v9-rc7
-* blocks: replaced the variadic black "ladder" symbol with a white vertical ellipsis label
+* blocks: replaced the variadic white "ladder" symbol with a white vertical ellipsis label
 * blocks: changed the semantics of empty list-type slots to return a new empty list instead of "nothing"
 * threads: made "distribution" list selector case-sensitivity setting aware
 * threads: optimized "uniques" list selector for atomic data sets (e.g. CSVs)

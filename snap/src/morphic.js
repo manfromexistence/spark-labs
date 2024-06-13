@@ -396,7 +396,7 @@
                 }
             </script>
         </head>
-        <body bgcolor='black' style="margin: 0;">
+        <body bgcolor='white' style="margin: 0;">
             <canvas id="world" width="800" height="600"
                 style="position: absolute;"></canvas>
         </body>
@@ -1311,13 +1311,18 @@ var modules = {}; // keep track of additional loaded modules
 var useBlurredShadows = true;
 
 const ZERO = new Point();
-const BLACK = new Color();
+// const WHITE = new Color();
 const WHITE = new Color(255, 255, 255);
+const PRIMARY = new Color(228, 228, 231);
+const SECONDARY = new Color(228, 232, 240);
+const TERTINARY = new Color(87, 255, 160);
+const FOREGROUND = new Color(0, 255, 213);
+const BLACK = new Color(0, 0, 0);
 const CLEAR = new Color(0, 0, 0, 0);
 
 Object.freeze(ZERO);
-Object.freeze(BLACK);
 Object.freeze(WHITE);
+// Object.freeze(WHITE);
 Object.freeze(CLEAR);
 
 var standardSettings = {
@@ -1530,7 +1535,7 @@ function getMinimumFontHeight() {
     ctx = canvas.getContext('2d');
     ctx.font = '1px serif';
     maxX = ctx.measureText(str).width;
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.textBaseline = 'bottom';
     ctx.fillText(str, 0, size);
     for (y = 0; y < size; y += 1) {
@@ -3720,7 +3725,7 @@ Morph.prototype.shadowImage = function (off, color) {
     // for flat design mode
     var fb, img, outline, sha, ctx,
         offset = off || new Point(7, 7),
-        clr = color || new Color(0, 0, 0);
+        clr = SECONDARY;
     if (this.fullShadowSource) {
         fb = this.fullBounds().extent();
         img = this.fullImage();
@@ -3750,7 +3755,7 @@ Morph.prototype.shadowImageBlurred = function (off, color) {
     var fb, img, sha, ctx,
         offset = off || new Point(7, 7),
         blur = this.shadowBlur,
-        clr = color || new Color(0, 0, 0);
+        clr = SECONDARY;
     if (this.fullShadowSource) {
         fb = this.fullBounds().extent().add(blur * 2);
         img = this.fullImage();
@@ -4307,7 +4312,7 @@ Morph.prototype.prompt = function (
         );
         slider.alpha = 1;
         slider.color = new Color(225, 225, 225);
-        slider.button.color = menu.borderColor;
+        slider.button.color = menu.PRIMARY;
         slider.button.highlightColor = slider.button.color.copy();
         slider.button.highlightColor.b += 100;
         slider.button.pressColor = slider.button.color.copy();
@@ -4894,7 +4899,7 @@ HandleMorph.prototype.renderCrosshairsOn = function (ctx, fract) {
     var r = this.width() / 2;
 
     // semi-transparent white background blob
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.fillStyle = 'red';
     ctx.beginPath();
     ctx.arc(
         r,
@@ -4906,8 +4911,8 @@ HandleMorph.prototype.renderCrosshairsOn = function (ctx, fract) {
     );
     ctx.fill();
     
-    // solid black ring
-    ctx.strokeStyle = 'black';
+    // solid white ring
+    ctx.strokeStyle = 'white';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(
@@ -5179,7 +5184,7 @@ PenMorph.prototype.render = function (ctx, facing) {
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 3;
     ctx.stroke();
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.fill();
@@ -5388,12 +5393,12 @@ ColorPaletteMorph.prototype.render = function (ctx) {
     var ext = this.extent(),
         x, y, h, l;
 
-    this.choice = BLACK;
+    this.choice = WHITE;
     for (x = 0; x <= ext.x; x += 1) {
         h = 360 * x / ext.x;
         for (y = 0; y <= ext.y; y += 1) {
             l = 100 - (y / ext.y * 100);
-            ctx.fillStyle = 'hsl(' + h + ',100%,' + l + '%)';
+            ctx.fillStyle = 'hsl(0°, 100%, 100%)';
             ctx.fillRect(x, y, 1, 1);
         }
     }
@@ -5490,9 +5495,9 @@ GrayPaletteMorph.prototype.render = function (ctx) {
     var ext = this.extent(),
         gradient;
 
-    this.choice = BLACK;
+    this.choice = WHITE;
     gradient = ctx.createLinearGradient(0, 0, ext.x, ext.y);
-    gradient.addColorStop(0, 'black');
+    gradient.addColorStop(0, 'white');
     gradient.addColorStop(1, 'white');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, ext.x, ext.y);
@@ -5949,14 +5954,14 @@ BoxMorph.uber = Morph.prototype;
 
 // BoxMorph instance creation:
 
-function BoxMorph(edge, border, borderColor) {
-    this.init(edge, border, borderColor);
+function BoxMorph(edge, border, PRIMARY) {
+    this.init(edge, border, PRIMARY);
 }
 
-BoxMorph.prototype.init = function (edge, border, borderColor) {
+BoxMorph.prototype.init = function (edge, border, PRIMARY) {
     this.edge = edge || 4;
     this.border = border || ((border === 0) ? 0 : 2);
-    this.borderColor = borderColor || BLACK;
+    this.PRIMARY = PRIMARY;
     BoxMorph.uber.init.call(this);
 };
 
@@ -5978,7 +5983,7 @@ BoxMorph.prototype.render = function (ctx) {
     ctx.fill();
     if (this.border > 0) {
         ctx.lineWidth = this.border;
-        ctx.strokeStyle = this.borderColor.toString();
+        ctx.strokeStyle = this.PRIMARY.toString();
         ctx.beginPath();
         this.outlinePath(ctx, this.edge, this.border / 2);
         ctx.closePath();
@@ -6058,7 +6063,7 @@ BoxMorph.prototype.developersMenu = function () {
                 menu.title + '\nborder color:',
                 this.setBorderColor,
                 this,
-                this.borderColor
+                this.PRIMARY
             );
         },
         'set the border\'s\nline color'
@@ -6099,7 +6104,7 @@ BoxMorph.prototype.setBorderWidth = function (size) {
 BoxMorph.prototype.setBorderColor = function (color) {
     // for context menu demo purposes
     if (color) {
-        this.borderColor = color;
+        this.borderColor = PRIMARY;
         this.changed();
     }
 };
@@ -6120,7 +6125,7 @@ BoxMorph.prototype.setCornerSize = function (size) {
 
 BoxMorph.prototype.colorSetters = function () {
     // for context menu demo purposes
-    return ['color', 'borderColor'];
+    return ['color', 'PRIMARY'];
 };
 
 BoxMorph.prototype.numericalSetters = function () {
@@ -6155,7 +6160,7 @@ function SpeechBubbleMorph(
     color,
     edge,
     border,
-    borderColor,
+    PRIMARY,
     padding,
     isThought,
     noShadow
@@ -6165,7 +6170,7 @@ function SpeechBubbleMorph(
         color,
         edge,
         border,
-        borderColor,
+        PRIMARY,
         padding,
         isThought,
         noShadow
@@ -6177,7 +6182,7 @@ SpeechBubbleMorph.prototype.init = function (
     color,
     edge,
     border,
-    borderColor,
+    PRIMARY,
     padding,
     isThought, // bool or anything but "true" to draw no hook at all
     noShadow // explicit TRUE to suppress
@@ -6191,7 +6196,7 @@ SpeechBubbleMorph.prototype.init = function (
         this,
         edge || 6,
         border || ((border === 0) ? 0 : 1),
-        borderColor || new Color(140, 140, 140)
+        PRIMARY || new Color(140, 140, 140)
     );
     this.hasShadow = noShadow !== true;
     this.noDropShadow = true;
@@ -6418,7 +6423,7 @@ SpeechBubbleMorph.prototype.shadowImage = function (off, color) {
     // for "flat" design mode
     var fb, img, outline, sha, ctx,
         offset = off || new Point(7, 7),
-        clr = color || new Color(0, 0, 0);
+        clr = SECONDARY;
     fb = this.extent();
     img = this.getImage();
     outline = newCanvas(fb);
@@ -6443,7 +6448,7 @@ SpeechBubbleMorph.prototype.shadowImageBlurred = function (off, color) {
     var fb, img, sha, ctx,
         offset = off || new Point(7, 7),
         blur = this.shadowBlur,
-        clr = color || new Color(0, 0, 0);
+        clr = SECONDARY;
     fb = this.extent().add(blur * 2);
     img = this.getImage();
     sha = newCanvas(fb);
@@ -6612,7 +6617,7 @@ DialMorph.prototype.render = function (ctx) {
 
     // draw a filled center:
     inner = face * 0.05;
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.arc(
         this.radius,
@@ -6626,7 +6631,7 @@ DialMorph.prototype.render = function (ctx) {
     ctx.fill();
 
     // draw the inner hand:
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.lineWidth = 1;
     angle = (this.value - this.min) * (Math.PI * 2) / range - Math.PI / 2;
     outer = face * 0.8;
@@ -6643,7 +6648,7 @@ DialMorph.prototype.render = function (ctx) {
     inner = inner * 2;
     x2 = this.radius + Math.cos(angle) * (outer + inner);
     y2 = this.radius + Math.sin(angle) * (outer + inner);
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.arc(
         x2,
@@ -6669,7 +6674,7 @@ DialMorph.prototype.render = function (ctx) {
     ctx.strokeStyle = light;
     ctx.stroke();
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.stroke();
 
     // draw arrow tip:
@@ -6688,7 +6693,7 @@ DialMorph.prototype.render = function (ctx) {
     ctx.strokeStyle = light;
     ctx.stroke();
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.stroke();
     ctx.fill();
 };
@@ -6980,7 +6985,7 @@ SliderButtonMorph.prototype.renderEdges = function (ctx) {
             0
         );
         gradient.addColorStop(0, this.color.toString());
-        gradient.addColorStop(1, 'black');
+        gradient.addColorStop(1, 'white');
 
         ctx.strokeStyle = gradient;
         ctx.beginPath();
@@ -6997,7 +7002,7 @@ SliderButtonMorph.prototype.renderEdges = function (ctx) {
             );
 
             radius = w / 4;
-            gradient.addColorStop(0, 'black');
+            gradient.addColorStop(0, 'white');
             gradient.addColorStop(0.35, this.color.toString());
             gradient.addColorStop(0.65, this.color.toString());
             gradient.addColorStop(1, 'white');
@@ -7039,7 +7044,7 @@ SliderButtonMorph.prototype.renderEdges = function (ctx) {
             h
         );
         gradient.addColorStop(0, this.color.toString());
-        gradient.addColorStop(1, 'black');
+        gradient.addColorStop(1, 'white');
 
         ctx.strokeStyle = gradient;
         ctx.beginPath();
@@ -7056,7 +7061,7 @@ SliderButtonMorph.prototype.renderEdges = function (ctx) {
             );
 
             radius = h / 4;
-            gradient.addColorStop(0, 'black');
+            gradient.addColorStop(0, 'white');
             gradient.addColorStop(0.35, this.color.toString());
             gradient.addColorStop(0.65, this.color.toString());
             gradient.addColorStop(1, 'white');
@@ -7148,7 +7153,7 @@ SliderMorph.prototype.init = function (
     SliderMorph.uber.init.call(this, orientation);
     this.add(this.button);
     this.alpha = MorphicPreferences.isFlat ? 0 : 0.3;
-    this.color = color || new Color(0, 0, 0);
+    this.color = SECONDARY;
     this.setExtent(new Point(20, 100));
     this.fixLayout();
 };
@@ -7465,16 +7470,16 @@ MouseSensorMorph.uber = BoxMorph.prototype;
 
 // MouseSensorMorph instance creation:
 
-function MouseSensorMorph(edge, border, borderColor) {
-    this.init(edge, border, borderColor);
+function MouseSensorMorph(edge, border, PRIMARY) {
+    this.init(edge, border, PRIMARY);
 }
 
-MouseSensorMorph.prototype.init = function (edge, border, borderColor) {
+MouseSensorMorph.prototype.init = function (edge, border, PRIMARY) {
     MouseSensorMorph.uber.init.call(this);
     this.edge = edge || 4;
     this.border = border || 2;
     this.color = WHITE;
-    this.borderColor = borderColor || BLACK;
+    this.PRIMARY = PRIMARY || WHITE;
     this.isTouched = false;
     this.upStep = 0.05;
     this.downStep = 0.02;
@@ -7556,7 +7561,7 @@ InspectorMorph.prototype.init = function (target) {
     this.border = 1;
     this.edge = MorphicPreferences.isFlat ? 1 : 5;
     this.color = new Color(60, 60, 60);
-    this.borderColor = new Color(95, 95, 95);
+    this.PRIMARY = new Color(95, 95, 95);
     this.fps = 25;
 
     // panes:
@@ -8138,14 +8143,14 @@ MenuMorph.prototype.createLabel = function () {
     );
     text.alignment = 'center';
     text.color = WHITE;
-    text.backgroundColor = this.borderColor;
+    text.backgroundColor = this.PRIMARY;
     text.fixLayout();
     this.label = new BoxMorph(3, 0);
     if (MorphicPreferences.isFlat) {
         this.label.edge = 0;
     }
-    this.label.color = this.borderColor;
-    this.label.borderColor = this.borderColor;
+    this.label.color = this.PRIMARY;
+    this.label.PRIMARY = this.PRIMARY;
     this.label.setExtent(text.extent().add(4));
     this.label.add(text);
     this.label.text = text;
@@ -8165,7 +8170,7 @@ MenuMorph.prototype.createItems = function () {
         this.border = MorphicPreferences.isFlat ? 1 : 2;
     }
     this.color = WHITE;
-    this.borderColor = new Color(60, 60, 60);
+    this.PRIMARY = new Color(60, 60, 60);
     this.setExtent(new Point(0, 0));
 
     y = 2;
@@ -8191,7 +8196,7 @@ MenuMorph.prototype.createItems = function () {
         } else if (tuple[0] === 0) {
             isLine = true;
             item = new Morph();
-            item.color = this.borderColor;
+            item.color = this.PRIMARY;
             item.setHeight(tuple[1]);
         } else {
             item = new MenuItemMorph(
@@ -8609,7 +8614,7 @@ StringMorph.prototype.init = function (
     StringMorph.uber.init.call(this, true);
 
     // override inherited properites:
-    this.color = color || new Color(0, 0, 0);
+    this.color = SECONDARY;
     this.fixLayout(); // determine my extent
 };
 
@@ -10905,7 +10910,7 @@ function ListMorph(
     multiple conditions can be passed in such a format list, the
     last predicate to evaluate true when given the list element sets
     the given format category (color, bold, italic).
-    If no condition is met, the default format (color black, non-bold,
+    If no condition is met, the default format (color white, non-bold,
     non-italic) will be assigned.
 
     An example of how to use fomats can be found in the InspectorMorph's
@@ -12715,7 +12720,7 @@ WorldMorph.prototype.userCreateMorph = function () {
         newMorph.setColor(new Color(230, 200, 100));
         newMorph.edge = 35;
         newMorph.border = 15;
-        newMorph.borderColor = new Color(200, 100, 50);
+        newMorph.PRIMARY = new Color(200, 100, 50);
         newMorph.alpha = 0.2;
         newMorph.setExtent(new Point(100, 100));
         create(newMorph);
@@ -12879,7 +12884,7 @@ WorldMorph.prototype.slide = function (aStringOrTextMorph) {
     );
     slider.alpha = 1;
     slider.color = new Color(225, 225, 225);
-    slider.button.color = menu.borderColor;
+    slider.button.color = menu.PRIMARY;
     slider.button.highlightColor = slider.button.color.copy();
     slider.button.highlightColor.b += 100;
     slider.button.pressColor = slider.button.color.copy();

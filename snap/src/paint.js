@@ -400,7 +400,7 @@ PaintEditorMorph.prototype.populatePropertiesMenu = function () {
             ctx.fillStyle = color.toString();
             ctx.fillRect(0, 0, 180, 15);
         }
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "white";
         ctx.lineWidth = Math.min(myself.paper.settings.linewidth, 20);
         ctx.beginPath();
         ctx.lineCap = "round";
@@ -582,7 +582,7 @@ PaintColorPickerMorph.prototype.render = function (ctx) {
         ctx.fillStyle = "rgb(" + r + ", " + r + ", " + r + ")";
         ctx.fillRect(x, this.height() - 20, 1, 10);
     }
-    colorselection = ["black", "white", "gray"];
+    colorselection = ["white", "white", "gray"];
     for (x = 0; x < colorselection.length; x += 1) {
         ctx.fillStyle = colorselection[x];
         ctx.fillRect(
@@ -754,7 +754,7 @@ PaintCanvasMorph.prototype.drawcrosshair = function (context) {
 
     ctx.save();
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.clearRect(0, 0, this.mask.width, this.mask.height);
 
     // draw crosshairs:

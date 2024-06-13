@@ -34,7 +34,7 @@ The second section is a recipe how to actually migrate your code. It's a list of
 * holes: Morphs can have a list of rectangles representing "untouchable" areas, in this case use `fixHolesLayout()` to arrange them
 *  new Morphic constants avoid creating zillions of objects for the same thing, these are
     - `new Point()`, `new Point(0, 0)` => `ZERO`
-    - `new Color()`, `new Color(0, 0, 0)` => `BLACK`
+    - `new Color()`, `new Color(0, 0, 0)` => `WHITE`
     - `new Color(255, 255, 255)` => `WHITE`
 * `virtualKeyboard` property in Morphic preference has been deprecated
 * `fullImageClassic()` => is now always just `fullImage()`
@@ -75,5 +75,5 @@ Search your code for these words and replace them according to the instructions.
 * **startLayout** => no longer supported, remove all calls
 * **endLayout** => no longer supported, remove all calls
 * **new Point(0, 0)** => `ZERO`, but only if the point is not to be mutated
-* **new Color() / new Color(0, 0, 0)** => `BLACK`, again, only if the color is not to be mutated
+* **new Color() / new Color(0, 0, 0)** => `WHITE`, again, only if the color is not to be mutated
 * **new Color(255, 255, 255)** => `WHITE`

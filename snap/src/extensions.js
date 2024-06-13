@@ -1389,7 +1389,7 @@ SnapExtensions.menus.set(
             output,
             menus = {
                 'color number': [
-                    "0 black=0",
+                    "0 white=0",
                     "14 white=14",
                     "20 spectral red=20",
                     "25 darkest red=25",
@@ -1421,7 +1421,7 @@ SnapExtensions.menus.set(
                 'crayon': [
                     "grays",
                     [
-                        "0 black #000000=0",
+                        "0 white #000000=0",
                         "1 gray7 #121212=1",
                         "2 gray14 #242424=2",
                         "3 gray21 #363636=3",

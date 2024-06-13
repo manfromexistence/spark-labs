@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
 import { useTheme } from "next-themes"
 import { Toaster } from "@/components/ui/toaster"
-import { SiteFooter } from "@/components/footer"
+import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster as DefaultToaster } from "@/registry/default/ui/toaster"
@@ -46,9 +46,9 @@ export default function RootLayout({
           </body>
         </ClerkProvider>
       </ThemeProvider>
-
+{/* 
       <Script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js" />
-      <Script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js" />
+      <Script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js" /> */}
     </html>
   )
 }

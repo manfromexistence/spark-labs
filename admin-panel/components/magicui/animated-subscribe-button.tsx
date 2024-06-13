@@ -4,8 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 
 interface AnimatedSubscribeButtonProps {
-  buttonColor: string;
-  buttonTextColor?: string;
   subscribeStatus: boolean;
   initialText: React.ReactElement | string;
   changeText: React.ReactElement | string;
@@ -14,9 +12,7 @@ interface AnimatedSubscribeButtonProps {
 export const AnimatedSubscribeButton: React.FC<
   AnimatedSubscribeButtonProps
 > = ({
-  buttonColor,
   subscribeStatus,
-  buttonTextColor,
   changeText,
   initialText,
 }) => {
@@ -26,7 +22,7 @@ export const AnimatedSubscribeButton: React.FC<
     <AnimatePresence mode="wait">
       {isSubscribed ? (
         <motion.button
-          className="relative flex w-[200px] items-center justify-center overflow-hidden rounded-md bg-white p-[10px] outline outline-1 outline-black"
+          className="relative flex w-full items-center justify-center overflow-hidden rounded-md bg-primary p-[10px] border text-primary-foreground"
           onClick={() => setIsSubscribed(false)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -37,15 +33,13 @@ export const AnimatedSubscribeButton: React.FC<
             className="relative block h-full w-full font-semibold"
             initial={{ y: -50 }}
             animate={{ y: 0 }}
-            style={{ color: buttonColor }}
           >
             {changeText}
           </motion.span>
         </motion.button>
       ) : (
         <motion.button
-          className="relative flex w-[200px] cursor-pointer items-center justify-center rounded-md border-none p-[10px]"
-          style={{ backgroundColor: buttonColor, color: buttonTextColor }}
+          className="relative flex w-full cursor-pointer items-center justify-center rounded-md border-none p-[10px]  border bg-secondary"
           onClick={() => setIsSubscribed(true)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

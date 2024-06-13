@@ -92,7 +92,7 @@ export function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-foreground">Components</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-foreground">Resources</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {components.map((component) => (
@@ -107,13 +107,11 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/teachers" legacyBehavior passHref>
+          {/* <Link href="/teachers" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Teachers
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="/students" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -127,7 +125,8 @@ export function NavigationMenuDemo() {
               Projects
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
+        
       </NavigationMenuList>
     </NavigationMenu>
   )

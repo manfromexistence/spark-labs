@@ -303,7 +303,6 @@
   position: absolute;
   left: -5px;
   top: -5px;
-  /* filter: blur(40px); */
   background: linear-gradient(45deg, #e8f74d, #ff6600d9, #00ff66, #13ff13, #ad27ad, #bd2681, #6512b9, #ff3300de, #5aabde);
   background-size: 400%;
   width: calc(100% + 10px);
@@ -606,11 +605,15 @@ button .cl-button {
 
 
 .rainbow-text {
+  /* font-size: 3.5em;
+  font-family: 'Pacifico', sans-serif !important;
+  color: black;
+  background: white; */
   font-size: 3.5em;
   font-family: 'Pacifico', sans-serif !important;
-  position: relative;
   color: black;
   background: white;
+  position: relative;
   mix-blend-mode: multiply;
   overflow: hidden;
 
@@ -693,4 +696,31 @@ button .cl-button {
     radial-gradient(at 0% 100%, hsla(22, 100%, 77%, 1) 0px, transparent 50%),
     radial-gradient(at 80% 100%, hsla(242, 100%, 70%, 1) 0px, transparent 50%),
     radial-gradient(at 0% 0%, hsla(343, 100%, 76%, 1) 0px, transparent 50%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.auth-button::before,
+.auth-button::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  background: linear-gradient(45deg, #e8f74d, #ff6600d9, #00ff66, #13ff13, #ad27ad, #bd2681, #6512b9, #ff3300de, #5aabde);
+  background-size: 400%;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  z-index: -1;
+  animation: glower 20s linear infinite;
+  border-radius: 10px;
 }

@@ -47,11 +47,11 @@ export function MainNav() {
         >
           Home
         </Link> */}
-        {/* <Link
+        <Link
           href="/teachers"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/universities" ? "text-foreground" : "text-foreground/60"
+            pathname === "/teachers" ? "text-foreground" : "text-foreground/60"
           )}
         >
           Teachers
@@ -60,7 +60,7 @@ export function MainNav() {
           href="/students"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/specialties" ? "text-foreground" : "text-foreground/60"
+            pathname === "/students" ? "text-foreground" : "text-foreground/60"
           )}
         >
           Students
@@ -69,11 +69,11 @@ export function MainNav() {
           href="/projects"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/questions" ? "text-foreground" : "text-foreground/60"
+            pathname === "/projects" ? "text-foreground" : "text-foreground/60"
           )}
         >
           Projects
-        </Link> */}
+        </Link>
         {/* <Link
           href="/supports"
           className={cn(

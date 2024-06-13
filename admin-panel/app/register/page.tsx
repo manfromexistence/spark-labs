@@ -4,7 +4,7 @@ import type { NextPage } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Input as NextuiInput } from "@nextui-org/react"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Facebook, Youtube } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AspectRatio } from "@/registry/default/ui/aspect-ratio"
 import { Button, buttonVariants } from "@/registry/default/ui/button"
@@ -178,8 +178,12 @@ const Register: NextPage = () => {
     const [userDetailsDialog, setUserDetailsDialog] = useState(false);
     const [accountType, setAccountType] = useState("student");
     const [email, setEmail] = useState("");
-    const [avater, setAvater] = useState("");
+    const [avatar, setAvatar] = useState("");
     const [userName, setUserName] = useState("");
+    const [youtube, setYoutube] = useState("");
+    const [twitter, setTwitter] = useState("");
+    const [instagam, setInstagam] = useState("");
+    const [facebook, setFacebook] = useState("");
     const [userId, setUserid] = useState<any>("");
     const [surname, setSurname] = useState("");
     const [untScore, setUntScore] = useState<any>(0);
@@ -334,11 +338,15 @@ const Register: NextPage = () => {
         const Create = await addDoc(collection(db, "users"), {
             userName: userName,
             surname: surname,
-            avater: avater,
+            avatar: avatar,
             email: email,
             region: region,
             userId: userId.uid,
-            accountType: accountType
+            accountType: accountType,
+            youtube: youtube,
+            twitter: twitter,
+            instagam: instagam,
+            facebook: Facebook,
         })
 
         toast({
@@ -516,18 +524,31 @@ const Register: NextPage = () => {
                                             <Input value={surname} id="surname" placeholder="John Doe" required onChange={(e) => setSurname(e.target.value)} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="logo">Avater</Label>
-                                            <Input value={avater} id="name" placeholder="Please enter your avater url" required onChange={(e) => setAvater(e.target.value)} />
+                                            <Label htmlFor="logo">Avatar</Label>
+                                            <Input value={avatar} id="avatar" placeholder="Please enter your avater url" required onChange={(e) => setAvatar(e.target.value)} />
                                         </div>
 
+                                        <div className="space-y-2">
+                                            <Label htmlFor="youtube">Youtube</Label>
+                                            <Input value={youtube} id="youtube" placeholder="Youtube channel link" required onChange={(e) => setYoutube(e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="twitter">Twitter</Label>
+                                            <Input value={twitter} id="twitter" placeholder="Twitter profile link" required onChange={(e) => setTwitter(e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="instagam">Instagam</Label>
+                                            <Input value={instagam} id="instagam" placeholder="Instagam profile link" required onChange={(e) => setInstagam(e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="facebook">Facebook</Label>
+                                            <Input value={facebook} id="facebook" placeholder="Facebook profile or page link" required onChange={(e) => setFacebook(e.target.value)} />
+                                        </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="region">Region</Label>
                                             <Input value={region} id="region" placeholder="New York" required onChange={(e) => setRegion(e.target.value)} />
                                         </div>
-                                        {/* <div className="space-y-2">
-                      <Label htmlFor="unt-score">UntScore</Label>
-                      <Input value={untScore} id="unt-score" placeholder="85" required type="number" onChange={(e) => setUntScore(e.target.value)} />
-                    </div> */}
+
                                         <Button onClick={userDetails} className="w-full">
                                             Submit
                                         </Button>

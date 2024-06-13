@@ -10,43 +10,74 @@ import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Badge } from "@/registry/new-york/ui/badge"
 import { NavigationMenuDemo } from "./navigation-menu"
+import firebase, { initializeApp } from 'firebase/app';
+import 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  limit,
+  onSnapshot,
+  query,
+  startAfter,
+  updateDoc,
+} from "firebase/firestore"
+const firebaseConfig = {
+  apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
+  authDomain: "snap-workspace.firebaseapp.com",
+  projectId: "snap-workspace",
+  storageBucket: "snap-workspace.appspot.com",
+  messagingSenderId: "1092527848130",
+  appId: "1:1092527848130:web:a6ad15060f8d379b43595b",
+  measurementId: "G-JVEZGJHL8H"
+}
+
+const app = initializeApp(firebaseConfig)
+const db: any = getFirestore(app)
+const auth = getAuth(app);
+
+
+
+
+
 
 export function MainNav() {
+  
   const pathname = usePathname()
 
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
         <img className="h-20 w-auto" src="./logo.png" alt="logo" />
-
-        {/* <img src="./final-logo-01.svg" alt="fsdfsd"/> */}
-        {/* <Icons.logo className="h-6 w-6" /> */}
-
-        {/* <span className="hidden font-bold sm:inline-block">
-          {siteConfig.name}
-        </span> */}
       </Link>
       <nav className="flex items-center text-sm lg:gap-6">
-        <NavigationMenuDemo />
-        {/* <Link
-          href="/home"
-          className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname === "/home" ? "text-foreground" : "text-foreground/60"
-          )}
-        >
-          Home
-          
-        </Link> */}
-        {/* <Link
-          href="/home"
-          className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname === "/home" ? "text-foreground" : "text-foreground/60"
-          )}
-        >
-          Home
-        </Link> */}
+        {auth.currentUser ? (<>
+          <Link
+            href="/home"
+            className={cn(
+              "transition-colors hover:text-foreground/80",
+              pathname === "/home" ? "text-foreground" : "text-foreground/60"
+            )}
+          >
+            Home
+          </Link>
+          <Link
+            href="/profile"
+            className={cn(
+              "transition-colors hover:text-foreground/80",
+              pathname === "/profile" ? "text-foreground" : "text-foreground/60"
+            )}
+          >
+            Profile
+          </Link>
+        </>) :
+          <NavigationMenuDemo />}
+
         <Link
           href="/teachers"
           className={cn(

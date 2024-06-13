@@ -21,6 +21,7 @@ import {
   CreditCard,
   File,
   Home,
+  Inbox,
   LineChart,
   ListFilter,
   MoreVertical,
@@ -102,6 +103,37 @@ import { buttonVariants } from "@/registry/new-york/ui/button"
 import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 import { HoverBorderGradient } from "./magicui/hover-border-gradient"
 
+import firebase, { initializeApp } from 'firebase/app';
+import 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  limit,
+  onSnapshot,
+  query,
+  startAfter,
+  updateDoc,
+} from "firebase/firestore"
+const firebaseConfig = {
+  apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
+  authDomain: "snap-workspace.firebaseapp.com",
+  projectId: "snap-workspace",
+  storageBucket: "snap-workspace.appspot.com",
+  messagingSenderId: "1092527848130",
+  appId: "1:1092527848130:web:a6ad15060f8d379b43595b",
+  measurementId: "G-JVEZGJHL8H"
+}
+
+const app = initializeApp(firebaseConfig)
+const db: any = getFirestore(app)
+const auth = getAuth(app);
+
 export function HoverBorderGradientDemo() {
   return (
     <div className="m-40 flex justify-center text-center">
@@ -145,12 +177,167 @@ export function SiteHeader() {
         <MainNav />
         <MobileNav />
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          {/* {!sessionId && (
-            <div className="w-full flex-1 md:w-auto md:flex-none">
-              <CommandMenu />
-            </div>
-          )} */}
-          <Link href="/login">
+          {auth.currentUser ? (
+            <>
+              {/* <div className="w-full flex-1 md:w-auto md:flex-none">
+                <CommandMenu />
+              </div> */}
+
+              <nav className="flex items-center">
+                <div className="flex items-center gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline">Feedback</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[425px] border-none !p-0">
+                      <CardsReportIssue />
+                    </PopoverContent>
+                  </Popover>
+
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <div className="rounded-full border p-2.5">
+                        <Bell className="h-4 w-4" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="mr-20 max-h-[500px] w-[425px] !p-5">
+                      <Tabs defaultValue="all">
+                        <div className="flex items-center">
+                          <TabsList>
+                            <TabsTrigger value="all">All</TabsTrigger>
+                            <TabsTrigger value="archive">Archive</TabsTrigger>
+                            <TabsTrigger value="comments">Comments</TabsTrigger>
+                          </TabsList>
+                          <div className="ml-auto flex items-center gap-2">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="gap-1 p-3 text-sm"
+                                >
+                                  <Settings className="h-4 w-4" />
+                                  <span className="sr-only sm:not-sr-only">
+                                    Settings
+                                  </span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>
+                                  Filter by
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuCheckboxItem checked>
+                                  Fulfilled
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>
+                                  Declined
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>
+                                  Refunded
+                                </DropdownMenuCheckboxItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
+                        <TabsContent value="all" className="flex !w-full flex-col items-center justify-center gap-3 !border-none !p-0">
+                          <div className="flex h-[400px] w-full flex-col items-center justify-center gap-3">
+                            <div className="bg-secondary flex h-24 w-24 items-center justify-center rounded-full ">
+                              <Inbox />
+                            </div>
+                            <span>Nothing to show at All</span>
+                          </div>
+
+                        </TabsContent>
+                        <TabsContent value="archive" className="flex !w-full flex-col items-center justify-center gap-3 !border-none !p-0">
+                          <div className="flex h-[400px] w-full flex-col items-center justify-center gap-3">
+                            <div className="bg-secondary flex h-24 w-24 items-center justify-center rounded-full ">
+                              <Inbox />
+                            </div>
+                            <span>Nothing to show at Archive</span>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="comments" className="flex !w-full flex-col items-center justify-center gap-3 !border-none !p-0">
+                          <div className="flex h-[400px] w-full flex-col items-center justify-center gap-3">
+                            <div className="bg-secondary flex h-24 w-24 items-center justify-center rounded-full ">
+                              <Inbox />
+                            </div>
+                            <span>Nothing to show at Comments</span>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
+
+                    </PopoverContent>
+                  </Popover>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <div className="rounded-full border p-2.5">
+                        <User className="h-4 w-4" />
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="end"
+                      className="!z-[1000] w-[250px]"
+                    >
+                      <DropdownMenuLabel>Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-in">
+                          SignIn
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-up">
+                          SignUp
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-up">
+                          Freelancer
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-up">
+                          Upwork
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-up">
+                          Fiverr
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-up">
+                          Youtube
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/sign-up">
+                          Discord
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/whiteboard">
+                          Whiteboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full text-left" href="/planner">
+                          Planner
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+
+                  </DropdownMenu>
+
+
+
+                </div>
+              </nav>
+            </>) : <Link href="/login">
             <div className="w-full h-auto flex items-center justify-end">
               <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                 <div className="auth-button relative bg-background p-2 w-fit rounded-md text-center leading-tight">
@@ -158,7 +345,18 @@ export function SiteHeader() {
                 </div>
               </div>
             </div>
-          </Link>
+          </Link>}
+
+
+
+
+
+
+
+
+
+
+
 
         </div>
       </div>

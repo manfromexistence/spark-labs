@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 // import RainbowText from 'react-rainbow-text';
@@ -125,7 +127,11 @@ const app = initializeApp(firebaseConfig)
 const db: any = getFirestore(app)
 const auth = getAuth(app);
 
-import { useOrganization, useSession, useUser } from "@clerk/nextjs";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 function Row({
   desc,
@@ -151,10 +157,10 @@ function PointerC({ label }: { label: string }) {
   return (
     <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-y-1/2 left-full">
       <div className="relative">
-        <div className="h-px bg-[#BFBFC4] w-[6.5rem]" />
-        <div className="size-1 bg-[#BFBFC4] rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
+        <div className="h-px bg-primary w-[6.5rem]" />
+        <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
       </div>
-      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white">
+      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
         {label}
       </div>
     </div>
@@ -214,165 +220,124 @@ export function UserDetails() {
 
     <div>
       {docs && docs.map((user: any) => {
-        if (user.accountType === "Client") {
-          return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div key={user.uid} className="rounded-lg relative w-[750px] flex items-center justify-start">
-            <div className="p-8 rounded-xl bg-background shadow-[0_5px_15px_rgba(0,0,0,0.08),0_15px_35px_-5px_rgba(25,28,33,0.2)] ring-1 ring-gray-950/5 max-w-[25rem]">
+        if (user.accountType === "student") {
+          return auth && auth.currentUser && auth.currentUser.uid === user.userId && 
+          <div key={user.uid} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
+            <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
               <div className="flex flex-col items-center gap-2 mb-6">
                 <div className="w-full relative flex justify-center">
-                  <img src={user.imageUrl} className="size-20 rounded-full" />
+                  <Avatar className="flex items-center justify-center h-32 w-32 rounded-full border">
+                    <AvatarImage src={user.avatar} alt="@shadcn" />
+                    <AvatarFallback>AVATAR</AvatarFallback>
+                  </Avatar>
+
                   <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
                     <div className="relative">
-                      <div className="h-px bg-[#BFBFC4] w-[6.5rem]" />
-                      <div className="size-1 bg-[#BFBFC4] rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
+                      <div className="h-px bg-primary w-[6.5rem]" />
+                      <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
                     </div>
-                    <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white">
-                      user.imageUrl
+                    <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
+                      user.avatar
                     </div>
                   </div>
                 </div>
-                {user.firstName && user.lastName ? (
-                  <h1 className="text-[1.0625rem] font-semibold relative w-full text-center">
-                    {user.firstName} {user.lastName}
-                    <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
-                      <div className="relative">
-                        <div className="h-px bg-[#BFBFC4] w-[6.5rem]" />
-                        <div className="size-1 bg-[#BFBFC4] rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
-                      </div>
-                      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white">
-                        user.firstName
-                      </div>
-                      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white -translate-x-3">
-                        user.lastName
-                      </div>
-                    </div>
-                  </h1>
-                ) : (
-                  <div className="h-4" />
-                )}
               </div>
 
-              <div className="px-2.5 bg-[#171720] rounded-lg divide-y divide-border">
-                <Row desc="Email" value={user.name}>
-                  <PointerC label="user.name" />
+              <div className="px-2.5 bg-primary-foreground rounded-lg divide-y divide-border">
+                <Row desc="SurName" value={user.surname}>
+                  <PointerC label="user.surname" />
+                </Row>
+                <Row desc="UserName" value={user.userName}>
+                  <PointerC label="user.userName" />
                 </Row>
 
-                <Row desc="User ID" value={user.id}>
-                  <PointerC label="user.user.id" />
+                <Row desc="Account Type" value={user.accountType}>
+                  <PointerC label="user.accountType" />
+                </Row>
+
+                <Row desc="Region" value={user.region}>
+                  <PointerC label="user.region" />
+                </Row>
+                <Row desc="Email" value={user.email}>
+                  <PointerC label="user.email" />
+                </Row>
+
+
+
+                <Row desc="Youtube" value={user.youtube}>
+                  <PointerC label="user.youtube" />
+                </Row>
+                <Row desc="Twitter" value={user.twitter}>
+                  <PointerC label="user.twitter" />
+                </Row>
+                <Row desc="Instagam" value={user.instagam}>
+                  <PointerC label="user.instagam" />
+                </Row>
+                <Row desc="Facebook" value={user.facebook}>
+                  <PointerC label="user.facebook" />
                 </Row>
               </div>
-              <h2 className="mt-6 mb-4 text-[0.9375rem] font-semibold">
-                Session details
-              </h2>
-              <div className="px-2.5 bg-[#171720] rounded-lg divide-y divide-border">
-                <Row desc="Session ID" value={user.id}>
-                  <PointerC label="session.id" />
-                </Row>
-                <Row desc="Status" value={user.status}>
-                  <PointerC label="session.status" />
-                </Row>
-                {/* <Row
-                  desc="Last active"
-                  value={formatDateWithNumbers(user.lastActiveAt)}
-                >
-                  <PointerC label="session.lastActiveAt" />
-                </Row>
-                <Row
-                  desc="Session expiration"
-                  value={formatDateWithNumbers(user.expireAt)}
-                >
-                  <PointerC label="session.expireAt" />
-                </Row> */}
-              </div>
-              {/* {organization ? (
-                <>
-                  <h2 className="mt-6 mb-4 text-[0.9375rem] font-semibold">
-                    Organization detail
-                  </h2>
-                  <div className="px-2.5 bg-[#FAFAFB] rounded-lg divide-y divide-[#EEEEF0]">
-                    <Row desc="Organization ID" value={organization.id}>
-                      <PointerC label="organization.id" />
-                    </Row>
-                    <Row desc="Name" value={organization.name}>
-                      <PointerC label="organization.name" />
-                    </Row>
-                    <Row desc="Members" value={String(organization.membersCount)}>
-                      <PointerC label="organization.membersCount" />
-                    </Row>
-                    <Row
-                      desc="Pending invitations"
-                      value={String(organization.pendingInvitationsCount)}
-                    >
-                      <PointerC label="organization.pendingInvitationsCount" />
-                    </Row>
-                  </div>
-                </>
-              ) : null} */}
             </div>
           </div>
         }
-        if (user.accountType === "Admin") {
-          return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div key={user.uid} className="rounded-lg relative w-[750px] flex items-center justify-center">
-            {/* <div className="p-8 rounded-xl bg-background shadow-[0_5px_15px_rgba(0,0,0,0.08),0_15px_35px_-5px_rgba(25,28,33,0.2)] ring-1 ring-gray-950/5">
+        if (user.accountType === "teacher") {
+          return auth && auth.currentUser && auth.currentUser.uid === user.userId && 
+          <div key={user.uid} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
+            <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
               <div className="flex flex-col items-center gap-2 mb-6">
                 <div className="w-full relative flex justify-center">
-                  <div className="mesh-avater h-[150px] w-[150px] rounded-full border"></div>
-                  <div className="absolute w-max flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
+                  <Avatar className="flex items-center justify-center h-32 w-32 rounded-full border">
+                    <AvatarImage src={user.avatar} alt="@shadcn" />
+                    <AvatarFallback>AVATAR</AvatarFallback>
+                  </Avatar>
+
+                  <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
                     <div className="relative">
-                      <div className="h-px bg-[#BFBFC4] w-[6.5rem]" />
-                      <div className="size-1 bg-[#BFBFC4] rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
+                      <div className="h-px bg-primary w-[6.5rem]" />
+                      <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
                     </div>
-                    <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white w-max">
-                      Your Avatar
+                    <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
+                      user.avatar
                     </div>
                   </div>
                 </div>
-                {user.firstName && user.lastName ? (
-                  <h1 className="text-[1.0625rem] font-semibold relative w-full text-center">
-                    {user.firstName} {user.lastName}
-                    <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
-                      <div className="relative">
-                        <div className="h-px bg-[#BFBFC4] w-[6.5rem]" />
-                        <div className="size-1 bg-[#BFBFC4] rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
-                      </div>
-                      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white">
-                        user.firstName
-                      </div>
-                      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-white -translate-x-3">
-                        user.lastName
-                      </div>
-                    </div>
-                  </h1>
-                ) : (
-                  <div className="h-4" />
-                )}
               </div>
 
-              <div className="px-2.5 bg-[#171720] rounded-lg divide-y divide-border">
-                <Row desc="Email" value={user.name}>
-                  <PointerC label="user.name" />
+              <div className="px-2.5 bg-primary-foreground rounded-lg divide-y divide-border">
+                <Row desc="SurName" value={user.surname}>
+                  <PointerC label="user.surname" />
+                </Row>
+                <Row desc="UserName" value={user.userName}>
+                  <PointerC label="user.userName" />
                 </Row>
 
-                <Row desc="User ID" value={user.id}>
-                  <PointerC label="user.user.id" />
+                <Row desc="Account Type" value={user.accountType}>
+                  <PointerC label="user.accountType" />
+                </Row>
+
+                <Row desc="Region" value={user.region}>
+                  <PointerC label="user.region" />
+                </Row>
+                <Row desc="Email" value={user.email}>
+                  <PointerC label="user.email" />
+                </Row>
+
+
+
+                <Row desc="Youtube" value={user.youtube}>
+                  <PointerC label="user.youtube" />
+                </Row>
+                <Row desc="Twitter" value={user.twitter}>
+                  <PointerC label="user.twitter" />
+                </Row>
+                <Row desc="Instagam" value={user.instagam}>
+                  <PointerC label="user.instagam" />
+                </Row>
+                <Row desc="Facebook" value={user.facebook}>
+                  <PointerC label="user.facebook" />
                 </Row>
               </div>
-              <h2 className="mt-6 mb-4 text-[0.9375rem] font-semibold">
-                Session details
-              </h2>
-              <div className="px-2.5 bg-[#171720] rounded-lg divide-y divide-border">
-                <Row desc="Session ID" value={user.id}>
-                  <PointerC label="session.id" />
-                </Row>
-                <Row desc="Status" value={user.status}>
-                  <PointerC label="session.status" />
-                </Row>
-
-              </div>
-            </div> */}
-
-            <div className="mesh-avater h-[150px] w-[150px] rounded-full border"></div>
-
-
+            </div>
           </div>
         }
       })}

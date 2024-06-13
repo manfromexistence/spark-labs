@@ -1,92 +1,3 @@
-/*
-
-    gui.js
-
-    a programming environment
-    based on morphic.js, blocks.js, threads.js and objects.js
-    inspired by Scratch
-
-    written by Jens Mönig
-    jens@moenig.org
-
-    Copyright (C) 2024 by Jens Mönig
-
-    This file is part of Snap!.
-
-    Snap! is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of
-    the License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-    prerequisites:
-    --------------
-    needs blocks.js, threads.js, objects.js, cloud.jus and morphic.js
-
-
-    toc
-    ---
-    the following list shows the order in which all constructors are
-    defined. Use this list to locate code in this document:
-
-        IDE_Morph
-        ProjectDialogMorph
-        LibraryImportDialogMorph
-        SpriteIconMorph
-        TurtleIconMorph
-        CostumeIconMorph
-        WardrobeMorph
-        SoundIconMorph
-        JukeboxMorph
-        SceneIconMorph
-        SceneAlbumMorph
-        StageHandleMorph
-        PaletteHandleMorph
-        CamSnapshotDialogMorph
-        SoundRecorderDialogMorph
-
-
-    credits
-    -------
-    Nathan Dinsmore contributed saving and loading of projects,
-    ypr-Snap! project conversion and countless bugfixes
-    Ian Reynolds contributed handling and visualization of sounds
-    Michael Ball contributed the LibraryImportDialogMorph and countless
-    utilities to load libraries from relative urls
-    Bernat Romagosa contributed more things than I can mention,
-    including interfacing to the camera and microphone
-
-*/
-
-/*global modules, Morph, SpriteMorph, SyntaxElementMorph, Color, Cloud, Audio,
-ListWatcherMorph, TextMorph, newCanvas, useBlurredShadows, Sound, Scene, Note,
-StringMorph, Point, MenuMorph, morphicVersion, DialogBoxMorph, BlockEditorMorph,
-ToggleButtonMorph, contains, ScrollFrameMorph, StageMorph, PushButtonMorph, sb,
-InputFieldMorph, FrameMorph, Process, nop, SnapSerializer, ListMorph, detect,
-AlignmentMorph, TabMorph, Costume, MorphicPreferences,BlockMorph, ToggleMorph,
-InputSlotDialogMorph, ScriptsMorph, isNil, SymbolMorph, fontHeight, localize,
-BlockExportDialogMorph, BlockImportDialogMorph, SnapTranslator, List, ArgMorph,
-Uint8Array, HandleMorph, SVG_Costume, TableDialogMorph, CommentMorph, saveAs,
-CommandBlockMorph, BooleanSlotMorph, RingReporterSlotMorph, ScriptFocusMorph,
-BlockLabelPlaceHolderMorph, SpeechBubbleMorph, XML_Element, WatcherMorph, WHITE,
-BlockRemovalDialogMorph,TableMorph, isSnapObject, isRetinaEnabled, SliderMorph,
-disableRetinaSupport, enableRetinaSupport, isRetinaSupported, MediaRecorder,
-Animation, BoxMorph, BlockDialogMorph, RingMorph, Project, ZERO, BLACK,
-BlockVisibilityDialogMorph, ThreadManager, isString, SnapExtensions, snapEquals
-*/
-
-/*jshint esversion: 8*/
-
-// Global stuff ////////////////////////////////////////////////////////
-
 modules.gui = '2024-June-04';
 
 // Declarations
@@ -123,8 +34,8 @@ IDE_Morph.uber = Morph.prototype;
 
 IDE_Morph.prototype.setDefaultDesign = function () {
     MorphicPreferences.isFlat = false;
-    SpriteMorph.prototype.paletteColor = new Color(30, 30, 30);
-    SpriteMorph.prototype.paletteTextColor = new Color(230, 230, 230);
+    SpriteMorph.prototype.paletteColor = PRIMARY;
+    SpriteMorph.prototype.paletteTextColor = ACCENT;
     StageMorph.prototype.paletteTextColor
         = SpriteMorph.prototype.paletteTextColor;
     StageMorph.prototype.paletteColor = SpriteMorph.prototype.paletteColor;
@@ -132,7 +43,7 @@ IDE_Morph.prototype.setDefaultDesign = function () {
         = SpriteMorph.prototype.paletteColor.lighter(30);
 
     IDE_Morph.prototype.buttonContrast = 30;
-    IDE_Morph.prototype.backgroundColor = new Color(10, 10, 10);
+    IDE_Morph.prototype.backgroundColor = WHITE;
     IDE_Morph.prototype.frameColor = SpriteMorph.prototype.paletteColor;
 
     IDE_Morph.prototype.groupColor
@@ -167,19 +78,19 @@ IDE_Morph.prototype.setDefaultDesign = function () {
 IDE_Morph.prototype.setFlatDesign = function () {
     MorphicPreferences.isFlat = true;
     SpriteMorph.prototype.paletteColor = WHITE;
-    SpriteMorph.prototype.paletteTextColor = new Color(70, 70, 70);
+    SpriteMorph.prototype.paletteTextColor = ACCENT;
     StageMorph.prototype.paletteTextColor
         = SpriteMorph.prototype.paletteTextColor;
     StageMorph.prototype.paletteColor = SpriteMorph.prototype.paletteColor;
     SpriteMorph.prototype.sliderColor = SpriteMorph.prototype.paletteColor;
 
     IDE_Morph.prototype.buttonContrast = 30;
-    IDE_Morph.prototype.backgroundColor = new Color(220, 220, 230);
-    IDE_Morph.prototype.frameColor = new Color(240, 240, 245);
+    IDE_Morph.prototype.backgroundColor = PRIMARY;
+    IDE_Morph.prototype.frameColor = SECONDARY;
 
     IDE_Morph.prototype.groupColor = WHITE;
     IDE_Morph.prototype.sliderColor = SpriteMorph.prototype.sliderColor;
-    IDE_Morph.prototype.buttonLabelColor = new Color(70, 70, 70);
+    IDE_Morph.prototype.buttonLabelColor = ACCENT;
     IDE_Morph.prototype.tabColors = [
         IDE_Morph.prototype.frameColor,
         IDE_Morph.prototype.frameColor.lighter(50),
@@ -202,7 +113,7 @@ IDE_Morph.prototype.setFlatDesign = function () {
         = IDE_Morph.prototype.buttonLabelColor;
 
     SyntaxElementMorph.prototype.contrast = 25;
-    ScriptsMorph.prototype.feedbackColor = new Color(153, 255, 213);
+    ScriptsMorph.prototype.feedbackColor = PRIMARY;
 };
 
 IDE_Morph.prototype.scriptsTexture = function () {
@@ -1056,7 +967,7 @@ IDE_Morph.prototype.createLogo = function () {
                 this.width(),
                 0
             );
-        gradient.addColorStop(0, 'black');
+        gradient.addColorStop(0, PRIMARY);
         gradient.addColorStop(0.5, myself.frameColor.toString());
         ctx.fillStyle = MorphicPreferences.isFlat ?
                 myself.frameColor.toString() : gradient;
@@ -1107,7 +1018,7 @@ IDE_Morph.prototype.createControlBar = function () {
             this.frameColor.darker(50),
             this.frameColor.darker(50)
         ],
-        activeColor = new Color(153, 255, 213),
+        activeColor = ACCENT,
         activeColors = [
             activeColor,
             activeColor.lighter(40),
@@ -1120,7 +1031,7 @@ IDE_Morph.prototype.createControlBar = function () {
     }
 
     this.controlBar = new Morph();
-    this.controlBar.color = this.frameColor;
+    this.controlBar.color = SECONDARY;
     this.controlBar.setHeight(this.logo.height()); // height is fixed
 
     // let users manually enforce re-layout when changing orientation
@@ -1148,9 +1059,9 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
-    button.pressColor = colors[0];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
+    button.pressColor = PRIMARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
@@ -1180,9 +1091,9 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
-    button.pressColor = colors[0];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
+    button.pressColor = PRIMARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
@@ -1209,9 +1120,9 @@ IDE_Morph.prototype.createControlBar = function () {
     );
 
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
-    button.pressColor = activeColor;
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
+    button.pressColor = SECONDARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
@@ -1241,8 +1152,8 @@ IDE_Morph.prototype.createControlBar = function () {
     );
 
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1275,8 +1186,8 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
     button.pressColor = colors[0];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1300,8 +1211,8 @@ IDE_Morph.prototype.createControlBar = function () {
         new SymbolMorph('flag', 14)
     );
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1371,8 +1282,8 @@ IDE_Morph.prototype.createControlBar = function () {
         //'\u270E'
     );
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1394,8 +1305,8 @@ IDE_Morph.prototype.createControlBar = function () {
         //'\u2699'
     );
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1423,8 +1334,8 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = ACCENT;
     button.pressColor = colors[0];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -2298,8 +2209,8 @@ IDE_Morph.prototype.createCorralBar = function () {
         new SymbolMorph("turtle", 14)
     );
     newbutton.corner = 12;
-    newbutton.color = colors[0];
-    newbutton.highlightColor = colors[1];
+    newbutton.color = PRIMARY;
+    newbutton.highlightColor = ACCENT;
     newbutton.pressColor = colors[2];
     newbutton.labelMinExtent = new Point(36, 18);
     newbutton.padding = 0;
@@ -2319,8 +2230,8 @@ IDE_Morph.prototype.createCorralBar = function () {
         new SymbolMorph("brush", 15)
     );
     paintbutton.corner = 12;
-    paintbutton.color = colors[0];
-    paintbutton.highlightColor = colors[1];
+    paintbutton.color = PRIMARY;
+    paintbutton.highlightColor = ACCENT;
     paintbutton.pressColor = colors[2];
     paintbutton.labelMinExtent = new Point(36, 18);
     paintbutton.padding = 0;
@@ -2343,8 +2254,8 @@ IDE_Morph.prototype.createCorralBar = function () {
                 new SymbolMorph("camera", 15)
                 );
         cambutton.corner = 12;
-        cambutton.color = colors[0];
-        cambutton.highlightColor = colors[1];
+        cambutton.color = PRIMARY;
+        cambutton.highlightColor = ACCENT;
         cambutton.pressColor = colors[2];
         cambutton.labelMinExtent = new Point(36, 18);
         cambutton.padding = 0;
@@ -2382,8 +2293,8 @@ IDE_Morph.prototype.createCorralBar = function () {
         new SymbolMorph("trash", 18)
     );
     trashbutton.corner = 12;
-    trashbutton.color = colors[0];
-    trashbutton.highlightColor = colors[1];
+    trashbutton.color = PRIMARY;
+    trashbutton.highlightColor = ACCENT;
     trashbutton.pressColor = colors[2];
     trashbutton.labelMinExtent = new Point(36, 18);
     trashbutton.padding = 0;
@@ -4048,7 +3959,7 @@ IDE_Morph.prototype.snapMenu = function () {
             'switchToUserMode',
             'disable deep-Morphic\ncontext menus'
                 + '\nand show user-friendly ones',
-            new Color(0, 100, 0)
+            PRIMARY
         );
     } else if (world.currentKey === 16) { // shift-click
         menu.addLine();
@@ -4057,7 +3968,7 @@ IDE_Morph.prototype.snapMenu = function () {
             'switchToDevMode',
             'enable Morphic\ncontext menus\nand inspectors,'
                 + '\nnot user-friendly!',
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.popup(world, this.logo.bottomLeft());
@@ -4080,7 +3991,7 @@ IDE_Morph.prototype.cloudMenu = function () {
             'url...',
             'setCloudURL',
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addLine();
     }
@@ -4144,7 +4055,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 }
             },
             null,
-            this.hasChangedMedia ? new Color(100, 0, 0) : new Color(0, 100, 0)
+            this.hasChangedMedia ? PRIMARY : new Color(0, 100, 0)
         );
         menu.addItem(
             'export project without media...',
@@ -4162,7 +4073,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 }
             },
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addItem(
             'export project as cloud data...',
@@ -4180,7 +4091,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 }
             },
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addLine();
         menu.addItem(
@@ -4233,7 +4144,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 );
             },
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.popup(world, pos);
@@ -4263,7 +4174,7 @@ IDE_Morph.prototype.settingsMenu = function () {
                 ],
                 toggle,
                 test ? onHint : offHint,
-                hide ? new Color(100, 0, 0) : null
+                hide ? PRIMARY : null
             );
         }
     }
@@ -4277,7 +4188,7 @@ IDE_Morph.prototype.settingsMenu = function () {
                 ],
                 toggle,
                 test ? onHint : offHint,
-                hide ? new Color(100, 0, 0) : null
+                hide ? PRIMARY : null
             );
         }
     }
@@ -4311,7 +4222,7 @@ IDE_Morph.prototype.settingsMenu = function () {
             'userSetDragThreshold',
             'specify the distance the hand has to move\n' +
                 'before it picks up an object',
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.addItem(
@@ -4830,14 +4741,14 @@ IDE_Morph.prototype.projectMenu = function () {
             'Restore unsaved project',
             'restore',
             backup,
-            shiftClicked ? new Color(100, 0, 0) : null
+            shiftClicked ? PRIMARY : null
         );
         if (shiftClicked) {
             menu.addItem(
                 'Clear backup',
                 'clearBackup',
                 backup,
-                new Color(100, 0, 0)
+                PRIMARY
             );
         }
     }
@@ -4877,13 +4788,13 @@ IDE_Morph.prototype.projectMenu = function () {
                 '\nwith a summary of this project' +
                 '\nwith drop-shadows on all pictures.' +
                 '\nnot supported by all browsers',
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addItem(
             'Export all scripts as pic...',
             () => this.exportScriptsPicture(),
             'show a picture of all scripts\nand block definitions',
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.addLine();
@@ -5417,7 +5328,7 @@ IDE_Morph.prototype.aboutSnap = function () {
             scroller.bounds.setWidth(tm.width());
             scroller.bounds.setHeight(maxHeight);
             scroller.addContents(tm);
-            scroller.color = new Color(0, 0, 0, 0);
+            scroller.color = ACCENT;
             return scroller;
         }
         return tm;
@@ -5604,7 +5515,7 @@ IDE_Morph.prototype.createNewCategory = function () {
     ).promptCategory(
         "New Category",
         null,
-        new Color(0,116,143),
+        PRIMARY,
         this.world(),
         null, // pic
         'Blocks category name:' // msg
@@ -10498,7 +10409,7 @@ SpriteIconMorph.prototype.userMenu = function () {
                 "parent...",
                 'chooseExemplar',
                 null,
-                new Color(100, 0, 0)
+                PRIMARY
             );
         }
         */
@@ -10874,7 +10785,7 @@ CostumeIconMorph.prototype.userMenu = function () {
             'edit rotation point only...',
             'editRotationPointOnly',
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.addItem("rename", "renameCostume");

@@ -5497,8 +5497,8 @@ GrayPaletteMorph.prototype.render = function (ctx) {
 
     this.choice = WHITE;
     gradient = ctx.createLinearGradient(0, 0, ext.x, ext.y);
-    gradient.addColorStop(0, 'white');
-    gradient.addColorStop(1, 'white');
+    gradient.addColorStop(0, 'red');
+    gradient.addColorStop(1, 'red');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, ext.x, ext.y);
 };
@@ -5983,7 +5983,7 @@ BoxMorph.prototype.render = function (ctx) {
     ctx.fill();
     if (this.border > 0) {
         ctx.lineWidth = this.border;
-        ctx.strokeStyle = this.PRIMARY.toString();
+        ctx.strokeStyle = PRIMARY;
         ctx.beginPath();
         this.outlinePath(ctx, this.edge, this.border / 2);
         ctx.closePath();

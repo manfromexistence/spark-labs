@@ -1311,9 +1311,9 @@ var modules = {}; // keep track of additional loaded modules
 var useBlurredShadows = true;
 
 const ZERO = new Point();
-const BLACK = new Color();
-const WHITE = new Color(255, 255, 255);
-const CLEAR = new Color(0, 0, 0, 0);
+const BLACK = new Color(255, 0, 208);
+const WHITE = new Color(0, 251, 255);
+const CLEAR = new Color(106, 0, 255);
 
 Object.freeze(ZERO);
 Object.freeze(BLACK);
@@ -5956,7 +5956,7 @@ function BoxMorph(edge, border, borderColor) {
 BoxMorph.prototype.init = function (edge, border, borderColor) {
     this.edge = edge || 4;
     this.border = border || ((border === 0) ? 0 : 2);
-    this.borderColor = borderColor || BLACK;
+    this.borderColor = BLACK;
     BoxMorph.uber.init.call(this);
 };
 

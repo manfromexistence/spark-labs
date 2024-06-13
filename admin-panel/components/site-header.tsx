@@ -99,13 +99,17 @@ import { MobileNav } from "@/components/mobile-nav"
 import { ModeToggle } from "@/components/mode-toggle"
 import { CardsReportIssue } from "@/registry/default/example/cards/report-issue"
 import { buttonVariants } from "@/registry/new-york/ui/button"
+import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 
-
-
-
-
-
-
+export async function NeonGradientCardDemo() {
+  return (
+    <NeonGradientCard className="max-w-sm items-center justify-center text-center">
+      <span className="pointer-events-none z-10 h-full whitespace-pre-wrap bg-gradient-to-br from-[#ff2975] from-35% to-[#00FFF1] bg-clip-text text-center text-6xl font-bold leading-none tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+        Neon Gradient Card
+      </span>
+    </NeonGradientCard>
+  );
+}
 
 
 
@@ -130,7 +134,7 @@ export function SiteHeader() {
           <nav className="flex items-center">
             {!sessionId ? (
               <>
-                <Link
+                {/* <Link
                   href={siteConfig.links.twitter}
                   target="_blank"
                   rel="noreferrer"
@@ -148,18 +152,11 @@ export function SiteHeader() {
                   </div>
                 </Link>
 
-                <ModeToggle />
+                <ModeToggle /> */}
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="w-9 px-0">
-                      {/* <Image
-                      alt="User"
-                      className="aspect-square rounded-full object-cover"
-                      height="23"
-                      src="/Ustudy.jpg"
-                      width="23"
-                    /> */}
                       <User className="h-5 w-5" />
                     </Button>
                     

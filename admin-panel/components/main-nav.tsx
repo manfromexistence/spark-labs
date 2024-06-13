@@ -9,6 +9,7 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Badge } from "@/registry/new-york/ui/badge"
+import { NavigationMenuDemo } from "./navigation-menu"
 
 export function MainNav() {
   const pathname = usePathname()
@@ -25,7 +26,8 @@ export function MainNav() {
           {siteConfig.name}
         </span> */}
       </Link>
-      <nav className="flex items-center gap-4 text-sm lg:gap-6">
+      <nav className="flex items-center text-sm lg:gap-6">
+        <NavigationMenuDemo />
         {/* <Link
           href="/home"
           className={cn(
@@ -45,34 +47,34 @@ export function MainNav() {
         >
           Home
         </Link> */}
-        <Link
-          href="/universities"
+        {/* <Link
+          href="/teachers"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname === "/universities" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Universities
+          Teachers
         </Link>
         <Link
-          href="/specialties"
+          href="/students"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname === "/specialties" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Specialties
+          Students
         </Link>
         <Link
-          href="/questions"
+          href="/projects"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname === "/questions" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Questions
-        </Link>
-        <Link
+          Projects
+        </Link> */}
+        {/* <Link
           href="/supports"
           className={cn(
             "transition-colors hover:text-foreground/80",
@@ -80,7 +82,7 @@ export function MainNav() {
           )}
         >
           Supports
-        </Link>
+        </Link> */}
         {/* <Link
           href="/profile"
           className={cn(

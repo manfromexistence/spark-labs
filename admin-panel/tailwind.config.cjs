@@ -70,11 +70,16 @@ module.exports = {
           from: { backgroundPosition: '200% 0' },
           to: { backgroundPosition: '-200% 0' },
         },
+        "background-position-spin": {
+          "0%": { backgroundPosition: "top center" },
+          "100%": { backgroundPosition: "bottom center" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "shine": "shine 8s ease-in-out infinite",
+        backgroundPositionSpin:"background-position-spin 3000ms infinite alternate",
       },
     },
   },

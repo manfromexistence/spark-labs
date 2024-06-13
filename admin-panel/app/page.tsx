@@ -10,6 +10,17 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@nextui-org/react";
 import date from 'date-and-time';
 import { useEditableProps } from "@udecode/plate-common";
+import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
+
+export async function NeonGradientCardDemo() {
+  return (
+    <NeonGradientCard className="max-h-xl max-w-sm items-center justify-center text-center">
+      <span className="pointer-events-none z-10 h-full whitespace-pre-wrap bg-gradient-to-br from-[#ff2975] from-35% to-[#00FFF1] bg-clip-text text-center text-6xl font-bold leading-none tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+        Neon Gradient Card
+      </span>
+    </NeonGradientCard>
+  );
+}
 
 // const now = new Date();
 
@@ -91,7 +102,8 @@ export default function Home() {
   return (
     <>
       <div className="bg-background">
-        <main className="isolate">
+        <main className="isolate h-screen w-full">
+          <NeonGradientCardDemo />
 
           {/* <div className="relative pt-14 pb-32">
             <div

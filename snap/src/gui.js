@@ -1127,8 +1127,8 @@ IDE_Morph.prototype.createControlBar = function () {
 
     this.controlBar = new Morph();
     this.controlBar.color = TERTINARY;
-    this.controlBar.setHeight(this.logo.height()); // height is fixed
-
+    this.controlBar.setHeight(28); // height is fixed
+console.log(this.logo.height());
     // let users manually enforce re-layout when changing orientation
     // on mobile devices
     // Leaving it out, because it's most probably unneeded
@@ -5423,7 +5423,7 @@ IDE_Morph.prototype.aboutSnap = function () {
             scroller.bounds.setWidth(tm.width());
             scroller.bounds.setHeight(maxHeight);
             scroller.addContents(tm);
-            scroller.color = new Color(0, 0, 0, 0);
+            scroller.color = new Color(0, 255, 213);
             return scroller;
         }
         return tm;
@@ -8832,7 +8832,7 @@ ProjectDialogMorph.prototype.fixListFieldItemColors = function () {
     this.listField.contents.children[0].alpha = 0;
     this.listField.contents.children[0].children.forEach(item => {
         item.pressColor = this.titleBarColor.darker(20);
-        item.color = new Color(0, 0, 0, 0);
+        item.color = new Color(0, 255, 213);
     });
 };
 

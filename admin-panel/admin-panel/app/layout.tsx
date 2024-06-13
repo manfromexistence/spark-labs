@@ -23,9 +23,9 @@ import { Nextui } from "./nextui"
 // const inter = Inter({ subsets: ["latin"] })
 
 // const title =
-//   "Admin Panel";
+//   "Spark Labs";
 // const description =
-//   "This is a highly cutomizable admin panel.";
+//   "This is a highly cutomizable Spark Labs.";
 
 // export const metadata: Metadata = {
 //   title,
@@ -127,9 +127,9 @@ export default function RootLayout({
 // const inter = Inter({ subsets: ["latin"] });
 
 // const title =
-//   "Admin Panel";
+//   "Spark Labs";
 // const description =
-//   "This is a highly cutomizable admin panel.";
+//   "This is a highly cutomizable Spark Labs.";
 
 // export const metadata: Metadata = {
 //   title,

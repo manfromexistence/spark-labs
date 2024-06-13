@@ -46,7 +46,7 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold mb-4">Ustudy</h3>
             <p className="text-primary mb-4">
-              Admin Panel That Shapes the Future.
+              Spark Labs That Shapes the Future.
             </p>
             {/* <div className="flex space-x-4">
               <a className="text-primary hover:text-muted-foreground transition-colors" href="#">

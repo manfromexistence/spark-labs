@@ -48,7 +48,7 @@ export function FadeDownStagger({ key }: { key: number }) {
         className="mt-6 text-center md:text-2xl"
         variants={FADE_DOWN_ANIMATION_VARIANTS}
       >
-        Admin Panel
+        Spark Labs
       </motion.p>
       <motion.div
         className="mx-auto mt-6 flex items-center justify-center space-x-5"
@@ -90,7 +90,7 @@ export function FadeUpStagger({ key }: { key: number }) {
         className="mt-6 text-center md:text-2xl"
         variants={FADE_UP_ANIMATION_VARIANTS}
       >
-        Admin Panel
+        Spark Labs
       </motion.p>
       <motion.div
         className="mx-auto mt-6 flex items-center justify-center space-x-5"
@@ -127,14 +127,14 @@ export function MultiDirectionSlide({ key }: { key: number }) {
         transition={{ duration: 1 }}
         className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]"
       >
-        Admin Panel
+        Spark Labs
       </motion.h1>
     </div>
   );
 }
 
 export function StaggeredFadeIn() {
-  const sentence = "Ustudy's Admin Panel";
+  const sentence = "Ustudy's Spark Labs";
   const words = sentence.split(" ");
 
   const wordVariants = {
@@ -157,7 +157,7 @@ export function StaggeredFadeIn() {
 }
 
 export function LetterPullUp() {
-  const words = "Ustudy's Admin Panel";
+  const words = "Ustudy's Spark Labs";
   const letters = words.split("");
 
   const pullupVariant = {
@@ -205,7 +205,7 @@ export function WordPullUp() {
     show: { y: 0, opacity: 1 },
   };
 
-  const words = "Ustudy's Admin Panel";
+  const words = "Ustudy's Spark Labs";
   return (
     <motion.h1
       variants={container}
@@ -289,13 +289,13 @@ export function VelocityScroll() {
   return (
     <section>
       <ParallaxText baseVelocity={5}>Ustudy's</ParallaxText>
-      <ParallaxText baseVelocity={-5}>Admin Panel</ParallaxText>
+      <ParallaxText baseVelocity={-5}>Spark Labs</ParallaxText>
     </section>
   );
 }
 
 export function RotateText() {
-  const words = ["Ustudy's", " Admin Panel"];
+  const words = ["Ustudy's", " Spark Labs"];
   const [index, setIndex] = React.useState(0);
 
   React.useEffect(() => {
@@ -323,7 +323,7 @@ export function RotateText() {
 }
 
 export function TypingEffect() {
-  const text = "Ustudy's Admin Panel";
+  const text = "Ustudy's Spark Labs";
   const [displayedText, setDisplayedText] = React.useState("");
   const [i, setI] = React.useState(0);
 
@@ -344,7 +344,7 @@ export function TypingEffect() {
 
   return (
     <h1 className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">
-      {displayedText ? displayedText : "Ustudy's Admin Panel"}
+      {displayedText ? displayedText : "Ustudy's Spark Labs"}
     </h1>
   );
 }
@@ -376,14 +376,14 @@ export function SeparateAway() {
         animate="visible"
         className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]"
       >
-        Admin Panel
+        Spark Labs
       </motion.h1>
     </div>
   );
 }
 
 export function GradualSpacing() {
-  const text = "Ustudy's Admin Panel";
+  const text = "Ustudy's Spark Labs";
   const gradual = {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 },
@@ -422,13 +422,13 @@ export function BlurIn() {
       variants={variants1}
       className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]"
     >
-      Ustudy's Admin Panel
+      Ustudy's Spark Labs
     </motion.h1>
   );
 }
 
 export function SlightFlip() {
-  const word = "Ustudy's Admin Panel";
+  const word = "Ustudy's Spark Labs";
   const variants1 = {
     hidden: { rotateX: -90, opacity: 0 },
     visible: { rotateX: 0, opacity: 1 },
@@ -456,7 +456,7 @@ export function SlightFlip() {
 }
 
 export function WavyText() {
-  const word = "Ustudy's Admin Panel";
+  const word = "Ustudy's Spark Labs";
   const variants1 = {
     hidden: { y: 10 },
     visible: { y: -10 },

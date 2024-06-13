@@ -44,7 +44,7 @@ const features = [
   {
     name: "Responsive Design",
     description:
-      "The admin panel adapts seamlessly across devices, allowing Ustudy to manage Ustudy content from desktops, tablets, or even mobile phones.",
+      "The Spark Labs adapts seamlessly across devices, allowing Ustudy to manage Ustudy content from desktops, tablets, or even mobile phones.",
     icon: HeartFilledIcon,
   },
 ];

@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-    name: 'Admin Panel ',
+    name: 'Spark Labs ',
     description:
         'Rich-data editor components built with Nextjs.',
     mainNav: [

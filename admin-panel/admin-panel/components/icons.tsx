@@ -256,6 +256,20 @@ export const Icons = {
         strokeWidth="16"
       />
     </svg>
+
+//     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+//       width="2917.000000pt" height="2084.000000pt" viewBox="0 0 2917.000000 2084.000000"
+//       preserveAspectRatio="xMidYMid meet">
+
+//       <g transform="translate(0.000000,2084.000000) scale(0.100000,-0.100000)"
+//         fill="#000000" stroke="none">
+//         <path d="M6743 12272 c-298 -61 -509 -110 -504 -115 12 -12 120 5 426 68 444
+// 92 536 114 582 139 15 8 24 15 18 15 -5 0 -241 -48 -522 -107z"/>
+//         <path d="M7540 8320 c0 -18 111 -92 400 -265 296 -177 489 -281 508 -274 6 2
+// -196 126 -449 276 -252 149 -459 267 -459 263z"/>
+//       </g>
+//     </svg>
+
   ),
   twitter: (props: IconProps) => (
     <svg

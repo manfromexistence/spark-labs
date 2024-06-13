@@ -33,7 +33,7 @@ export default function VVLogo() {
                 src="/logo.png"
                 width="25"
               />
-            Admin Panel 
+            Spark Labs 
           </Button>
         </Link>
       </HoverCardTrigger>

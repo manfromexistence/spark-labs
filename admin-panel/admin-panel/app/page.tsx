@@ -90,15 +90,11 @@ export default function Home() {
   return (
     <>
       <div className="min-h-screen bg-background">
-
-        {/* <div className="h-max border w-max flex items-start justify-start flex-col gap-3 p-10">
-          <span className="select-all">{date.format(now, 'YYYY/MM/DD HH:mm:ss')}</span>
-          <span className="select-all">{humanReadableTimeDifference(date1, date.format(now, 'YYYY/MM/DD HH:mm:ss'))}</span>
-        </div> */}
-
         <main className="isolate">
+      <img src="./logo.png" alt="fsdfsd"/>
+
           {/* Hero section */}
-          <div className="relative pt-14">
+          <div className="relative pt-14 pb-32">
             <div
               className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
               aria-hidden="true"
@@ -111,9 +107,6 @@ export default function Home() {
                 }}
               />
             </div>
-
-            {/* <CustomButton /> */}
-
             <div className="py-12 sm:py-0">
               <IntroText />
             </div>
@@ -131,16 +124,14 @@ export default function Home() {
             </div>
           </div>
 
-          <WebsiteTab />
-
-          {/* Info section */}
-          <Info />
+          {/* <WebsiteTab />
+          <Info /> */}
 
           {/* Feature section */}
           <Features />
 
           {/* Testimonial section */}
-          <div className="mx-auto mb-32 max-w-7xl sm:mt-16 sm:px-6 lg:px-8">
+          <div className="mx-auto my-32 max-w-7xl sm:mt-16 sm:px-6 lg:px-8">
             <div className="relative overflow-hidden  px-6 py-20 shadow-xl sm:rounded-3xl sm:px-10 sm:py-24 md:px-12 lg:px-20">
               <div className="absolute inset-0 bg-gray-900/90 mix-blend-multiply" />
               <div

@@ -50,9 +50,9 @@ export default function IntroText() {
 
           <motion.div
             variants={FADE_DOWN_ANIMATION_VARIANTS}
-            className="mt-10 flex items-center justify-center gap-x-6 "
+            className="mt-10 flex items-center justify-center "
           >
-            <Link href="/universities" className="z-50">
+            <Link href="/registation" className="z-50 mr-6">
               {/* <Button variant={"secondary"}>Spark Labs</Button> */}
               <Button variant="expandIcon" Icon={ArrowRightIcon} iconPlacement="right">
                 Spark Labs
@@ -64,7 +64,7 @@ export default function IntroText() {
                 MD MAHABUB HOSSAIN
               </Button> */}
 
-              <Button variant="expandIcon" Icon={ArrowLeftIcon} iconPlacement="left" className="border border-input bg-background hover:bg-accent text-accent-foreground">
+              <Button variant="expandIcon" Icon={ArrowLeftIcon} iconPlacement="left" className="p-[22.5px] border border-input bg-background hover:bg-accent text-accent-foreground">
                 Learn more
               </Button>
             </Link>

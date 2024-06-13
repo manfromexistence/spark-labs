@@ -60,32 +60,6 @@ export default function Home() {
       clearInterval(timer);
     };
   }, []);
-
-  // function timePassed(date1: Date, date2: Date): string {
-  //   const diffInSeconds = Math.abs(date2.getTime() - date1.getTime()) / 1000;
-  //   const units = [
-  //     { name: 'second', limit: 60, in_seconds: 1 },
-  //     { name: 'minute', limit: 3600, in_seconds: 60 },
-  //     { name: 'hour', limit: 86400, in_seconds: 3600 },
-  //     { name: 'day', limit: 604800, in_seconds: 86400 },
-  //     { name: 'week', limit: 2629743, in_seconds: 604800 },
-  //     { name: 'month', limit: 31556926, in_seconds: 2629743 },
-  //     { name: 'year', limit: Infinity, in_seconds: 31556926 }
-  //   ];
-  //   let diff = diffInSeconds;
-  //   for (let i=0; i<units.length; i++) {
-  //     if (diff < units[i].limit) {
-  //       const val = Math.floor(diff / units[i].in_seconds);
-  //       return `${val} ${units[i].name}${val > 1 ? 's' : ''} ago`;
-  //     }
-  //     diff = diffInSeconds / units[i].limit;
-  //   }
-  //   return 'just now';
-  // }
-
-  // const date1 = new Date('2024/05/31 10:44:33');
-  // const date2 = new Date('2024/05/30 10:44:33');
-
   function humanReadableTimeDifference(date1: string | number | Date, date2: string | number | Date) {
     // Parse the dates
     let d1: any = new Date(date1);
@@ -124,12 +98,12 @@ export default function Home() {
   return (
     <>
       <div className="bg-background">
-        <main className="isolate h-screen w-full">
+        <main className="isolate min-h-full w-full">
 
           {/* <AnimatedSubscribeButtonDemo /> */}
           {/* <NeonGradientCardDemo /> */}
 
-          {/* <div className="relative pt-14 pb-32">
+          <div className="relative pt-14 pb-32">
             <div
               className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
               aria-hidden="true"
@@ -157,12 +131,12 @@ export default function Home() {
                 }}
               />
             </div>
-          </div> */}
+          </div>
 
-          {/* <WebsiteTab />
-          <Info /> */}
+          {/* <WebsiteTab /> */}
+          <Info />
 
-          {/* <Features />
+          <Features />
 
           <div className="mx-auto my-32 max-w-7xl sm:mt-16 sm:px-6 lg:px-8">
             <div className="relative overflow-hidden  px-6 py-20 shadow-xl sm:rounded-3xl sm:px-10 sm:py-24 md:px-12 lg:px-20">
@@ -194,7 +168,7 @@ export default function Home() {
 
               <Blockquote />
             </div>
-          </div> */}
+          </div>
 
         </main>
       </div>
@@ -202,45 +176,3 @@ export default function Home() {
 
   );
 }
-
-
-
-
-// const CustomButton = () => {
-//   const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-//   const handleConfetti = async () => {
-//     const { clientWidth, clientHeight } = document.documentElement;
-//     const boundingBox = buttonRef.current?.getBoundingClientRect?.();
-
-//     const targetY = boundingBox?.y ?? 0;
-//     const targetX = boundingBox?.x ?? 0;
-//     const targetWidth = boundingBox?.width ?? 0;
-
-//     const targetCenterX = targetX + targetWidth / 2;
-//     const confetti = (await import("canvas-confetti")).default;
-
-//     confetti({
-//       zIndex: 999,
-//       particleCount: 100,
-//       spread: 70,
-//       origin: {
-//         y: targetY / clientHeight,
-//         x: targetCenterX / clientWidth,
-//       },
-//     });
-//   };
-
-//   return (
-//     <Button
-//       ref={buttonRef}
-//       disableRipple
-//       className="center relative overflow-visible border !rounded-md hover:bg-primary-foreground bg-background hover:text-accent-foreground"
-//       size="lg"
-//       onPress={handleConfetti}
-//     >
-//       Press me
-//     </Button>
-//   );
-// };
-

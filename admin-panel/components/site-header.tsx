@@ -148,10 +148,14 @@ export function SiteHeader() {
               <CommandMenu />
             </div>
           )} */}
+          <Link href="/login">
+            <div className="w-full h-auto flex items-center justify-end">
+              <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
+                <div className="auth-button relative bg-background p-2 w-24 rounded-md text-center font-bold leading-tight">Login</div>
+              </div>
+            </div>
+          </Link>
 
-          <div className="w-full h-auto flex items-center justify-end">
-            <div className="auth-button relative bg-primary-foreground hover:primary p-2 w-24 rounded-md text-center">Login</div>
-          </div>
         </div>
       </div>
     </header>

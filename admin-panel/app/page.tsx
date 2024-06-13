@@ -11,10 +11,34 @@ import { Button } from "@nextui-org/react";
 import date from 'date-and-time';
 import { useEditableProps } from "@udecode/plate-common";
 import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
+import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe-button";
+import { CheckIcon, ChevronRightIcon } from "lucide-react";
+
+export function AnimatedSubscribeButtonDemo() {
+  return (
+    <AnimatedSubscribeButton
+      buttonColor="#000000"
+      buttonTextColor="#ffffff"
+      subscribeStatus={false}
+      initialText={
+        <span className="group inline-flex items-center">
+          Subscribe{" "}
+          <ChevronRightIcon className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      }
+      changeText={
+        <span className="group inline-flex items-center">
+          <CheckIcon className="mr-2 h-4 w-4" />
+          Subscribed{" "}
+        </span>
+      }
+    />
+  );
+}
 
 export async function NeonGradientCardDemo() {
   return (
-    <NeonGradientCard className="max-h-xl max-w-sm items-center justify-center text-center">
+    <NeonGradientCard className="max-h-md max-w-sm items-center justify-center text-center">
       <span className="pointer-events-none z-10 h-full whitespace-pre-wrap bg-gradient-to-br from-[#ff2975] from-35% to-[#00FFF1] bg-clip-text text-center text-6xl font-bold leading-none tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
         Neon Gradient Card
       </span>
@@ -103,6 +127,7 @@ export default function Home() {
     <>
       <div className="bg-background">
         <main className="isolate h-screen w-full">
+          <AnimatedSubscribeButtonDemo />
           <NeonGradientCardDemo />
 
           {/* <div className="relative pt-14 pb-32">

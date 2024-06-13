@@ -66,13 +66,13 @@ export function MainNav() {
           Students
         </Link>
         <Link
-          href="/projects"
+          href="/submissions"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/projects" ? "text-foreground" : "text-foreground/60"
+            pathname === "/submissions" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Projects
+          Submissions
         </Link>
         {/* <Link
           href="/supports"

@@ -137,6 +137,8 @@ export async function NeonGradientCardDemo() {
 
 export function SiteHeader() {
   const { sessionId } = useAuth();
+  const pathname = usePathname()
+
   return (
     <header className="navbar h-[4.5rem] flex items-center justify-center z-10 sticky top-0 w-full bg-background/80 backdrop-blur-2xl border-b">
       <div className="w-full flex h-14 items-center justify-center lg:px-[3%] px-10">
@@ -151,7 +153,9 @@ export function SiteHeader() {
           <Link href="/login">
             <div className="w-full h-auto flex items-center justify-end">
               <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
-                <div className="auth-button relative bg-background p-2 w-24 rounded-md text-center font-bold leading-tight">Login</div>
+                <div className="auth-button relative bg-background p-2 w-fit rounded-md text-center leading-tight">
+                  {pathname === "/login" ? "Thanks for loging In!" : pathname === "/register" ? "Thanks for creating an account!" : "Login"}
+                </div>
               </div>
             </div>
           </Link>

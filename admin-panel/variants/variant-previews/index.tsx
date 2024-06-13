@@ -55,7 +55,7 @@ export function FadeDownStagger({ key }: { key: number }) {
         variants={FADE_DOWN_ANIMATION_VARIANTS}
       >
         {/* If you&apos;re seeing this, thank you for trying my project out! - MAHABUB */}
-        We prefer user privacy and security the most!
+        We care about our user's privacy and security the most!
       </motion.div>
     </motion.div>
   );

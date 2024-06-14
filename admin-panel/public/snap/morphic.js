@@ -8,7 +8,8 @@ const WHITE = new Color(255, 255, 255);
 const PRIMARY = new Color(240, 240, 240);
 const SECONDARY = new Color(255, 255, 255);
 const ACCENT = new Color(0, 250, 250);
-const HIGHLIGHT = new Color(255, 251, 0);
+const HIGHLIGHT = new Color(255, 251
+    , 0);
 const CLEAR = new Color(106, 0, 255);
 
 Object.freeze(ZERO);

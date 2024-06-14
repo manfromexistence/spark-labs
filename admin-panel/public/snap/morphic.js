@@ -8,8 +8,7 @@ const WHITE = new Color(255, 255, 255);
 const PRIMARY = new Color(240, 240, 240);
 const SECONDARY = new Color(255, 255, 255);
 const ACCENT = new Color(0, 250, 250);
-const HIGHLIGHT = new Color(255, 251
-    , 0);
+const HIGHLIGHT = new Color(255, 251, 0);
 const CLEAR = new Color(106, 0, 255);
 
 Object.freeze(ZERO);
@@ -1056,7 +1055,7 @@ Color.prototype.lighter = function (percent) {
     if (percent) {
         fract = (100 - percent) / 100;
     }
-    return this.mixed(fract, ACCENT);
+    return this.mixed(fract, BLACK);
 };
 
 Color.prototype.dansDarker = function () {

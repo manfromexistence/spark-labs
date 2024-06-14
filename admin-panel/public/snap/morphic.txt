@@ -13,7 +13,7 @@
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Spark Labs Workspaceis free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of
     the License, or (at your option) any later version.
@@ -988,7 +988,7 @@
     continuously perform collision detection. However, it will also consume
     more memory. Therefore it's best to use this setting with caution.
     
-    Snap! caches the shapes of sprites but not those of blocks. Instead it
+    Spark Labs Workspacecaches the shapes of sprites but not those of blocks. Instead it
     manages the insides of C- and E-shaped blocks through the morphic "holes"
     mechanism.
 
@@ -1173,7 +1173,7 @@
     safe to call directly. For an example how to make retina support
     user-specifiable refer to
 
-        Snap! >> guis.js >> toggleRetina()
+        Spark Labs Workspace>> guis.js >> toggleRetina()
 
     Even when in retina mode it often makes sense to use normal-resolution
     canvasses for simple shapes in order to save system resources and

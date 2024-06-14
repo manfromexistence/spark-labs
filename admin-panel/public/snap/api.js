@@ -2,7 +2,7 @@
 
     api.js
 
-    programmatically interact with a Snap! project
+    programmatically interact with a Spark Labs Workspaceproject
 
     written by Jens Mönig
     jens@moenig.org
@@ -11,7 +11,7 @@
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Spark Labs Workspaceis free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of
     the License, or (at your option) any later version.
@@ -32,7 +32,7 @@
 
     documentation
     -------------
-    along with this file you should have received a copy of the Snap! API
+    along with this file you should have received a copy of the Spark Labs WorkspaceAPI
     documentation. If not, see
     https://github.com/jmoenig/Snap/blob/master/API.md
     or https://snap.berkeley.edu/snap/API.md
@@ -51,7 +51,7 @@ modules.api = '2024-February-22';
 // IDE_Morph external communication API
 /*
     programmatically trigger scripts from outside of Snap!
-    add message listeners to Snap! broadcasts and access
+    add message listeners to Spark Labs Workspacebroadcasts and access
     global variables
 */
 

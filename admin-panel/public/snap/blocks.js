@@ -13,7 +13,7 @@
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Spark Labs Workspaceis free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of
     the License, or (at your option) any later version.
@@ -3424,7 +3424,7 @@ BlockMorph.prototype.userMenu = function () {
             'compile',
             () => this.setSelector(compiledAlternatives[this.selector]),
             'experimental!\nmake this reporter fast and uninterruptable\n' +
-                'CAUTION: Errors in the ring\ncan break your Snap! session!'
+                'CAUTION: Errors in the ring\ncan break your Spark Labs Workspacesession!'
         );
     } else if (
         contains(

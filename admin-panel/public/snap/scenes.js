@@ -11,7 +11,7 @@
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Spark Labs Workspaceis free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of
     the License, or (at your option) any later version.
@@ -57,7 +57,7 @@ modules.scenes = '2022-November-29';
 
 // Projecct /////////////////////////////////////////////////////////
 
-// I am a container for a set of one or more Snap! scenes,
+// I am a container for a set of one or more Spark Labs Workspacescenes,
 // the IDE operates on an instance of me
 
 // Project instance creation:
@@ -104,7 +104,7 @@ Project.prototype.addDefaultScene = function () {
 
 // Scene /////////////////////////////////////////////////////////
 
-// I am a container for a Snap! stage, scene-global variables
+// I am a container for a Spark Labs Workspacestage, scene-global variables
 // and its associated settings.
 // I can be used as a slide in a presentation, a chapter in a narrative,
 // a level in a game, etc.

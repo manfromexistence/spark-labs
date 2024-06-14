@@ -2,7 +2,7 @@ modules.gui = '2024-June-04';
 
 // Declarations
 
-var SnapVersion = '9.2.18';
+var SnapVersion = '';
 
 var IDE_Morph;
 var ProjectDialogMorph;
@@ -168,7 +168,7 @@ function IDE_Morph(config = {}) {
         noExitWarning:  bool, do not show a browser warning when closing the IDE
                                 with unsaved changes
         preserveTitle:  bool, do not set the tab title dynamically to reflect
-                                the current Snap! version
+                                the current Spark Labs Workspaceversion
         blocksZoom:     num, zoom factor for blocks, e.g. 1.5
         blocksFade:     num, fading percentage for blocks, e.g. 85
         zebra:          num, contrast percentage for nesting same-color blocks
@@ -1458,7 +1458,7 @@ IDE_Morph.prototype.createControlBar = function () {
                 ' (' + myself.scene.name + ')' : '';
         name = (myself.getProjectName() || localize('untitled'));
         if (!myself.config.preserveTitle) {
-            document.title = "Snap! " +
+            document.title = "Spark Labs Workspace" +
                 (myself.getProjectName() ? name : SnapVersion);
         }
         txt = new StringMorph(
@@ -3942,7 +3942,7 @@ IDE_Morph.prototype.snapMenu = function () {
         }
     );
     menu.addItem(
-        'Snap! website',
+        'Spark Labs Workspacewebsite',
         () => window.open('https://snap.berkeley.edu/', 'SnapWebsite')
     );
     menu.addItem(
@@ -4897,11 +4897,11 @@ IDE_Morph.prototype.projectMenu = function () {
 IDE_Morph.prototype.resourceURL = function () {
     // Take in variadic inputs that represent an a nested folder structure.
     // Method can be easily overridden if running in a custom location.
-    // Default Snap! simply returns a path (relative to snap.html)
+    // Default Spark Labs Workspacesimply returns a path (relative to snap.html)
     // Note: You can specify a base path to the root directory in the
     // configuration object's "path" property that's passed when creating
     // an IDE instance, e.g. either a relative one: {path: '../' }
-    // or a full url, depending on where (your) Snap! distro ist hosted
+    // or a full url, depending on where (your) Spark Labs Workspacedistro ist hosted
     var args = Array.prototype.slice.call(arguments, 0),
         path = this.config.path ? [this.config.path] : [];
     return path.concat(args).join('/');
@@ -5220,22 +5220,22 @@ IDE_Morph.prototype.aboutSnap = function () {
         module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
         world = this.world();
 
-    aboutTxt = 'Snap! ' + SnapVersion + '\nBuild Your Own Blocks\n\n'
+    aboutTxt = 'Spark Labs Workspace' + SnapVersion + '\nBuild Your Own Blocks\n\n'
         + 'Copyright \u24B8 2008-2024 Jens M\u00F6nig and '
         + 'Brian Harvey\n'
         + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'
-        + '        Snap! is developed by the University of California, '
+        + '        Spark Labs Workspaceis developed by the University of California, '
         + 'Berkeley and SAP        \n'
         + 'with support from the National Science Foundation (NSF),\n'
         + 'MIOsoft and YC Research.\n'
-        + 'The design of Snap! is influenced and inspired by Scratch,\n'
+        + 'The design of Spark Labs Workspaceis influenced and inspired by Scratch,\n'
         + 'from the Lifelong Kindergarten group at the MIT Media Lab\n\n'
 
         + 'for more information see https://snap.berkeley.edu';
 
     noticeTxt = localize('License')
         + '\n\n'
-        + 'Snap! is free software: you can redistribute it and/or modify\n'
+        + 'Spark Labs Workspaceis free software: you can redistribute it and/or modify\n'
         + 'it under the terms of the GNU Affero General Public License as\n'
         + 'published by the Free Software Foundation, either version 3 of\n'
         + 'the License, or (at your option) any later version.\n\n'
@@ -5249,7 +5249,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         + 'GNU Affero General Public License along with this program.\n'
         + 'If not, see http://www.gnu.org/licenses/\n\n'
 
-        + 'Want to use Snap! but scared by the open-source license?\n'
+        + 'Want to use Spark Labs Workspacebut scared by the open-source license?\n'
         + 'Get in touch with us, we\'ll make it work.';
 
     creditsTxt = localize('Contributors')
@@ -5287,7 +5287,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         + 'Jahrd, Derec, Jamet, Sarron, Aleassa, and Lirin costumes'
         + '\nare watercolor paintings by Meghan Taylor and represent'
         + '\n characters from her webcomic Prophecy of the Circle,'
-        + '\nlicensed to us only for use in Snap! projects.'
+        + '\nlicensed to us only for use in Spark Labs Workspaceprojects.'
         + '\nMeghan also painted the Tad costumes,'
         + '\nbut that character is in the public domain.';
 
@@ -5596,7 +5596,7 @@ IDE_Morph.prototype.deletePaletteCategory = function (name) {
 
 IDE_Morph.prototype.save = function () {
     // temporary hack - only allow exporting projects to disk
-    // when running Snap! locally without a web server
+    // when running Spark Labs Workspacelocally without a web server
     var pn = this.getProjectName();
     if (location.protocol === 'file:') {
         if (pn) {
@@ -7240,7 +7240,7 @@ IDE_Morph.prototype.addScene = function () {
         // bypass the project import dialog and directly pop up
         // the local file picker.
         // this should not be necessary, we should be able
-        // to access the cloud even when running Snap! locally
+        // to access the cloud even when running Spark Labs Workspacelocally
         // to be worked on.... (jens)
         this.isAddingScenes = true;
         this.importLocalFile();
@@ -7255,7 +7255,7 @@ IDE_Morph.prototype.openProjectsBrowser = function () {
         // bypass the project import dialog and directly pop up
         // the local file picker.
         // this should not be necessary, we should be able
-        // to access the cloud even when running Snap! locally
+        // to access the cloud even when running Spark Labs Workspacelocally
         // to be worked on.... (jens)
         this.importLocalFile();
         return;
@@ -7265,7 +7265,7 @@ IDE_Morph.prototype.openProjectsBrowser = function () {
 
 IDE_Morph.prototype.saveProjectsBrowser = function () {
     // temporary hack - only allow exporting projects to disk
-    // when running Snap! locally without a web server
+    // when running Spark Labs Workspacelocally without a web server
     if (location.protocol === 'file:') {
         this.prompt(
             'Export Project As...',
@@ -8304,7 +8304,7 @@ IDE_Morph.prototype.warnAboutIE = function () {
         dlg = new DialogBoxMorph();
         txt = new TextMorph(
             'Please do not use Internet Explorer.\n' +
-                'Snap! runs best in a web-standards\n' +
+                'Spark Labs Workspaceruns best in a web-standards\n' +
                 'compliant browser',
             dlg.fontSize,
             dlg.fontStyle,
@@ -8340,13 +8340,13 @@ IDE_Morph.prototype.warnAboutDev = function () {
     }
     this.inform(
         "CAUTION! Development Version",
-        'This version of Snap! is being developed.\n' +
+        'This version of Spark Labs Workspaceis being developed.\n' +
             '*** It is NOT supported for end users. ***\n' +
             'Saving a project in THIS version is likely to\n' +
             'make it UNUSABLE or DEFECTIVE for current and\n' +
             'even future official versions!\n\n' +
             'visit https://snap.berkeley.edu/run\n' +
-            'for the official Snap! installation.'
+            'for the official Spark Labs Workspaceinstallation.'
     ).nag = true;
 };
 

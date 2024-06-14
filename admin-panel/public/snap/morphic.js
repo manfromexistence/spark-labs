@@ -82,7 +82,7 @@ var MorphicPreferences = standardSettings;
     or already disabled, so it's equally safe to call.
 
     For an example how to make retina support user-specifiable refer to
-    Snap! >> guis.js >> toggleRetina()
+    Spark Labs Workspace>> guis.js >> toggleRetina()
 */
 
 enableRetinaSupport();
@@ -376,7 +376,7 @@ function enableRetinaSupport() {
     written to the Canvas element will be scaled appropriately.
 
     NOTE: This implementation is not exhaustive; it only implements what is
-    needed by the Snap! UI.
+    needed by the Spark Labs WorkspaceUI.
 
     [Jens]: like all other retina screen support implementations I've seen
     Bartosz's patch also does not address putImageData() compatibility when

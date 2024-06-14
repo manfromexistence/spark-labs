@@ -13,7 +13,7 @@
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Spark Labs Workspaceis free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of
     the License, or (at your option) any later version.
@@ -186,7 +186,7 @@ function invoke(
             throw (new Error(
                 localize(
                     timeoutErrorMsg ||
-                        "a synchronous Snap! script has timed out")
+                        "a synchronous Spark Labs Workspacescript has timed out")
                 )
             );
         }
@@ -766,7 +766,7 @@ Process.prototype.evaluateContext = function () {
 
     // keep track of overall frames for profiling purposes.
     // also keep track of frames inside the current atomic step.
-    // In order to let Snap! behave similarly on a wide range of
+    // In order to let Spark Labs Workspacebehave similarly on a wide range of
     // differently performant hardware decide when to yield inside
     // a WARPed script or an infinitely recursive reporter
     // by how much time has elapsed since the last yield, but since
@@ -5282,7 +5282,7 @@ Process.prototype.rawParseCSV = function (text, delim) {
         records.pop();
     }
 
-    // convert arrays to Snap! Lists
+    // convert arrays to Spark Labs WorkspaceLists
     records = new List(
         records.map(row => new List(row))
     );
@@ -5352,7 +5352,7 @@ Process.prototype.alert = function (data) {
     if (this.homeContext.receiver) {
         world = this.homeContext.receiver.world();
         if (world.isDevMode) {
-            alert('Snap! ' + data.itemsArray());
+            alert('Spark Labs Workspace' + data.itemsArray());
         }
     }
 };
@@ -5363,7 +5363,7 @@ Process.prototype.log = function (data) {
     if (this.homeContext.receiver) {
         world = this.homeContext.receiver.world();
         if (world.isDevMode) {
-            console.log('Snap! ' + data.itemsArray());
+            console.log('Spark Labs Workspace' + data.itemsArray());
         }
     }
 };

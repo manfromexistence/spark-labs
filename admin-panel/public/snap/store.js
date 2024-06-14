@@ -2,7 +2,7 @@
 
     store.js
 
-    saving and loading Snap! projects
+    saving and loading Spark Labs Workspaceprojects
 
     written by Jens Mönig
     jens@moenig.org
@@ -11,7 +11,7 @@
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Spark Labs Workspaceis free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of
     the License, or (at your option) any later version.

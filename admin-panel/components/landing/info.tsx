@@ -12,42 +12,43 @@ import { HeartFilledIcon } from "@radix-ui/react-icons";
 
 const features = [
   {
-    name: "Effortless Data Entry",
+    name: "Interactive Learning",
     description:
-      "The intuitive interface simplifies adding universities, specialties, and questions. Drag-and-drop functionality or clear wizards can further enhance ease of use.",
+      "Sparks Lab provides an interactive learning environment where students can learn Scratch programming by doing. Our visually intuitive editor makes coding fun and engaging.",
     icon: HeartFilledIcon,
   },
   {
-    name: "Quick Navigation",
+    name: "Guided Instruction",
     description:
-      "A well-organized sidebar or menu with clear labels allows Ustudy to find the needed section instantly, minimizing clicks and maximizing productivity",
+      "Our experienced instructors guide students through each concept, ensuring they understand the fundamentals before moving on to more complex topics.",
     icon: HeartFilledIcon,
   },
   {
-    name: "Real-Time Previews",
+    name: "Creative Exploration",
     description:
-      " Let Ustudy see how the added information will appear on the Ustudy website, ensuring everything looks polished before publishing.",
+      "Sparks Lab encourages students to explore their creativity. With Scratch, they can create their own stories, games, and animations, bringing their ideas to life.",
     icon: HeartFilledIcon,
   },
   {
-    name: "Clean and Uncluttered Design",
+    name: "Collaborative Environment",
     description:
-      "A minimalist aesthetic with ample white space keeps the interface focused and reduces cognitive load for Ustudy",
+      "Sparks Lab fosters a collaborative environment where students can share their projects, get feedback, and learn from each other.",
     icon: HeartFilledIcon,
   },
   {
-    name: "Visually Appealing Elements",
+    name: "Real-World Application",
     description:
-      "Consider incorporating subtle icons or color-coding to categorize different sections, making information visually distinct.",
+      "At Sparks Lab, we emphasize the real-world application of coding skills. Students learn how coding can be used to solve problems and make a difference in the world.",
     icon: HeartFilledIcon,
   },
   {
-    name: "Responsive Design",
+    name: "Accessible Anywhere",
     description:
-      "The Spark Labs adapts seamlessly across devices, allowing Ustudy to manage Ustudy content from desktops, tablets, or even mobile phones.",
+      "Sparks Lab is accessible on any device, allowing students to learn and create wherever they are.",
     icon: HeartFilledIcon,
   },
 ];
+
 
 export default function Info() {
   //   const { ref: refBottom, inView: inViewBottom } = useInView({
@@ -88,20 +89,19 @@ export default function Info() {
                   variants={FADE_UP_ANIMATION_VARIANTS}
                   className="text-base font-semibold leading-7 text-muted-foreground"
                 >
-                  Streamlined Efficiency for Ustudy
+                  Ignite Creativity with Sparks Lab
                 </motion.h2>
                 <motion.p
                   variants={FADE_UP_ANIMATION_VARIANTS}
                   className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl"
                 >
-                  A User-Friendly Experience
+                  A Visual Programming Workshop
                 </motion.p>
                 <motion.p
                   variants={FADE_UP_ANIMATION_VARIANTS}
                   className="mt-6 text-lg leading-8 "
                 >
-                  Ready to use powers for your next project. Just add,remove,update
-                  and delete data.
+                  Learn Scratch programming in an interactive and engaging environment. Bring your ideas to life with our visually intuitive editor.
                 </motion.p>
 
                 <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 lg:max-w-none">
@@ -127,22 +127,22 @@ export default function Info() {
           </div>
           <div className="flex flex-col items-center justify-center space-y-3">
             <Image
-              src="/website/ustudy-index.png"
-              alt="Product screenshot"
+              src="/spark-labs-profile.png"
+              alt="Sparks Lab screenshot"
               className="!min-w-full !max-w-[350px] rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-auto md:-ml-4 lg:-ml-0 !max-h-[300px]"
               width={300}
               height={200}
             />
             <Image
-              src="/website/ustudy-rubix-cube.png"
-              alt="Product screenshot"
+              src="/spark-labs-editor.png"
+              alt="Sparks Lab screenshot"
               className="!min-w-full  !max-w-[350px] rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-auto md:-ml-4 lg:-ml-0 !max-h-[300px]"
               width={300}
               height={300}
             />
             <Image
-              src="/website/ustudy-footer-calculator.png"
-              alt="Product screenshot"
+              src="/spark-labs-submissions.png"
+              alt="Sparks Lab screenshot"
               className="!min-w-full !max-w-[350px] rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-auto md:-ml-4 lg:-ml-0 !max-h-[300px]"
               width={300}
               height={300}
@@ -153,5 +153,6 @@ export default function Info() {
         </div>
       </div>
     </div>
+
   );
 }

@@ -35,16 +35,17 @@ export default function IntroText() {
         >
           <motion.h1
             variants={FADE_DOWN_ANIMATION_VARIANTS}
-            className="text-4xl font-bold tracking-tight sm:text-6xl"
+            className="text-2xl font-bold tracking-tight sm:text-6xl"
           >
-            Spark Labs that changes the way you use it.
+            Scratch Coding Workshop
           </motion.h1>
           <motion.p
             variants={FADE_DOWN_ANIMATION_VARIANTS}
             className="mt-6 text-lg leading-8"
           >
-            A collection of handmade, free, and ready to use operations &
-            variants operations for your next adminastration work.
+            Join us at Sparks Lab and embark on an exciting journey of discovery and innovation. Let’s code, create, and celebrate learning!
+            {/* Welcome to Sparks Lab: Scratch Coding Workshop! This is a unique learning platform designed to introduce students to the world of visual programming through Scratch, an innovative programming language developed by the MIT Media Lab. */}
+            {/* Sparks Labs: Ignite Creativity with Scratch - A Visual Programming Workshop for Future Innovators */}
           </motion.p>
 
           <motion.div
@@ -86,7 +87,7 @@ export default function IntroText() {
             >
               <div className="-m-2 rounded-xl  p-2 ring-1 ring-inset ring-primary/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                 <h1 className="text-xl font-bold tracking-tight sm:text-2xl mb-5">
-                  Spark Labs With High Level Customization.
+                  Highly Customizable Scratch Editor.
                 </h1>
 
                 <VariantCarousel />

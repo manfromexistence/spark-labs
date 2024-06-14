@@ -11,7 +11,7 @@
 
 
 
-    --color-one: #B0BCE6;
+    --color-one: rgb(176, 188, 230);
     --color-two: #A7D0F6;
     --color-three: rgb(176, 224, 230);
     --color-four: rgb(176, 213, 174);
@@ -25,7 +25,7 @@
 
 
 
-    --color-one: rgb(0, 0, 0);
+    --color-one: rgb(255, 0, 0);
 
 
 

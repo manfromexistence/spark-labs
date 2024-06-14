@@ -81,7 +81,7 @@ ThreadManager, VariableFrame, detect, BlockMorph, BoxMorph, Color, Animation,
 CommandBlockMorph, FrameMorph, HatBlockMorph, MenuMorph, Morph, MultiArgMorph,
 ReporterBlockMorph, ScriptsMorph, StringMorph, SyntaxElementMorph, XML_Element,
 TextMorph, contains, degrees, detect, newCanvas, radians, Array, CursorMorph,
-Date, FrameMorph, Math, MenuMorph, Morph, invoke, MorphicPreferences, WHITE,
+Date, FrameMorph, Math, MenuMorph, Morph, invoke, MorphicPreferences, PRIMARY,
 Object, PenMorph, Point, Rectangle, ScrollFrameMorph, SliderMorph, VideoMotion,
 StringMorph, TextMorph, contains, copy, degrees, detect, document, isNaN, Point,
 isString, newCanvas, nop, parseFloat, radians, window, modules, IDE_Morph,
@@ -162,14 +162,14 @@ SpriteMorph.prototype.categories =
     ];
 
 SpriteMorph.prototype.blockColor = {
-    motion : new Color(74, 108, 212),
-    looks : new Color(143, 86, 227),
-    sound : new Color(207, 74, 217),
-    pen : new Color(0, 161, 120),
-    control : new Color(230, 168, 34),
-    sensing : new Color(4, 148, 220),
-    operators : new Color(98, 194, 19),
-    variables : new Color(243, 118, 29),
+    motion : new Color(176, 188, 230),
+    looks : new Color(167, 208, 246),
+    sound : new Color(176, 224, 230),
+    pen : new Color(176, 213, 174),
+    control : new Color(250, 237, 192),
+    sensing : new Color(253, 213, 177),
+    operators : new Color(228, 172, 178),
+    variables : new Color(212, 174, 207),
     lists : new Color(217, 77, 17),
     other: new Color(150, 150, 150)
 };
@@ -188,7 +188,7 @@ SpriteMorph.prototype.blockColorFor = function (category) {
         this.blockColor.other;
 };
 
-SpriteMorph.prototype.paletteColor = new Color(55, 55, 55);
+SpriteMorph.prototype.paletteColor = PRIMARY;
 SpriteMorph.prototype.paletteTextColor = new Color(230, 230, 230);
 SpriteMorph.prototype.sliderColor
     = SpriteMorph.prototype.paletteColor.lighter(30);
@@ -203,7 +203,7 @@ SpriteMorph.prototype.disableDraggingData = false;
 SpriteMorph.prototype.highlightColor = new Color(250, 200, 130);
 SpriteMorph.prototype.highlightBorder = 8;
 
-SpriteMorph.prototype.bubbleColor = WHITE;
+SpriteMorph.prototype.bubbleColor = PRIMARY;
 SpriteMorph.prototype.bubbleFontSize = 14;
 SpriteMorph.prototype.bubbleFontIsBold = true;
 SpriteMorph.prototype.bubbleCorner = 10;
@@ -3772,7 +3772,7 @@ SpriteMorph.prototype.searchBlocks = function (
         if (focus) {focus.destroy(); }
         if (!selection || !scriptFocus) {return; }
         focus = selection.outline(
-            MorphicPreferences.isFlat ? new Color(150, 200, 255) : WHITE,
+            MorphicPreferences.isFlat ? new Color(150, 200, 255) : PRIMARY,
             2
         );
         searchPane.contents.add(focus);
@@ -8313,7 +8313,7 @@ SpriteMorph.prototype.highlight = function (color, border) {
     highlight.cachedImage = this.highlightImage(color, border);
     ctx = highlight.cachedImage.getContext('2d');
     ctx.drawImage(
-        this.highlightImage(WHITE, 4),
+        this.highlightImage(PRIMARY, 4),
         border - 4,
         border - 4
     );
@@ -8323,7 +8323,7 @@ SpriteMorph.prototype.highlight = function (color, border) {
         border - 2
     );
     ctx.drawImage(
-        this.highlightImage(WHITE, 1),
+        this.highlightImage(PRIMARY, 1),
         border - 1,
         border - 1
     );
@@ -10203,7 +10203,7 @@ StageMorph.prototype.write = function (text, size) {
     );
 
     // try to contrast the background
-    textMorph.setColor(this.getColorDimension(2) > 50 ? BLACK : WHITE);
+    textMorph.setColor(this.getColorDimension(2) > 50 ? PRIMARY : PRIMARY);
 
     // stamp the text onstage
     ctx = this.penTrails().getContext('2d');
@@ -10964,7 +10964,7 @@ SpriteBubbleMorph.prototype.init = function (
     this.scale = stage ? stage.scale : 1;
     this.data = data;
     this.isQuestion = isQuestion;
-    this.bubbleFontColor = BLACK;
+    this.bubbleFontColor = HIGHLIGHT;
     this.bubbleFontSize = sprite.bubbleFontSize;
     this.bubbleFontIsBold = sprite.bubbleFontIsBold;
     this.bubbleFontAlignment = 'center';
@@ -11371,7 +11371,7 @@ StageBubbleMorph.prototype.init = function (data, stage) {
     this.stage = stage;
     this.scale = stage ? stage.scale : 1;
     this.data = data;
-    this.bubbleFontColor = BLACK;
+    this.bubbleFontColor = HIGHLIGHT;
     this.bubbleFontSize = sprite.bubbleFontSize;
     this.bubbleFontIsBold = false; // sprite.bubbleFontIsBold;
     this.bubbleCorner = sprite.bubbleCorner;
@@ -11689,7 +11689,7 @@ Costume.prototype.editRotationPointOnly = function (aWorld, anIDE) {
         null,
         null,
         new Point(1, 1),
-        WHITE
+        PRIMARY
     );
 
     dialog.labelString = 'Costume Editor';
@@ -12567,7 +12567,7 @@ CellMorph.prototype.init = function (contents, color, idx, parentCell) {
         this,
         SyntaxElementMorph.prototype.corner,
         1,
-        WHITE
+        PRIMARY
     );
     this.color = color || new Color(255, 140, 0);
     this.isBig = false;
@@ -12702,7 +12702,7 @@ CellMorph.prototype.createContents = function () {
                 this.contentsMorph.isEditable = true;
                 this.contentsMorph.enableSelecting();
             }
-            this.contentsMorph.setColor(WHITE);
+            this.contentsMorph.setColor(PRIMARY);
         } else if (typeof this.contents === 'boolean') {
             img = SpriteMorph.prototype.booleanMorph.call(
                 null,
@@ -12834,7 +12834,7 @@ CellMorph.prototype.createContents = function () {
                         true, // italic
                         'center'
                     );
-                    this.contentsMorph.setColor(WHITE);
+                    this.contentsMorph.setColor(PRIMARY);
                 } else {
                     this.contentsMorph = new ListWatcherMorph(
                         this.contents,
@@ -12856,7 +12856,7 @@ CellMorph.prototype.createContents = function () {
                 this.contentsMorph.isEditable = true;
                 this.contentsMorph.enableSelecting();
             }
-            this.contentsMorph.setColor(WHITE);
+            this.contentsMorph.setColor(PRIMARY);
         }
         this.add(this.contentsMorph);
     }
@@ -13225,7 +13225,7 @@ WatcherMorph.prototype.fixLayout = function () {
             false,
             false,
             MorphicPreferences.isFlat ? new Point() : new Point(1, 1),
-            WHITE
+            PRIMARY
         );
         this.add(this.labelMorph);
     }
@@ -13811,7 +13811,7 @@ StagePrompterMorph.prototype.init = function (question) {
     );
 
     // override inherited behavior
-    this.color = WHITE;
+    this.color = PRIMARY;
     if (this.label) {this.add(this.label); }
     this.add(this.inputField);
     this.add(this.button);
@@ -14010,7 +14010,7 @@ StagePickerMorph.prototype.dataRepresentation = function (data) {
         data.bubbleBorder = 0; // 1.5;
         data.bubblePadding = 0;
         data.scale = this.scale;
-        data.bubbleFontColor = data.isPointingRight ? BLACK : WHITE;
+        data.bubbleFontColor = data.isPointingRight ? HIGHLIGHT : PRIMARY;
         data.color = data.isPointingRight ? new Color(220, 220, 220)
             : SpriteMorph.prototype.blockColor.sensing;
         data.fixLayout();
@@ -14116,8 +14116,8 @@ StagePickerMorph.prototype.createLabel = function () {
         'center'
     );
     text.alignment = 'center';
-    text.color = WHITE;
-    text.backgroundColor = this.borderColor;
+    text.color = PRIMARY;
+    text.backgroundColor = PRIMARY;
     text.fixLayout();
 
     // reflow text boundaries
@@ -14180,7 +14180,7 @@ StagePickerMorph.prototype.createItems = function (scale) {
     this.children = [];
     this.edge = SyntaxElementMorph.prototype.rounding  * this.scale;
     this.border = SpriteMorph.prototype.bubbleBorder * this.scale;
-    this.color = WHITE;
+    this.color = PRIMARY;
     this.borderColor = SpriteMorph.prototype.blockColor.sensing;
     this.setExtent(new Point(0, 0));
 

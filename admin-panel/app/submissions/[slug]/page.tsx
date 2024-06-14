@@ -91,7 +91,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         <Script strategy="beforeInteractive" src="/snap/FileSaver.min.js" />
 
         <Script strategy="beforeInteractive" src="/qqqq.js" />
-        <Script strategy="beforeInteractive" id="world-script">
+        {/* <Script strategy="beforeInteractive" id="world-script">
             {`
                      let world;
                      let FPS = 67,
@@ -116,7 +116,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      new IDE_Morph().openIn(world);
                      requestAnimationFrame(loop);
              `}
-        </Script>
+        </Script> */}
         {/* <div>My Post: {params.slug}</div> */}
         <canvas id="world" tabIndex={1} style={{ position: 'absolute' }}></canvas>
     </>)

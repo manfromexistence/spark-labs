@@ -18,35 +18,35 @@
 //                 <meta name="apple-mobile-web-app-title" content="Snap!" />
 //                 <meta name="msapplication-TileImage" content="/snap/snap-icon-144.png" />
 //                 <meta name="msapplication-TileColor" content="#FFFFFF" />
-//                 <script src="/snap/morphic.js?version=2024-03-01"></script>
-//                 <script src="/snap/symbols.js?version=2024-01-24"></script>
-//                 <script src="/snap/widgets.js?version=2023-05-24"></script>
-//                 <script src="/snap/blocks.js?version=2024-06-04"></script>
-//                 <script src="/snap/threads.js?version=2024-04-17"></script>
-//                 <script src="/snap/objects.js?version=2024-01-15"></script>
-//                 <script src="/snap/scenes.js?version=2022-10-29"></script>
-//                 <script src="/snap/gui.js?version=2024-06-04"></script>
-//                 <script src="/snap/paint.js?version=2023-05-24"></script>
-//                 <script src="/snap/lists.js?version=2024-04-05"></script>
-//                 <script src="/snap/byob.js?version=2024-04-17"></script>
-//                 <script src="/snap/tables.js?version=2023-07-05"></script>
-//                 <script src="/snap/sketch.js?version=2023-05-24"></script>
-//                 <script src="/snap/video.js?version=2019-06-27"></script>
-//                 <script src="/snap/maps.js?version=2021-06-15"></script>
-//                 <script src="/snap/extensions.js?version=2024-02-13"></script>
-//                 <script src="/snap/xml.js?version=2021-07-05"></script>
-//                 <script src="/snap/store.js?version=2023-07-27"></script>
-//                 <script src="/snap/locale.js?version=2024-06-04"></script>
-//                 <script src="/snap/cloud.js?version=2023-04-12"></script>
-//                 <script src="/snap/api.js?version=2024-02-22"></script>
-//                 <script src="/snap/sha512.js?version=2019-06-27"></script>
-//                 <script src="/snap/FileSaver.min.js?version=2019-06-27"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/morphic.js?version=2024-03-01"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/symbols.js?version=2024-01-24"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/widgets.js?version=2023-05-24"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/blocks.js?version=2024-06-04"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/threads.js?version=2024-04-17"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/objects.js?version=2024-01-15"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/scenes.js?version=2022-10-29"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/gui.js?version=2024-06-04"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/paint.js?version=2023-05-24"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/lists.js?version=2024-04-05"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/byob.js?version=2024-04-17"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/tables.js?version=2023-07-05"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/sketch.js?version=2023-05-24"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/video.js?version=2019-06-27"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/maps.js?version=2021-06-15"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/extensions.js?version=2024-02-13"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/xml.js?version=2021-07-05"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/store.js?version=2023-07-27"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/locale.js?version=2024-06-04"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/cloud.js?version=2023-04-12"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/api.js?version=2024-02-22"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/sha512.js?version=2019-06-27"></script>
+//                 <Script strategy="beforeInteractive" src="/snap/FileSaver.min.js?version=2019-06-27"></script>
 
 //             </Head> */}
-//             <Script strategy='lazyOnload' id="world-script">
+//             <Script strategy="beforeInteractive" strategy='lazyOnload' id="world-script">
 //                 {`console.log("Sumon")`}
 //             </Script>
-//             {/* <Script strategy='beforeInteractive' src="./main.js" /> */}
+//             {/* <Script strategy="beforeInteractive" strategy='beforeInteractive' src="/main.js" /> */}
 //             {/* <canvas id="world" tabIndex={1} style={{ position: 'absolute' }}></canvas> */}
 //         </>
 //     );
@@ -66,31 +66,32 @@ export default function Page({ params }: { params: { slug: string } }) {
     return (<>
 
 
-        <Script strategy="beforeInteractive" src="./snap/morphic.js" />
-        <Script strategy="beforeInteractive" src="./snap/symbols.js" />
-        <Script strategy="beforeInteractive" src="./snap/widgets.js" />
-        <Script strategy="beforeInteractive" src="./snap/blocks.js" />
-        <Script strategy="beforeInteractive" src="./snap/threads.js" />
-        <Script strategy="beforeInteractive" src="./snap/objects.js" />
-        <Script strategy="beforeInteractive" src="./snap/scenes.js" />
-        <Script strategy="beforeInteractive" src="./snap/gui.js" />
-        <Script strategy="beforeInteractive" src="./snap/paint.js" />
-        <Script strategy="beforeInteractive" src="./snap/lists.js" />
-        <Script strategy="beforeInteractive" src="./snap/byob.js" />
-        <Script strategy="beforeInteractive" src="./snap/tables.js" />
-        <Script strategy="beforeInteractive" src="./snap/sketch.js" />
-        <Script strategy="beforeInteractive" src="./snap/video.js" />
-        <Script strategy="beforeInteractive" src="./snap/maps.js" />
-        <Script strategy="beforeInteractive" src="./snap/extensions.js" />
-        <Script strategy="beforeInteractive" src="./snap/xml.js" />
-        <Script strategy="beforeInteractive" src="./snap/store.js" />
-        <Script strategy="beforeInteractive" src="./snap/locale.js" />
-        <Script strategy="beforeInteractive" src="./snap/cloud.js" />
-        <Script strategy="beforeInteractive" src="./snap/api.js" />
-        <Script strategy="beforeInteractive" src="./snap/sha512.js" />
-        <Script strategy="beforeInteractive" src="./snap/FileSaver.min.js" />
+        <Script strategy="beforeInteractive" src="/snap/morphic.js" />
+        <Script strategy="beforeInteractive" src="/snap/symbols.js" />
+        <Script strategy="beforeInteractive" src="/snap/widgets.js" />
+        <Script strategy="beforeInteractive" src="/snap/blocks.js" />
+        <Script strategy="beforeInteractive" src="/snap/threads.js" />
+        <Script strategy="beforeInteractive" src="/snap/objects.js" />
+        <Script strategy="beforeInteractive" src="/snap/scenes.js" />
+        <Script strategy="beforeInteractive" src="/snap/gui.js" />
+        <Script strategy="beforeInteractive" src="/snap/paint.js" />
+        <Script strategy="beforeInteractive" src="/snap/lists.js" />
+        <Script strategy="beforeInteractive" src="/snap/byob.js" />
+        <Script strategy="beforeInteractive" src="/snap/tables.js" />
+        <Script strategy="beforeInteractive" src="/snap/sketch.js" />
+        <Script strategy="beforeInteractive" src="/snap/video.js" />
+        <Script strategy="beforeInteractive" src="/snap/maps.js" />
+        <Script strategy="beforeInteractive" src="/snap/extensions.js" />
+        <Script strategy="beforeInteractive" src="/snap/xml.js" />
+        <Script strategy="beforeInteractive" src="/snap/store.js" />
+        <Script strategy="beforeInteractive" src="/snap/locale.js" />
+        <Script strategy="beforeInteractive" src="/snap/cloud.js" />
+        <Script strategy="beforeInteractive" src="/snap/api.js" />
+        <Script strategy="beforeInteractive" src="/snap/sha512.js" />
+        <Script strategy="beforeInteractive" src="/snap/FileSaver.min.js" />
 
-        <Script strategy='beforeInteractive' id="world-script">
+        <Script strategy="beforeInteractive" src="/qqqq.js" />
+        <Script strategy="beforeInteractive" id="world-script">
             {`
                      let world;
                      let FPS = 67,
@@ -116,7 +117,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      requestAnimationFrame(loop);
              `}
         </Script>
-        <div>My Post: {params.slug}</div>
+        {/* <div>My Post: {params.slug}</div> */}
         <canvas id="world" tabIndex={1} style={{ position: 'absolute' }}></canvas>
     </>)
 }

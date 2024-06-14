@@ -1,60 +1,23 @@
-![Snap! Logo](src/snap_logo_sm.png)
-# Snap<em>!</em> Build Your Own Blocks
-
-[https://snap.berkeley.edu][snap]
-
-**[Try Snap<em>!</em> Now](https://snap.berkeley.edu/snap/)**
-
-a visual, blocks based programming language
-inspired by Scratch
-
-written by Jens Mönig and Brian Harvey  
-jens@moenig.org, bh@cs.berkeley.edu
-
-## Snap<em>!</em> Community
-
-This repository contains the source code for Snap<em>!</em> IDE. If you have
-questions about using Snap<em>!</em>, please check out [the Snap! Forum][forum].
-
-We also maintain an active community at [snap.berkeley.edu][snap],
-where you can save and share your own projects. You can also
-[check out the code][snapcloud], if you're curious.
-
-[snap]: https://snap.berkeley.edu
-[snapcloud]: https://github.com/snap-cloud/snapCloud
-[forum]: https://forum.snap.berkeley.edu
-
-## Security
-
-If you have security concerns, please do not post them publicly.
-Please reach out to us at [contact@snap.berkeley.edu](mailto:contact@snap.berkeley.edu).
-
-## Documentation
-
-The definitive source of how to use Snap! is the [Snap! Manual](help/SnapManual.pdf).
-
-* [API.md](docs/API.md) describes the API for modifying the Snap! interface.
-* [Extensions.md](docs/Extensions.md) describes the basic interface for building JavaScript extensions for Snap!
-* [Migrating.md](docs/Migrating.md) gives guidance for older extensions to migrate to Morphic 2 and Snap! v6.
-* [Offline.md](docs/Offline.md) has instructions for running Snap! as a progressive web application.
-
-_Please read the [Contribution Guidelines](docs/CONTRIBUTING.md) before making an issue or pull request. Thanks!_
-
-## License
-Copyright (C) 2008-2024 by Jens Mönig and Brian Harvey
-
-Snap! is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of
-the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Want to use Snap! but scared by the open-source license? Get in touch with us,
-we'll make it work.
+<Script strategy="beforeInteractive" src="./snap/morphic.js?version=2024-03-01" />
+<Script strategy="beforeInteractive" src="./snap/symbols.js?version=2024-01-24" />
+<Script strategy="beforeInteractive" src="./snap/widgets.js?version=2023-05-24" />
+<Script strategy="beforeInteractive" src="./snap/blocks.js?version=2024-06-04" />
+<Script strategy="beforeInteractive" src="./snap/threads.js?version=2024-04-17" />
+<Script strategy="beforeInteractive" src="./snap/objects.js?version=2024-01-15" />
+<Script strategy="beforeInteractive" src="./snap/scenes.js?version=2022-10-29" />
+<Script strategy="beforeInteractive" src="./snap/gui.js?version=2024-06-04" />
+<Script strategy="beforeInteractive" src="./snap/paint.js?version=2023-05-24" />
+<Script strategy="beforeInteractive" src="./snap/lists.js?version=2024-04-05" />
+<Script strategy="beforeInteractive" src="./snap/byob.js?version=2024-04-17" />
+<Script strategy="beforeInteractive" src="./snap/tables.js?version=2023-07-05" />
+<Script strategy="beforeInteractive" src="./snap/sketch.js?version=2023-05-24" />
+<Script strategy="beforeInteractive" src="./snap/video.js?version=2019-06-27" />
+<Script strategy="beforeInteractive" src="./snap/maps.js?version=2021-06-15" />
+<Script strategy="beforeInteractive" src="./snap/extensions.js?version=2024-02-13" />
+<Script strategy="beforeInteractive" src="./snap/xml.js?version=2021-07-05" />
+<Script strategy="beforeInteractive" src="./snap/store.js?version=2023-07-27" />
+<Script strategy="beforeInteractive" src="./snap/locale.js?version=2024-06-04" />
+<Script strategy="beforeInteractive" src="./snap/cloud.js?version=2023-04-12" />
+<Script strategy="beforeInteractive" src="./snap/api.js?version=2024-02-22" />
+<Script strategy="beforeInteractive" src="./snap/sha512.js?version=2019-06-27" />
+<Script strategy="beforeInteractive" src="./snap/FileSaver.min.js?version=2019-06-27" />

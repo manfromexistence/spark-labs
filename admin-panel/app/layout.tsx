@@ -1,5 +1,3 @@
-"use client"
-
 import "./globals.css"
 import Script from "next/script"
 import { ClerkProvider } from "@clerk/nextjs"
@@ -14,17 +12,31 @@ import { Toaster as NewYorkSonner } from "@/registry/new-york/ui/sonner"
 import { Toaster as NewYorkToaster } from "@/registry/new-york/ui/toaster"
 import { Nextui } from "./nextui"
 
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { theme } = useTheme()
-  const isDarkMode = theme === "dark"
+
   return (
     <html lang="en">
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <body className="">
+          <Nextui>
+            <SiteHeader />
+            <div className="">{children}</div>
+            <SiteFooter />
+            <Toaster />
+            <NewYorkToaster />
+            <DefaultToaster />
+            <NewYorkSonner />
+          </Nextui>
+        </body>
+
+      </ThemeProvider>
+      {/* 
+        const { theme } = useTheme()
+  const isDarkMode = theme === "dark"
         <ClerkProvider
           appearance={{
             baseTheme: isDarkMode ? dark : undefined,
@@ -33,20 +45,8 @@ export default function RootLayout({
             },
           }}
         >
-          <body className="">
-            <Nextui>
-              <SiteHeader />
-              <div className="">{children}</div>
-              <SiteFooter />
-              <Toaster />
-              <NewYorkToaster />
-              <DefaultToaster />
-              <NewYorkSonner />
-            </Nextui>
-          </body>
+
         </ClerkProvider>
-      </ThemeProvider>
-{/* 
       <Script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js" />
       <Script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js" /> */}
     </html>

@@ -39,7 +39,7 @@ export function SiteFooter() {
   const { setTheme } = useTheme()
 
   return (
-    <footer className="flex min-h-[300px] w-full items-center justify-center border-t py-16">
+    <footer className="footer flex min-h-[300px] w-full items-center justify-center border-t py-16">
       <div className="w-auto px-3 sm:px-6 lg:px-8 ">
         <div className="flex items-start justify-start lg:w-[1200px]">
           <div className="w-[200px] space-y-3">

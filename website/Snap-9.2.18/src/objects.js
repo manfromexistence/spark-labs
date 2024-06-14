@@ -161,15 +161,16 @@ SpriteMorph.prototype.categories =
         'other'
     ];
 
+
 SpriteMorph.prototype.blockColor = {
-    motion : new Color(74, 108, 212),
-    looks : new Color(143, 86, 227),
-    sound : new Color(207, 74, 217),
-    pen : new Color(0, 161, 120),
-    control : new Color(230, 168, 34),
-    sensing : new Color(4, 148, 220),
-    operators : new Color(98, 194, 19),
-    variables : new Color(243, 118, 29),
+    motion : new Color(76, 188, 230),
+    looks : new Color(167, 208, 246),
+    sound : new Color(176, 224, 230),
+    pen : new Color(176, 213, 174),
+    control : new Color(250, 237, 192),
+    sensing : new Color(253, 213, 177),
+    operators : new Color(228, 172, 178),
+    variables : new Color(212, 174, 207),
     lists : new Color(217, 77, 17),
     other: new Color(150, 150, 150)
 };

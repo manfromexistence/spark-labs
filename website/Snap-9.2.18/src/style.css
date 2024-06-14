@@ -1,0 +1,43 @@
+:root {
+    --color-one: #B0BCE6;
+    --color-two: #A7D0F6;
+    --color-three: #B0E0E6;
+    --color-four: #B0D5AE;
+
+    --color-five: #FAEDC0;
+    --color-six: #FDD5B1;
+    --color-seven: #E4ACB2;
+    --color-eight: #D4AECF;
+
+
+
+    --color-one: #B0BCE6;
+    --color-two: #A7D0F6;
+    --color-three: rgb(176, 224, 230);
+    --color-four: rgb(176, 213, 174);
+
+    --color-five: rgb(250, 237, 192);
+    --color-six: rgb(253, 213, 177);
+    --color-seven: rgb(228, 172, 178);
+    --color-eight: rgb(212, 174, 207);
+    
+    --pen: #00a178;
+
+
+
+    --color-one: rgb(0, 0, 0);
+
+
+
+
+
+    --color-one: rgb(176, 188, 230);
+    --color-two: rgb(167, 208, 246);
+    --color-three: rgb(176, 224, 230);
+    --color-four: rgb(176, 224, 230);
+
+    --color-five: rgb(176, 213, 174);
+    --color-six: rgb(250, 237, 192);
+    --color-seven: rgb(253, 213, 177);
+    --color-eight: rgb(228, 172, 178);
+}

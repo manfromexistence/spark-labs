@@ -4,10 +4,11 @@ var useBlurredShadows = true;
 
 const ZERO = new Point();
 const BLACK = new Color(255, 0, 208);
-const WHITE = new Color(0, 251, 255);
-const PRIMARY = new Color(15, 15, 15);
-const SECONDARY = new Color(5, 5, 5);
+const WHITE = new Color(0, 0, 0);
+const PRIMARY = new Color(240, 240, 240);
+const SECONDARY = new Color(255, 255, 255);
 const ACCENT = new Color(0, 250, 250);
+const HIGHLIGHT = new Color(255, 251, 0);
 const CLEAR = new Color(106, 0, 255);
 
 Object.freeze(ZERO);
@@ -5838,7 +5839,7 @@ SliderMorph.prototype.init = function (
     this.button.isDraggable = false;
     this.button.alpha = MorphicPreferences.isFlat ? 0.7 : 1;
     this.button.color = new Color(200, 200, 200);
-    this.button.highlightColor = new Color(210, 210, 255);
+    this.button.highlightColor = WHITE;
     this.button.pressColor = new Color(180, 180, 255);
     SliderMorph.uber.init.call(this, orientation);
     this.add(this.button);
@@ -8566,7 +8567,7 @@ TriggerMorph.prototype.init = function (
     this.schedule = null; // animation slot for displaying hints
     this.fontSize = fontSize || MorphicPreferences.menuFontSize;
     this.fontStyle = fontStyle || 'sans-serif';
-    this.highlightColor = new Color(192, 192, 192);
+    this.highlightColor = HIGHLIGHT;
     this.pressColor = new Color(128, 128, 128);
     this.labelColor = labelColor || new Color(0, 0, 0);
     this.labelBold = labelBold || false;
@@ -8577,7 +8578,7 @@ TriggerMorph.prototype.init = function (
     TriggerMorph.uber.init.call(this);
 
     // override inherited properites:
-    this.color = WHITE;
+    this.color = PRIMARY;
     this.createLabel();
 };
 

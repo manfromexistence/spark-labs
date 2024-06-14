@@ -1476,7 +1476,7 @@ SnapExtensions.menus.set(
                         "40 orange #ff7f00=40",
                         "41 Pantone orange #ff5800=41",
                         "42 pumpkin #ff7518=42",
-                        "43 Variables #f3761d=43",
+                        "43 Variables #E4ACB2=43",
                         "44 Spanish orange #e86100=44",
                         "45 burnt orange #cc5500=45",
                         "46 sinopia #cb410b=46",
@@ -1487,7 +1487,7 @@ SnapExtensions.menus.set(
                     "yellows",
                     [
                         "50 yellow #ffff00=50",
-                        "51 Control #e6a822=51",
+                        "51 Control #B0D5AE=51",
                         "52 dark goldenrod #b8860b=52",
                         "53 goldenrod #daa520=53",
                         "54 saffron #f4c430=54",
@@ -1501,14 +1501,14 @@ SnapExtensions.menus.set(
                     [
                         "60 lime #00ff00=60",
                         "61 apple green #8db600=61",
-                        "62 Operators #62c213=62",
+                        "62 Operators #FDD5B1=62",
                         "63 forest green #228b22=63",
                         "64 green #008000=64",
                         "65 dark green #006400=65",
                         "66 dark pastel green #03c03c=66",
                         "67 emerald #50c878=67",
                         "68 mint #3eb489=68",
-                        "69 Pen #00a178=69"
+                        "69 Pen #B0E0E6=69"
                     ],
                     "cyans",
                     [
@@ -1516,7 +1516,7 @@ SnapExtensions.menus.set(
                         "71 dark cyan #008b8b=71",
                         "72 cerulean #007ba7=72",
                         "73 iceberg #71a6d2=73",
-                        "74 Sensing #0494dc=74",
+                        "74 Sensing #FAEDC0=74",
                         "75 teal #008080=75",
                         "76 light sky blue #87cefa=76",
                         "77 deep sky blue #00bfff=77",
@@ -1532,20 +1532,20 @@ SnapExtensions.menus.set(
                         "84 denim #1560bd=84",
                         "85 navy blue #000080=85",
                         "86 steel blue #4682b4=86",
-                        "87 Motion #4a6cd4=87",
+                        "87 Motion #B0BCE6=87",
                         "88 cornflower #6495ed=88",
                         "89 slate blue #6a5acd=89"
                     ],
                     "purples",
                     [
                         "90 violet #8000ff=90",
-                        "91 Looks #8f56e3=91",
+                        "91 Looks #A7D0F6=91",
                         "92 grape #6f2da8=92",
                         "93 indigo #4b0082=93",
                         "94 x11 purple #a020f0=94",
                         "95 magenta (fuchia) #ff00ff=95",
                         "96 dark orchid #9932cc=96",
-                        "97 Sound #cf4ad9=97",
+                        "97 Sound #B0E0E6=97",
                         "98 purple #7f007f=98",
                         "99 dark magenta #8b008b=99"
                     ]

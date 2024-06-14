@@ -3,11 +3,12 @@ var modules = {}; // keep track of additional loaded modules
 var useBlurredShadows = true;
 
 const ZERO = new Point();
-const BLACK = new Color(255, 0, 208);
-const WHITE = new Color(0, 251, 255);
-const PRIMARY = new Color(15, 15, 15);
-const SECONDARY = new Color(5, 5, 5);
+const BLACK = new Color(0, 0, 0);
+const WHITE = new Color(255, 255, 255);
+const PRIMARY = new Color(240, 240, 240);
+const SECONDARY = new Color(255, 255, 255);
 const ACCENT = new Color(0, 250, 250);
+const HIGHLIGHT = new Color(255, 251, 0);
 const CLEAR = new Color(106, 0, 255);
 
 Object.freeze(ZERO);
@@ -82,7 +83,7 @@ var MorphicPreferences = standardSettings;
     or already disabled, so it's equally safe to call.
 
     For an example how to make retina support user-specifiable refer to
-    Spark Labs Workspace>> guis.js >> toggleRetina()
+    Snap! >> guis.js >> toggleRetina()
 */
 
 enableRetinaSupport();
@@ -376,7 +377,7 @@ function enableRetinaSupport() {
     written to the Canvas element will be scaled appropriately.
 
     NOTE: This implementation is not exhaustive; it only implements what is
-    needed by the Spark Labs WorkspaceUI.
+    needed by the Snap! UI.
 
     [Jens]: like all other retina screen support implementations I've seen
     Bartosz's patch also does not address putImageData() compatibility when
@@ -1054,7 +1055,7 @@ Color.prototype.lighter = function (percent) {
     if (percent) {
         fract = (100 - percent) / 100;
     }
-    return this.mixed(fract, WHITE);
+    return this.mixed(fract, BLACK);
 };
 
 Color.prototype.dansDarker = function () {
@@ -3532,7 +3533,7 @@ HandleMorph.prototype.init = function (
     this.type =  type || 'resize'; // also: 'move', 'moveCenter', 'movePivot'
     this.isHighlighted = false;
     HandleMorph.uber.init.call(this);
-    this.color = WHITE;
+    this.color = ACCENT;
     this.isDraggable = false;
     if (this.type === 'movePivot') {
         size *= 2;
@@ -3573,7 +3574,7 @@ HandleMorph.prototype.render = function (ctx) {
             this.renderHandleOn(
                 ctx,
                 new Color(100, 100, 255),
-                WHITE
+                ACCENT
             );
         } else {
             this.renderHandleOn(
@@ -4204,13 +4205,13 @@ ColorPickerMorph.uber = Morph.prototype;
 // ColorPickerMorph instance creation:
 
 function ColorPickerMorph(defaultColor) {
-    this.init(defaultColor || WHITE);
+    this.init(defaultColor || ACCENT);
 }
 
 ColorPickerMorph.prototype.init = function (defaultColor) {
     this.choice = defaultColor;
     ColorPickerMorph.uber.init.call(this);
-    this.color = WHITE;
+    this.color = ACCENT;
     this.setExtent(new Point(80, 80));
 };
 
@@ -5838,7 +5839,7 @@ SliderMorph.prototype.init = function (
     this.button.isDraggable = false;
     this.button.alpha = MorphicPreferences.isFlat ? 0.7 : 1;
     this.button.color = new Color(200, 200, 200);
-    this.button.highlightColor = new Color(210, 210, 255);
+    this.button.highlightColor = ACCENT;
     this.button.pressColor = new Color(180, 180, 255);
     SliderMorph.uber.init.call(this, orientation);
     this.add(this.button);
@@ -6168,7 +6169,7 @@ MouseSensorMorph.prototype.init = function (edge, border, borderColor) {
     MouseSensorMorph.uber.init.call(this);
     this.edge = edge || 4;
     this.border = border || 2;
-    this.color = WHITE;
+    this.color = ACCENT;
     this.borderColor = borderColor || BLACK;
     this.isTouched = false;
     this.upStep = 0.05;
@@ -6328,7 +6329,7 @@ InspectorMorph.prototype.buildPanes = function () {
     this.label = new TextMorph(this.target.toString());
     this.label.fontSize = MorphicPreferences.menuFontSize;
     this.label.isBold = true;
-    this.label.color = WHITE;
+    this.label.color = ACCENT;
     this.add(this.label);
 
     // properties list
@@ -6394,7 +6395,7 @@ InspectorMorph.prototype.buildPanes = function () {
     this.detail.acceptsDrops = false;
     this.detail.contents.acceptsDrops = false;
     this.detail.isTextLineWrapping = true;
-    this.detail.color = WHITE;
+    this.detail.color = ACCENT;
     this.detail.hBar.alpha = 0.6;
     this.detail.vBar.alpha = 0.6;
     ctrl = new TextMorph('');
@@ -6411,7 +6412,7 @@ InspectorMorph.prototype.buildPanes = function () {
         this.work.acceptsDrops = false;
         this.work.contents.acceptsDrops = false;
         this.work.isTextLineWrapping = true;
-        this.work.color = WHITE;
+        this.work.color = ACCENT;
         this.work.hBar.alpha = 0.6;
         this.work.vBar.alpha = 0.6;
         ev = new TextMorph('');
@@ -6832,15 +6833,15 @@ MenuMorph.prototype.createLabel = function () {
         'center'
     );
     text.alignment = 'center';
-    text.color = WHITE;
-    text.backgroundColor = this.borderColor;
+    text.color = ACCENT;
+    text.backgroundColor = ACCENT;
     text.fixLayout();
     this.label = new BoxMorph(3, 0);
     if (MorphicPreferences.isFlat) {
         this.label.edge = 0;
     }
     this.label.color = this.borderColor;
-    this.label.borderColor = this.borderColor;
+    this.label.borderColor = ACCENT;
     this.label.setExtent(text.extent().add(4));
     this.label.add(text);
     this.label.text = text;
@@ -6859,7 +6860,7 @@ MenuMorph.prototype.createItems = function () {
         this.edge = MorphicPreferences.isFlat ? 0 : 5;
         this.border = MorphicPreferences.isFlat ? 1 : 2;
     }
-    this.color = WHITE;
+    this.color = ACCENT;
     this.borderColor = new Color(60, 60, 60);
     this.setExtent(new Point(0, 0));
 
@@ -7297,7 +7298,7 @@ StringMorph.prototype.init = function (
     this.currentlySelecting = false;
     this.startMark = 0;
     this.endMark = 0;
-    this.markedTextColor = WHITE;
+    this.markedTextColor = ACCENT;
     this.markedBackgoundColor = new Color(60, 60, 120);
 
     // initialize inherited properties:
@@ -8007,7 +8008,7 @@ TextMorph.prototype.init = function (
     this.currentlySelecting = false;
     this.startMark = 0;
     this.endMark = 0;
-    this.markedTextColor = WHITE;
+    this.markedTextColor = ACCENT;
     this.markedBackgoundColor = new Color(60, 60, 120);
 
     // initialize inherited properties:
@@ -8566,7 +8567,7 @@ TriggerMorph.prototype.init = function (
     this.schedule = null; // animation slot for displaying hints
     this.fontSize = fontSize || MorphicPreferences.menuFontSize;
     this.fontStyle = fontStyle || 'sans-serif';
-    this.highlightColor = new Color(192, 192, 192);
+    this.highlightColor = HIGHLIGHT;
     this.pressColor = new Color(128, 128, 128);
     this.labelColor = labelColor || new Color(0, 0, 0);
     this.labelBold = labelBold || false;
@@ -8577,7 +8578,7 @@ TriggerMorph.prototype.init = function (
     TriggerMorph.uber.init.call(this);
 
     // override inherited properites:
-    this.color = WHITE;
+    this.color = PRIMARY;
     this.createLabel();
 };
 
@@ -9635,7 +9636,7 @@ ListMorph.prototype.init = function (
     ListMorph.uber.init.call(this);
 
     this.contents.acceptsDrops = false;
-    this.color = WHITE;
+    this.color = ACCENT;
     this.hBar.alpha = 0.6;
     this.vBar.alpha = 0.6;
     this.elements = elements || [];
@@ -9787,7 +9788,7 @@ StringFieldMorph.prototype.init = function (
     this.isNumeric = isNumeric || false;
     this.text = null;
     StringFieldMorph.uber.init.call(this);
-    this.color = WHITE;
+    this.color = ACCENT;
     this.isEditable = true;
     this.acceptsDrops = false;
     this.createText();

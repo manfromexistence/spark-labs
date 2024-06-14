@@ -35,7 +35,7 @@ IDE_Morph.uber = Morph.prototype;
 IDE_Morph.prototype.setDefaultDesign = function () {
     MorphicPreferences.isFlat = false;
     SpriteMorph.prototype.paletteColor = PRIMARY;
-    SpriteMorph.prototype.paletteTextColor = ACCENT;
+    SpriteMorph.prototype.paletteTextColor = BLACK;
     StageMorph.prototype.paletteTextColor
         = SpriteMorph.prototype.paletteTextColor;
     StageMorph.prototype.paletteColor = SpriteMorph.prototype.paletteColor;
@@ -43,13 +43,13 @@ IDE_Morph.prototype.setDefaultDesign = function () {
         = SpriteMorph.prototype.paletteColor.lighter(30);
 
     IDE_Morph.prototype.buttonContrast = 30;
-    IDE_Morph.prototype.backgroundColor = WHITE;
+    IDE_Morph.prototype.backgroundColor = BLACK;
     IDE_Morph.prototype.frameColor = SpriteMorph.prototype.paletteColor;
 
     IDE_Morph.prototype.groupColor
         = SpriteMorph.prototype.paletteColor.lighter(5);
     IDE_Morph.prototype.sliderColor = SpriteMorph.prototype.sliderColor;
-    IDE_Morph.prototype.buttonLabelColor = WHITE;
+    IDE_Morph.prototype.buttonLabelColor = BLACK;
     IDE_Morph.prototype.tabColors = [
         IDE_Morph.prototype.groupColor.darker(50),
         IDE_Morph.prototype.groupColor.darker(25),
@@ -72,13 +72,13 @@ IDE_Morph.prototype.setDefaultDesign = function () {
         = IDE_Morph.prototype.buttonLabelColor;
 
     SyntaxElementMorph.prototype.contrast = 65;
-    ScriptsMorph.prototype.feedbackColor = WHITE;
+    ScriptsMorph.prototype.feedbackColor = BLACK;
 };
 
 IDE_Morph.prototype.setFlatDesign = function () {
     MorphicPreferences.isFlat = true;
-    SpriteMorph.prototype.paletteColor = WHITE;
-    SpriteMorph.prototype.paletteTextColor = ACCENT;
+    SpriteMorph.prototype.paletteColor = BLACK;
+    SpriteMorph.prototype.paletteTextColor = BLACK;
     StageMorph.prototype.paletteTextColor
         = SpriteMorph.prototype.paletteTextColor;
     StageMorph.prototype.paletteColor = SpriteMorph.prototype.paletteColor;
@@ -88,9 +88,9 @@ IDE_Morph.prototype.setFlatDesign = function () {
     IDE_Morph.prototype.backgroundColor = PRIMARY;
     IDE_Morph.prototype.frameColor = SECONDARY;
 
-    IDE_Morph.prototype.groupColor = WHITE;
+    IDE_Morph.prototype.groupColor = BLACK;
     IDE_Morph.prototype.sliderColor = SpriteMorph.prototype.sliderColor;
-    IDE_Morph.prototype.buttonLabelColor = ACCENT;
+    IDE_Morph.prototype.buttonLabelColor = BLACK;
     IDE_Morph.prototype.tabColors = [
         IDE_Morph.prototype.frameColor,
         IDE_Morph.prototype.frameColor.lighter(50),
@@ -1018,7 +1018,7 @@ IDE_Morph.prototype.createControlBar = function () {
             this.frameColor.darker(50),
             this.frameColor.darker(50)
         ],
-        activeColor = ACCENT,
+        activeColor = BLACK,
         activeColors = [
             activeColor,
             activeColor.lighter(40),
@@ -1060,14 +1060,14 @@ IDE_Morph.prototype.createControlBar = function () {
     button.hasNeutralBackground = true;
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = PRIMARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
     button.labelShadowColor = colors[1];
     button.labelColor = MorphicPreferences.isFlat ?
-        WHITE
+    BLACK
         : this.buttonLabelColor;
     button.contrast = this.buttonContrast;
     // button.hint = 'stage size\nsmall & normal';
@@ -1092,7 +1092,7 @@ IDE_Morph.prototype.createControlBar = function () {
     button.hasNeutralBackground = true;
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = PRIMARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1121,7 +1121,7 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = SECONDARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1153,7 +1153,7 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1187,7 +1187,7 @@ IDE_Morph.prototype.createControlBar = function () {
     button.hasNeutralBackground = true;
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = colors[0];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1212,7 +1212,7 @@ IDE_Morph.prototype.createControlBar = function () {
     );
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1283,7 +1283,7 @@ IDE_Morph.prototype.createControlBar = function () {
     );
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1306,7 +1306,7 @@ IDE_Morph.prototype.createControlBar = function () {
     );
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1335,7 +1335,7 @@ IDE_Morph.prototype.createControlBar = function () {
     button.hasNeutralBackground = true;
     button.corner = 12;
     button.color = PRIMARY;
-    button.highlightColor = ACCENT;
+    button.highlightColor = BLACK;
     button.pressColor = colors[0];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1584,7 +1584,7 @@ IDE_Morph.prototype.createCategories = function () {
         button.labelShadowColor = colors[1];
         button.labelColor = myself.buttonLabelColor;
         if (MorphicPreferences.isFlat) {
-            button.labelPressColor = WHITE;
+            button.labelPressColor = BLACK;
         }
         button.fixLayout();
         button.refresh();
@@ -1621,7 +1621,7 @@ IDE_Morph.prototype.createCategories = function () {
         button.labelShadowColor = colors[1];
         button.labelColor = myself.buttonLabelColor;
         if (MorphicPreferences.isFlat) {
-            button.labelPressColor = WHITE;
+            button.labelPressColor = BLACK;
         }
         button.fixLayout();
         button.refresh();
@@ -2210,7 +2210,7 @@ IDE_Morph.prototype.createCorralBar = function () {
     );
     newbutton.corner = 12;
     newbutton.color = PRIMARY;
-    newbutton.highlightColor = ACCENT;
+    newbutton.highlightColor = BLACK;
     newbutton.pressColor = colors[2];
     newbutton.labelMinExtent = new Point(36, 18);
     newbutton.padding = 0;
@@ -2231,7 +2231,7 @@ IDE_Morph.prototype.createCorralBar = function () {
     );
     paintbutton.corner = 12;
     paintbutton.color = PRIMARY;
-    paintbutton.highlightColor = ACCENT;
+    paintbutton.highlightColor = BLACK;
     paintbutton.pressColor = colors[2];
     paintbutton.labelMinExtent = new Point(36, 18);
     paintbutton.padding = 0;
@@ -2255,7 +2255,7 @@ IDE_Morph.prototype.createCorralBar = function () {
                 );
         cambutton.corner = 12;
         cambutton.color = PRIMARY;
-        cambutton.highlightColor = ACCENT;
+        cambutton.highlightColor = BLACK;
         cambutton.pressColor = colors[2];
         cambutton.labelMinExtent = new Point(36, 18);
         cambutton.padding = 0;
@@ -2294,7 +2294,7 @@ IDE_Morph.prototype.createCorralBar = function () {
     );
     trashbutton.corner = 12;
     trashbutton.color = PRIMARY;
-    trashbutton.highlightColor = ACCENT;
+    trashbutton.highlightColor = BLACK;
     trashbutton.pressColor = colors[2];
     trashbutton.labelMinExtent = new Point(36, 18);
     trashbutton.padding = 0;
@@ -5317,7 +5317,7 @@ IDE_Morph.prototype.aboutSnap = function () {
                 null,
                 null,
                 MorphicPreferences.isFlat ? null : new Point(1, 1),
-                WHITE
+                BLACK
             ),
             scroller,
             maxHeight = world.height() - dlg.titleFontSize * 10;
@@ -5328,7 +5328,7 @@ IDE_Morph.prototype.aboutSnap = function () {
             scroller.bounds.setWidth(tm.width());
             scroller.bounds.setHeight(maxHeight);
             scroller.addContents(tm);
-            scroller.color = ACCENT;
+            scroller.color = BLACK;
             return scroller;
         }
         return tm;
@@ -8314,7 +8314,7 @@ IDE_Morph.prototype.warnAboutIE = function () {
             null,
             null,
             MorphicPreferences.isFlat ? null : new Point(1, 1),
-            WHITE
+            BLACK
         );
 
         dlg.key = 'IE-Warning';
@@ -8445,7 +8445,7 @@ ProjectDialogMorph.prototype.buildContents = function () {
             null, // width
             null, // font name
             new Point(1, 1), // shadow offset
-            WHITE // shadowColor
+            BLACK // shadowColor
         );
         notification.refresh = nop;
         this.srcBar.add(notification);
@@ -8662,7 +8662,7 @@ ProjectDialogMorph.prototype.addSourceButton = function (
             null,
             null,
             new Point(1, 1),
-            WHITE
+            BLACK
         ),
         lbl2 = new StringMorph(
             label,
@@ -8673,7 +8673,7 @@ ProjectDialogMorph.prototype.addSourceButton = function (
             null,
             new Point(-1, -1),
             this.titleBarColor.darker(50),
-            WHITE
+            BLACK
         ),
         l1 = new Morph(),
         l2 = new Morph(),
@@ -8696,7 +8696,7 @@ ProjectDialogMorph.prototype.addSourceButton = function (
     lbl2.add(new SymbolMorph(
         symbol,
         24,
-        WHITE,
+        BLACK,
         new Point(-1, -1),
         this.titleBarColor.darker(50)
     ));
@@ -10128,7 +10128,7 @@ SpriteIconMorph.uber = ToggleButtonMorph.prototype;
 SpriteIconMorph.prototype.thumbSize = new Point(40, 40);
 SpriteIconMorph.prototype.labelShadowOffset = null;
 SpriteIconMorph.prototype.labelShadowColor = null;
-SpriteIconMorph.prototype.labelColor = WHITE;
+SpriteIconMorph.prototype.labelColor = BLACK;
 SpriteIconMorph.prototype.fontSize = 9;
 
 // SpriteIconMorph instance creation:
@@ -10668,7 +10668,7 @@ CostumeIconMorph.uber = ToggleButtonMorph.prototype;
 CostumeIconMorph.prototype.thumbSize = new Point(80, 60);
 CostumeIconMorph.prototype.labelShadowOffset = null;
 CostumeIconMorph.prototype.labelShadowColor = null;
-CostumeIconMorph.prototype.labelColor = WHITE;
+CostumeIconMorph.prototype.labelColor = BLACK;
 CostumeIconMorph.prototype.fontSize = 9;
 
 // CostumeIconMorph instance creation:
@@ -10973,7 +10973,7 @@ TurtleIconMorph.uber = ToggleButtonMorph.prototype;
 TurtleIconMorph.prototype.thumbSize = new Point(80, 60);
 TurtleIconMorph.prototype.labelShadowOffset = null;
 TurtleIconMorph.prototype.labelShadowColor = null;
-TurtleIconMorph.prototype.labelColor = WHITE;
+TurtleIconMorph.prototype.labelColor = BLACK;
 TurtleIconMorph.prototype.fontSize = 9;
 
 // TurtleIconMorph instance creation:
@@ -11413,7 +11413,7 @@ SoundIconMorph.uber = ToggleButtonMorph.prototype;
 SoundIconMorph.prototype.thumbSize = new Point(80, 60);
 SoundIconMorph.prototype.labelShadowOffset = null;
 SoundIconMorph.prototype.labelShadowColor = null;
-SoundIconMorph.prototype.labelColor = WHITE;
+SoundIconMorph.prototype.labelColor = BLACK;
 SoundIconMorph.prototype.fontSize = 9;
 
 // SoundIconMorph instance creation:
@@ -11804,7 +11804,7 @@ SceneIconMorph.uber = ToggleButtonMorph.prototype;
 SceneIconMorph.prototype.thumbSize = new Point(40, 30);
 SceneIconMorph.prototype.labelShadowOffset = null;
 SceneIconMorph.prototype.labelShadowColor = null;
-SceneIconMorph.prototype.labelColor = WHITE;
+SceneIconMorph.prototype.labelColor = BLACK;
 SceneIconMorph.prototype.fontSize = 9;
 
 // SceneIconMorph instance creation:

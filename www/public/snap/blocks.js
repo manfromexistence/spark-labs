@@ -2007,7 +2007,7 @@ SyntaxElementMorph.prototype.labelPart = function (spec) {
             MorphicPreferences.isFlat ?
                     ZERO : this.embossing, // shadowOffset
             this.color.darker(this.labelContrast), // shadowColor
-            WHITE, // color
+            BLACK, // color
             this.labelFontName // fontName
         );
 
@@ -12234,7 +12234,7 @@ InputSlotStringMorph.prototype.getRenderColor = function () {
         }
         return this.parent.alpha > 0.5 ? this.color : BLACK;
     }
-    return this.parent.alpha > 0.25 ? this.color : WHITE;
+    return this.parent.alpha > 0.25 ? this.color : HIGHLIGHT;
 };
 
 InputSlotStringMorph.prototype.getShadowRenderColor = function () {

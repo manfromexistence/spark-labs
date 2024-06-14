@@ -170,10 +170,27 @@ export async function NeonGradientCardDemo() {
 export function SiteHeader() {
   const { sessionId } = useAuth();
   const pathname = usePathname()
+  const [docs, setDocs] = useState<any>([]);
+  const [region, setRegion] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    const fetchDocs = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+      const newDocs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setDocs(newDocs);
+    };
+    fetchDocs();
+  }, []);
 
   return (
     <header className="navbar h-[4.5rem] flex items-center justify-center z-10 sticky top-0 w-full bg-background/80 backdrop-blur-2xl border-b">
-      <div className="w-full flex h-14 items-center justify-center lg:px-[3%] px-10">
+      <div className="w-full flex h-14 items-center justify-center px-5">
         <MainNav />
         <MobileNav />
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -185,6 +202,31 @@ export function SiteHeader() {
 
               <nav className="flex items-center">
                 <div className="flex items-center gap-2">
+                  {docs && docs.map((user: any) => {
+                    if (user.accountType === "student") {
+                      return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div className="w-full h-auto flex items-center justify-end">
+                        <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
+                          <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
+                            <div className="color-change-5x rounded-full h-4 w-4"></div>
+                            Student
+                          </div>
+                        </div>
+                      </div>
+
+                    }
+                    if (user.accountType === "teacher") {
+                      return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div className="w-full h-auto flex items-center justify-end">
+                        <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
+                          <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
+                            <div className="color-change-5x rounded-full h-4 w-4"></div>
+                            Teacher
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  })}
+
+
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline">Feedback</Button>

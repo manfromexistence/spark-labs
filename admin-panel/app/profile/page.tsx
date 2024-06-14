@@ -1,13 +1,6 @@
 import { UserDetails } from "../components/user-details";
 
-
 export default async function DashboardPage() {
-  // const { userId } = auth().protect();
-
-  // const user = await clerkClient.users.getUser(userId);
-
-  // if (!user) return null;
-
   return (
     <>
       <main className="max-w-[75rem] w-full mx-auto border bg-theme my-24 rounded-md p-24">

@@ -473,26 +473,26 @@ export default function Home() {
           </PopoverContent>
         </Popover> */}
         <DockIcon>
-          <MonitorUp />
+          <MonitorUp className="h-4 w-4" />
         </DockIcon>
 
         <DockIcon>
-          <Save />
+          <Save className="h-4 w-4" />
         </DockIcon>
         <DockIcon>
-          <Send />
+          <Send className="h-4 w-4" />
         </DockIcon>
         <DockIcon>
-          <Map />
+          <Map className="h-4 w-4" />
         </DockIcon>
         <DockIcon>
-          <CircleDashed />
+          <CircleDashed className="h-4 w-4" />
         </DockIcon>
         <DockIcon>
-          <ArrowLeft />
+          <ArrowLeft className="h-4 w-4" />
         </DockIcon>
         <DockIcon>
-          <ChevronsRightLeft />
+          <ChevronsRightLeft className="h-4 w-4" />
         </DockIcon>
       </Dock>
 

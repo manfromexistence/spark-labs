@@ -217,6 +217,10 @@ const config = {
         hostname: 'img.clerk.com',
         port: '',
       },
+      
+    ],
+    domains: [
+      "api.microlink.io", // Microlink Image Preview
     ],
     unoptimized: true,
   },

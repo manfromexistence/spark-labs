@@ -41,7 +41,7 @@ export function SiteFooter() {
   return (
     <footer className="footer flex min-h-[300px] w-full items-center justify-center border-t py-16">
       <div className="w-auto px-3 sm:px-6 lg:px-8 ">
-        <div className="flex items-start justify-start lg:w-[1200px]">
+        <div className="flex items-start justify-start lg:w-[1200px] lg:flex-row flex-col pb-10 lg:pb-0 gap-10 lg:gap-0">
           <div className="w-[200px] space-y-3">
             <a className="font-semidark text-xl" href="#">
               Get all updates.
@@ -62,7 +62,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="flex-1 lg:px-5 flex items-start justify-evenly gap-3 flex-col lg:flex-row">
+          <div className="flex-1 footer-lists px-5">
             <div>
               <h3 className="text-lg font-medium">About us</h3>
               <ul className="mt-4 space-y-2">

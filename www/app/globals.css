@@ -191,6 +191,13 @@
   grid-template-columns: repeat(auto-fit, minmax(400px, auto));
 }
 
+.footer-lists {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(auto, 150px));
+  place-content: center;
+}
+
 .admin-panel-lists-loading {
   display: grid;
   grid-gap: 3em;
@@ -986,4 +993,11 @@ button .cl-button {
     transform: scale(2.2);
     opacity: 0;
   }
+}
+
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -193,7 +193,7 @@ export function SiteHeader() {
       <div className="w-full flex h-14 items-center justify-center px-5">
         <MainNav />
         <MobileNav />
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+        <div className="flex flex-1 items-center justify-end">
           {auth.currentUser ? (
             <>
               {/* <div className="w-full flex-1 md:w-auto md:flex-none">
@@ -380,7 +380,7 @@ export function SiteHeader() {
                 </div>
               </nav>
             </>) : <Link href="/login">
-            <div className="w-full h-auto flex items-center justify-end">
+            <div className="w-full h-auto flex items-center justify-end sm:items-end">
               <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                 <div className="auth-button relative bg-background p-2 w-fit rounded-md text-center leading-tight">
                   {pathname === "/login" ? "Thanks for logging In!" : pathname === "/register" ? "Thanks for creating an account!" : "Login"}

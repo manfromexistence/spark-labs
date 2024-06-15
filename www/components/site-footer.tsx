@@ -163,12 +163,12 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <a
-                    href="https://www.google.com/intl/en/policies/terms/"
+                    href="https://vercel.com/legal/terms"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <LinkPreview
-                      url="https://www.google.com/intl/en/policies/terms/"
+                      url="https://vercel.com/legal/terms"
                     >
                       Terms & conditions
                     </LinkPreview>
@@ -255,12 +255,12 @@ export function SiteFooter() {
               <ul className="mt-4 space-y-2">
                 <li>
                   <a
-                    href="https://spark.apache.org/docs/latest/api.html"
+                    href="https://vercel.com/home"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <LinkPreview
-                      url="https://spark.apache.org/docs/latest/api.html"
+                      url="https://vercel.com/home"
                     >
                       Experts
                     </LinkPreview>

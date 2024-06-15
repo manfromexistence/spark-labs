@@ -14,7 +14,7 @@ import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe
 import { CheckIcon, ChevronRightIcon, MonitorUp, Save, Send, Map, ChevronsRightLeft, CircleDashed, ArrowLeft } from "lucide-react";
 import { CoolMode } from "@/components/magicui/cool-mode";
 import { Button } from "@/components/ui/button";
-export type IconProps = React.HTMLAttributes<SVGElement>;
+type IconProps = React.HTMLAttributes<SVGElement>;
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -25,7 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export interface DockProps extends VariantProps<typeof dockVariants> {
+interface DockProps extends VariantProps<typeof dockVariants> {
   className?: string;
   magnification?: number;
   distance?: number;
@@ -78,7 +78,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
 
 Dock.displayName = "Dock";
 
-export interface DockIconProps {
+interface DockIconProps {
   size?: number;
   magnification?: number;
   distance?: number;
@@ -135,7 +135,7 @@ const DockIcon = ({
 DockIcon.displayName = "DockIcon";
 
 
-export function DockDemo() {
+function DockDemo() {
   return (
     <div className="relative flex h-[500px] w-full max-w-[32rem] flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
       <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">

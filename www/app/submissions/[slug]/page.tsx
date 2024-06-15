@@ -29,13 +29,16 @@ const scripts = [
     "/snap/sha512.js",
     "/snap/FileSaver.min.js"
 ];
+declare var WorldMorph: any;
+declare var IDE_Morph: any;
 
 export default function Page({ params }: { params: { slug: string } }) {
     const worldRef = useRef<HTMLCanvasElement | null>(null);
     let lastTime = 0;
+    // let WorldMorph:any= window.WorldMorph;
+    // let IDE_Morph:any= window.IDE_Morph;
 
     useEffect(() => {
-        document.title = `Spark Labs Workspace(${params.slug})`;
         if (worldRef.current) {
             const world = new WorldMorph(worldRef.current);
             new IDE_Morph().openIn(world);

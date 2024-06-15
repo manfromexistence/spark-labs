@@ -14,9 +14,11 @@ import {
 import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons"
 import { motion } from "framer-motion"
 import {
+  Bell,
   Cloud,
   CreditCard,
   Github,
+  Inbox,
   Keyboard,
   LifeBuoy,
   LogOut,
@@ -33,6 +35,7 @@ import {
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,

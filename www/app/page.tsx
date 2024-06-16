@@ -75,7 +75,7 @@ const DEFAULT_MAGNIFICATION = 70;
 const DEFAULT_DISTANCE = 125;
 
 const dockVariants = cva(
-  "mx-auto w-[345px] min-w-max h-[58px] p-2 flex items-end gap-2 rounded-2xl border fixed bottom-3 left-1/2 transform -translate-x-1/2 px-1.5 bg-background",
+  " mx-auto w-[345px] min-w-max h-[58px] p-2 flex items-end gap-2 rounded-2xl border fixed bottom-3 left-1/2 transform -translate-x-1/2 px-1.5 bg-background",
 );
 
 const Dock = React.forwardRef<HTMLDivElement, DockProps>(
@@ -445,7 +445,7 @@ export default function Home() {
         <Card className="mx-auto w-full bg-background rounded-xl overflow-hidden shadow-lg pb-5 font-mono tracking-tighter">
           <CardHeader className="bg-primary-foreground text-primary px-6 py-4 flex items-center">
             <div className="rounded-full border p-1">
-              <Avatar className="w-12 h-12 mr-4">
+              <Avatar className="w-12 h-12">
                 <AvatarImage src="/placeholder-user.jpg" />
                 <AvatarFallback>HF</AvatarFallback>
               </Avatar>
@@ -456,54 +456,54 @@ export default function Home() {
               <div className="text-foreground text-xs text-center w-full">@hareemfatima</div>
             </div>
           </CardHeader>
-          <CardContent className="px-6 py-5 grid gap-4 ">
-            <div className="grid grid-cols-2 gap-4">
+          <CardContent className="px-6 py-5 grid gap-4 transform">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
                 <LockIcon className="w-5 h-5 text-foreground" />
-                <span className="text-foreground">Password</span>
+                <span className="text-foreground h-full text-center">UserId</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">********</div>
             </div>
             <Separator />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
                 <MapPinIcon className="w-5 h-5 text-foreground" />
-                <span className="text-foreground">Region</span>
+                <span className="text-foreground h-full text-center">Region</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">New York, USA</div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
-                <Instagram className="w-5 h-5" />
-                <span className="text-foreground">Instagram</span>
+                <img src="https://img.logo.dev/instagram.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+                <span className="text-foreground h-full text-center">Instagram</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
                 <YouTube className="w-5 h-5" />
-                <span className="text-foreground">YouTube</span>
+                <span className="text-foreground h-full text-center">YouTube</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">John Doe</div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
                 <Facebook className="w-5 h-5" />
-                <span className="text-foreground">Facebook</span>
+                <span className="text-foreground h-full text-center">Facebook</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">John Doe</div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
                 <Twitter className="w-5 h-5" />
-                <span className="text-foreground">Twitter</span>
+                <span className="text-foreground h-full text-center">Twitter</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
               <div className="flex items-center gap-3">
-                <Messenger className="w-5 h-5" />
-                <span className="text-foreground">Messenger</span>
+                <img src="https://img.logo.dev/messanger.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+                <span className="text-foreground h-full text-center">Messanger</span>
               </div>
               <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
             </div>
@@ -539,27 +539,39 @@ export default function Home() {
           </Link>
           <Link href='https://www.instagram.com/tonymitul/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Instagram</span>
-            <img src="https://img.logo.dev/instagram.com" className="h-4 w-4" />
+            {/* <img src="https://img.logo.dev/instagram.com" className="h-4 w-4" /> */}
+            {/* <img src="https://img.logo.dev/instagram.com" /> */}
+            <img src="https://img.logo.dev/instagram.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
           </Link>
-          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://www.upwork.com/freelancers/~01b52af7a84ded5239' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Upwork</span>
-            <img src="https://img.logo.dev/upwork.com" className="h-4 w-4" />
+            {/* <img src="https://img.logo.dev/upwork.com" className="h-4 w-4" /> */}
+            <img src="https://img.logo.dev/upwork.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+
           </Link>
-          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://www.peopleperhour.com/freelancer/technology-programming/muhammad-hossain-software-engineer-zzvaxyvj' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>PeoplePerHour</span>
-            <img src="https://img.logo.dev/peopleperhour.com" className="h-4 w-4" />
+            {/* <img src="https://img.logo.dev/peopleperhour.com" className="h-4 w-4" /> */}
+            <img src="https://img.logo.dev/peopleperhour.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+
           </Link>
-          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://www.freelancer.com/u/manfrexistreacts' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Freelancer</span>
-            <img src="https://img.logo.dev/freelancer.com" className="h-4 w-4" />
+            {/* <img src="https://img.logo.dev/freelancer.com" className="h-4 w-4" /> */}
+            <img src="https://img.logo.dev/freelancer.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+
           </Link>
-          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://img.logo.dev/fiverr.com' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Fiverr</span>
-            <img src="https://img.logo.dev/fiverr.com" className="h-4 w-4" />
+            {/* <img src="https://img.logo.dev/fiverr.com" className="h-4 w-4" /> */}
+            <img src="https://img.logo.dev/fiverr.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+
           </Link>
-          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://contra.com/man_from_existence_reac_bcrgyud0' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Contra</span>
-            <img src="https://img.logo.dev/contra.com" className="h-4 w-4" />
+            {/* <img src="https://img.logo.dev/contra.com" className="h-4 w-4" /> */}
+            <img src="https://img.logo.dev/contra.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+
           </Link>
           <Link href='https://www.linkedin.com/in/minialgo-kz-a50180314/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Linkdin</span>
@@ -903,53 +915,53 @@ const LinkedIn = (props: SVGProps<SVGSVGElement>) => <svg width="1em" height="1e
 //       </div>
 //     </CardHeader>
 //     <CardContent className="px-6 py-5 grid gap-4 ">
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <LockIcon className="w-5 h-5 text-foreground" />
-//           <span className="text-foreground">Password</span>
+//           <span className="text-foreground h-full text-center">Password</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">********</div>
 //       </div>
 //       <Separator />
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <MapPinIcon className="w-5 h-5 text-foreground" />
-//           <span className="text-foreground">Region</span>
+//           <span className="text-foreground h-full text-center">Region</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">New York, USA</div>
 //       </div>
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <Instagram className="w-5 h-5" />
-//           <span className="text-foreground">Instagram</span>
+//           <span className="text-foreground h-full text-center">Instagram</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
 //       </div>
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <YouTube className="w-5 h-5" />
-//           <span className="text-foreground">YouTube</span>
+//           <span className="text-foreground h-full text-center">YouTube</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">John Doe</div>
 //       </div>
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <Facebook className="w-5 h-5" />
-//           <span className="text-foreground">Facebook</span>
+//           <span className="text-foreground h-full text-center">Facebook</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">John Doe</div>
 //       </div>
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <Twitter className="w-5 h-5" />
-//           <span className="text-foreground">Twitter</span>
+//           <span className="text-foreground h-full text-center">Twitter</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
 //       </div>
-//       <div className="grid grid-cols-2 gap-4">
+//       <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
 //         <div className="flex items-center gap-3">
 //           <Messenger className="w-5 h-5" />
-//           <span className="text-foreground">Messenger</span>
+//           <span className="text-foreground h-full text-center">Messenger</span>
 //         </div>
 //         <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
 //       </div>

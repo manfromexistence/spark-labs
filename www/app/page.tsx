@@ -539,23 +539,27 @@ export default function Home() {
           </Link>
           <Link href='https://www.instagram.com/tonymitul/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Instagram</span>
-            <Instagram className="h-4 w-4" />
+            <img src="https://img.logo.dev/instagram.com" className="h-4 w-4" />
           </Link>
           <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Upwork</span>
-            <Instagram className="h-4 w-4" />
+            <img src="https://img.logo.dev/upwork.com" className="h-4 w-4" />
           </Link>
           <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>PeoplePerHour</span>
-            <Instagram className="h-4 w-4" />
+            <img src="https://img.logo.dev/peopleperhour.com" className="h-4 w-4" />
           </Link>
           <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Freelancer</span>
-            <Instagram className="h-4 w-4" />
+            <img src="https://img.logo.dev/freelancer.com" className="h-4 w-4" />
           </Link>
           <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Fiverr</span>
-            <Instagram className="h-4 w-4" />
+            <img src="https://img.logo.dev/fiverr.com" className="h-4 w-4" />
+          </Link>
+          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Contra</span>
+            <img src="https://img.logo.dev/contra.com" className="h-4 w-4" />
           </Link>
           <Link href='https://www.linkedin.com/in/minialgo-kz-a50180314/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Linkdin</span>

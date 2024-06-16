@@ -1,6 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
 "use client"
 
+/* eslint-disable @next/next/no-img-element */
 import IntroText from "@/components/landing/intro-text";
 import Features from "@/components/landing/features";
 import Blockquote from "@/components/landing/blockquote";
@@ -192,7 +193,7 @@ export default function Home() {
 
   const [now, setNow] = useState(new Date());
   // Snap Editor
-  const [submitBar, setSubmitBar] = useState(true);
+  const [submitBar, setSubmitBar] = useState(false);
   const [navigationsBar, setNavigationsBar] = useState(false);
   const [detailsBar, setDetailsBar] = useState(false);
   const [developerBar, setDeveloperBar] = useState(false);
@@ -207,9 +208,9 @@ export default function Home() {
   const [projectStatus, setProjectStatus] = useState<any>(false);
   const [projectId, setProjectId] = useState<any>("");
 
-  const { toast } = useToast()
-  const router = useRouter()
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const { toast } = useToast();
+  // const router = useRouter();
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const submitProject = async () => {
     const { clientWidth, clientHeight } = document.documentElement
@@ -443,10 +444,13 @@ export default function Home() {
       <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <Card className="mx-auto w-full bg-background rounded-xl overflow-hidden shadow-lg pb-5 font-mono tracking-tighter">
           <CardHeader className="bg-primary-foreground text-primary px-6 py-4 flex items-center">
-            <Avatar className="w-12 h-12 mr-4">
-              <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>HF</AvatarFallback>
-            </Avatar>
+            <div className="rounded-full border p-1">
+              <Avatar className="w-12 h-12 mr-4">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>HF</AvatarFallback>
+              </Avatar>
+            </div>
+
             <div className="flex-1">
               <div className="text-lg font-semibold">Hareem Fatima</div>
               <div className="text-foreground text-xs text-center w-full">@hareemfatima</div>
@@ -507,75 +511,150 @@ export default function Home() {
         </Card>
       </div>
       <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", developerBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
-
         <div className="h-full w-full p-3 border rounded-md flex flex-col space-y-3 pb-12 !font-mono !tracking-tighter">
-          <Link href='/profile' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <div className="border hover:bg-primary-foreground text-primary px-6 py-4 flex items-center rounded-md flex-col">
+            <div className="rounded-full border p-1">
+              <img src="/manfromexistence.jpg" className="w-[50px] h-[50px] !rounded-full" />
+            </div>
+            <div className="flex-1">
+              <div className="text-lg font-semibold">ManFromExistence</div>
+              <div className="text-foreground text-xs text-center w-full">@manfromexistence</div>
+            </div>
+          </div>
+          <Link href='https://github.com/manfromexistence01' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Github</span>
             <Github className="h-4 w-4" />
           </Link>
-          <Link href='/dashboard' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://twitter.com/manofexistence1' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Twitter</span>
+            <Twitter className="h-4 w-4" />
+          </Link>
+          <Link href='https://www.youtube.com/channel/UCK0IEdLWxA2EFgucri7z4SA' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Youtube</span>
             <YouTube className="h-4 w-4" />
           </Link>
-          <Link href='/classrooms' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Facebook</span>
             <Facebook className="h-4 w-4" />
           </Link>
-          <Link href='/classrooms' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
-            <span>Messanger</span>
-            <Messenger className="h-4 w-4" />
+          <Link href='https://www.instagram.com/tonymitul/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Instagram</span>
+            <Instagram className="h-4 w-4" />
           </Link>
-          <Link href='/classrooms' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Upwork</span>
+            <Instagram className="h-4 w-4" />
+          </Link>
+          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>PeoplePerHour</span>
+            <Instagram className="h-4 w-4" />
+          </Link>
+          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Freelancer</span>
+            <Instagram className="h-4 w-4" />
+          </Link>
+          <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Fiverr</span>
+            <Instagram className="h-4 w-4" />
+          </Link>
+          <Link href='https://www.linkedin.com/in/minialgo-kz-a50180314/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+            <span>Linkdin</span>
+            <LinkedIn className="h-4 w-4" />
+          </Link>
+
+          {/* <Link href='https://www.facebook.com/shohan.hossain.376043' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Whatsapp</span>
             <WhatsApp className="h-4 w-4" />
           </Link>
           <Link href='/teachers' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Google</span>
             <Google className="h-4 w-4" />
-          </Link>
-          <Link href='/teachers' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </Link> */}
+          {/* <Link href='/teachers' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Gmail</span>
             <Gmail className="h-4 w-4" />
-          </Link>
-          <Link href='/students' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </Link> */}
+          {/* <Link href='/students' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Telegram</span>
             <Telegram className="h-4 w-4" />
-          </Link>
+          </Link> */}
         </div>
       </div>
       <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", actionsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <div className="h-full w-full p-3 border rounded-md flex flex-col space-y-3 pb-12 !font-mono !tracking-tighter">
-          <Link href='/dashboard' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <div onClick={() => {
+            setSubmitBar(!submitBar);
+            setNavigationsBar(false);
+            setDetailsBar(false);
+            setDeveloperBar(false);
+            setActionsBar(false);
+          }} className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Submit Project</span>
             <Send className="h-4 w-4" />
-          </Link>
-          <Link href='/classrooms' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </div>
+          <div onClick={() => {
+            setSubmitBar(!submitBar);
+            setNavigationsBar(false);
+            setDetailsBar(false);
+            setDeveloperBar(false);
+            setActionsBar(false);
+          }} className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Load Old Project</span>
             <MonitorUp className="h-4 w-4" />
-          </Link>
-          <Link href='/submissions' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </div>
+          <div onClick={() => {
+            setSubmitBar(!submitBar);
+            setNavigationsBar(false);
+            setDetailsBar(false);
+            setDeveloperBar(false);
+            setActionsBar(false);
+          }} className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Save Project</span>
             <Save className="h-4 w-4" />
-          </Link>
-          <Link href='/teachers' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </div>
+          <div onClick={() => {
+            setSubmitBar(false);
+            setNavigationsBar(!navigationsBar);
+            setDetailsBar(false);
+            setDeveloperBar(false);
+            setActionsBar(false);
+          }} className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Navigate Or Explore</span>
             <Map className="h-4 w-4" />
-          </Link>
-          <Link href='/students' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </div>
+          <div onClick={() => {
+            setSubmitBar(false);
+            setNavigationsBar(false);
+            setDetailsBar(!detailsBar);
+            setDeveloperBar(false);
+            setActionsBar(false);
+          }} className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>User Details</span>
             <CircleDashed className="h-4 w-4" />
-          </Link>
-          <Link href='/profile' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          </div>
+          <div onClick={() => {
+            setSubmitBar(false);
+            setNavigationsBar(false);
+            setDetailsBar(false);
+            setDeveloperBar(!developerBar);
+            setActionsBar(false);
+          }} className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Contract Developer</span>
             <ArrowUpFromDot className="h-4 w-4" />
-          </Link>
+          </div>
         </div>
       </div>
 
 
 
       <Dock>
-        <DockIcon onClick={() => setSubmitBar(!submitBar)} className={cn(submitBar ? "jello-vertical" : "")}>
+        <DockIcon onClick={() => {
+          setSubmitBar(!submitBar);
+          setNavigationsBar(false);
+          setDetailsBar(false);
+          setDeveloperBar(false);
+          setActionsBar(false);
+        }} className={cn(submitBar ? "jello-vertical" : "")}>
           {submitBar ? <X className="h-4 w-4" /> : <Send className="h-4 w-4" />}
         </DockIcon>
         <DockIcon onClick={() => {
@@ -604,19 +683,43 @@ export default function Home() {
         }} className={cn("hover:jello-vertical")}>
           <Save className="h-4 w-4" />
         </DockIcon>
-        <DockIcon onClick={() => setNavigationsBar(!navigationsBar)} className={cn(submitBar ? "jello-vertical" : "")}>
+        <DockIcon onClick={() => {
+          setSubmitBar(false);
+          setNavigationsBar(!navigationsBar);
+          setDetailsBar(false);
+          setDeveloperBar(false);
+          setActionsBar(false);
+        }} className={cn(submitBar ? "jello-vertical" : "")}>
           {navigationsBar ? <X className="h-4 w-4" /> :
             <Map className="h-4 w-4" />}
         </DockIcon>
-        <DockIcon onClick={() => setDetailsBar(!detailsBar)} className={cn(submitBar ? "jello-vertical" : "")}>
+        <DockIcon onClick={() => {
+          setSubmitBar(false);
+          setNavigationsBar(false);
+          setDetailsBar(!detailsBar);
+          setDeveloperBar(false);
+          setActionsBar(false);
+        }} className={cn(submitBar ? "jello-vertical" : "")}>
           {detailsBar ? <X className="h-4 w-4" /> :
             <CircleDashed className="h-4 w-4" />}
         </DockIcon>
-        <DockIcon onClick={() => setDeveloperBar(!developerBar)} className={cn(submitBar ? "jello-vertical" : "")}>
+        <DockIcon onClick={() => {
+          setSubmitBar(false);
+          setNavigationsBar(false);
+          setDetailsBar(false);
+          setDeveloperBar(!developerBar);
+          setActionsBar(false);
+        }} className={cn(submitBar ? "jello-vertical" : "")}>
           {developerBar ? <X className="h-4 w-4" /> :
             <ArrowUpFromDot className="h-4 w-4" />}
         </DockIcon>
-        <DockIcon onClick={() => setActionsBar(!actionsBar)} className={cn(submitBar ? "jello-vertical" : "")}>
+        <DockIcon onClick={() => {
+          setSubmitBar(false);
+          setNavigationsBar(false);
+          setDetailsBar(false);
+          setDeveloperBar(false);
+          setActionsBar(!actionsBar);
+        }} className={cn(submitBar ? "jello-vertical" : "")}>
           {actionsBar ? <X className="h-4 w-4" /> :
             <ChevronsRightLeft className="h-4 w-4" />}
         </DockIcon>
@@ -653,7 +756,7 @@ const XSocialMedia = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.
 
 const Telegram = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid" {...props}><defs><linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stopColor="#2AABEE" /><stop offset="100%" stopColor="#229ED9" /></linearGradient></defs><path fill="url(#a)" d="M128 0C94.06 0 61.48 13.494 37.5 37.49A128.038 128.038 0 0 0 0 128c0 33.934 13.5 66.514 37.5 90.51C61.48 242.506 94.06 256 128 256s66.52-13.494 90.5-37.49c24-23.996 37.5-56.576 37.5-90.51 0-33.934-13.5-66.514-37.5-90.51C194.52 13.494 161.94 0 128 0Z" /><path fill="#FFF" d="M57.94 126.648c37.32-16.256 62.2-26.974 74.64-32.152 35.56-14.786 42.94-17.354 47.76-17.441 1.06-.017 3.42.245 4.96 1.49 1.28 1.05 1.64 2.47 1.82 3.467.16.996.38 3.266.2 5.038-1.92 20.24-10.26 69.356-14.5 92.026-1.78 9.592-5.32 12.808-8.74 13.122-7.44.684-13.08-4.912-20.28-9.63-11.26-7.386-17.62-11.982-28.56-19.188-12.64-8.328-4.44-12.906 2.76-20.386 1.88-1.958 34.64-31.748 35.26-34.45.08-.338.16-1.598-.6-2.262-.74-.666-1.84-.438-2.64-.258-1.14.256-19.12 12.152-54 35.686-5.1 3.508-9.72 5.218-13.88 5.128-4.56-.098-13.36-2.584-19.9-4.708-8-2.606-14.38-3.984-13.82-8.41.28-2.304 3.46-4.662 9.52-7.072Z" /></svg>;
 
-
+const LinkedIn = (props: SVGProps<SVGSVGElement>) => <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 256" {...props}><path d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453" fill="#0A66C2" /></svg>;
 
 
 

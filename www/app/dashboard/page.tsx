@@ -51,7 +51,7 @@ import { initializeApp } from "firebase/app";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, getDoc, startAfter } from "firebase/firestore";
 import { useEffect, useRef } from "react";
 import { limit, query, onSnapshot } from "firebase/firestore";
-import { Chrome, CircleDollarSign, Code, Earth, Facebook, Flame, Hotel, Instagram, Mail, MapPinned, MessageCircleDashed, Phone, PocketKnife, University } from "lucide-react"
+import { Chrome, CircleDollarSign, Code, Earth, Facebook, Flame, Hotel, Instagram, Mail, MapPinned, MessageCircleDashed, Phone, PocketKnife, Trash2, University } from "lucide-react"
 const firebaseConfig = {
     apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
     authDomain: "snap-workspace.firebaseapp.com",
@@ -290,11 +290,32 @@ const invoices = [
 const Dashboard = () => {
 
     const [docs, setDocs] = useState<any[]>([]);
+    const [users, setUsers] = useState<any>([]);
+    const [classrooms, setClassrooms] = useState<any>([]);
+    const [students, setStudents] = useState<any[]>([]);
+    const studentUsers = users.filter((user: any) => user.accountType === "student");
+
+    const addAllStudents = () => {
+        setStudents(studentUsers);
+    };
+
+    const removeAllStudents = () => {
+        setStudents([]);
+    };
+
+    const deleteUser = (id: number) => {
+        const updatedStudents = users.filter((user: any) => user.id !== id);
+        setUsers(updatedStudents);
+    };
+
     const [lastDoc, setLastDoc] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [addNewStudentBar, setAddNewStudentBar] = React.useState(false);
     const [addNewClassroomBar, setAddNewClassroomBar] = React.useState(false);
     const [username, setUsername] = React.useState("");
+    const [title, setTitle] = React.useState("");
+    const [thumbnail, setThumbnail] = React.useState("");
+    const [description, setDescription] = React.useState("");
     const [password, setPassword] = React.useState("");
 
     const [api, setApi] = React.useState<CarouselApi>()
@@ -475,6 +496,28 @@ const Dashboard = () => {
         };
         fetchDocs();
     }, []);
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const q = query(collection(db, "users"));
+            const querySnapshot = await getDocs(q);
+            const newDocs = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setUsers(newDocs);
+        };
+        const fetchClassroom = async () => {
+            const q = query(collection(db, "classrooms"));
+            const querySnapshot = await getDocs(q);
+            const newDocs = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setClassrooms(newDocs);
+        };
+        fetchClassroom();
+        fetchUsers();
+    }, []);
 
     const loadMore = async () => {
         setLoading(true);
@@ -643,154 +686,92 @@ const Dashboard = () => {
                                     <CardContent className="space-y-4">
                                         <div className="space-y-2">
                                             <Label htmlFor="title">Title</Label>
-                                            <Input onChange={(e: any) => setUsername(e.target.value)} id="title" placeholder="Enter Title" />
+                                            <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="thumbnail">Thumbnail</Label>
-                                            <Input onChange={(e: any) => setUsername(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
+                                            <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="description">Description</Label>
-                                            <Textarea onChange={(e: any) => setUsername(e.target.value)} id="description" placeholder="Enter Description" />
+                                            <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
                                         </div>
-                                        <Select>
+                                        {/* <Select>
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder="Students" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectGroup>
-                                                    <SelectLabel>North America</SelectLabel>
-                                                    <SelectItem value="est">Eastern Standard Time (EST)</SelectItem>
-                                                    <SelectItem value="cst">Central Standard Time (CST)</SelectItem>
-                                                    <SelectItem value="mst">Mountain Standard Time (MST)</SelectItem>
-                                                    <SelectItem value="pst">Pacific Standard Time (PST)</SelectItem>
-                                                    <SelectItem value="akst">Alaska Standard Time (AKST)</SelectItem>
-                                                    <SelectItem value="hst">Hawaii Standard Time (HST)</SelectItem>
-                                                </SelectGroup>
-                                                <SelectGroup>
-                                                    <SelectLabel>Europe & Africa</SelectLabel>
-                                                    <SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
-                                                    <SelectItem value="cet">Central European Time (CET)</SelectItem>
-                                                    <SelectItem value="eet">Eastern European Time (EET)</SelectItem>
-                                                    <SelectItem value="west">
-                                                        Western European Summer Time (WEST)
-                                                    </SelectItem>
-                                                    <SelectItem value="cat">Central Africa Time (CAT)</SelectItem>
-                                                    <SelectItem value="eat">East Africa Time (EAT)</SelectItem>
-                                                </SelectGroup>
-                                                <SelectGroup>
-                                                    <SelectLabel>Asia</SelectLabel>
-                                                    <SelectItem value="msk">Moscow Time (MSK)</SelectItem>
-                                                    <SelectItem value="ist">India Standard Time (IST)</SelectItem>
-                                                    <SelectItem value="cst_china">China Standard Time (CST)</SelectItem>
-                                                    <SelectItem value="jst">Japan Standard Time (JST)</SelectItem>
-                                                    <SelectItem value="kst">Korea Standard Time (KST)</SelectItem>
-                                                    <SelectItem value="ist_indonesia">
-                                                        Indonesia Central Standard Time (WITA)
-                                                    </SelectItem>
-                                                </SelectGroup>
-                                                <SelectGroup>
-                                                    <SelectLabel>Australia & Pacific</SelectLabel>
-                                                    <SelectItem value="awst">
-                                                        Australian Western Standard Time (AWST)
-                                                    </SelectItem>
-                                                    <SelectItem value="acst">
-                                                        Australian Central Standard Time (ACST)
-                                                    </SelectItem>
-                                                    <SelectItem value="aest">
-                                                        Australian Eastern Standard Time (AEST)
-                                                    </SelectItem>
-                                                    <SelectItem value="nzst">New Zealand Standard Time (NZST)</SelectItem>
-                                                    <SelectItem value="fjt">Fiji Time (FJT)</SelectItem>
-                                                </SelectGroup>
-                                                <SelectGroup>
-                                                    <SelectLabel>South America</SelectLabel>
-                                                    <SelectItem value="art">Argentina Time (ART)</SelectItem>
-                                                    <SelectItem value="bot">Bolivia Time (BOT)</SelectItem>
-                                                    <SelectItem value="brt">Brasilia Time (BRT)</SelectItem>
-                                                    <SelectItem value="clt">Chile Standard Time (CLT)</SelectItem>
-                                                </SelectGroup>
+                                                {users.map((user: any) => user.accountType === "student" &&
+                                                    (<SelectItem onClick={() => {
+                                                        deleteUser(user.id);
+                                                        setStudents([...students, { id: user.id, username: user.username }]);
+                                                    }} className="hover:bg-primary hover:text-primary-foreground" key={user.id} value={user.id}>{user.username}</SelectItem>
+                                                    ))}
                                             </SelectContent>
-                                        </Select>
+                                        </Select> */}
 
                                         <div className="w-full flex justify-between">
-                                            <Button variant="outline">
+                                            <Button onClick={removeAllStudents} variant="outline">
                                                 Remove All Students
                                             </Button>
-                                            <Button variant="outline">
+                                            <Button onClick={addAllStudents} variant="outline">
                                                 Add All Students
                                             </Button>
                                         </div>
-                                        <Table>
+                                        {/* <Table className="w-full border !rounded-md">
                                             <TableCaption>A list of your recent invoices.</TableCaption>
                                             <TableHeader>
-                                                <TableRow>
-                                                    {/* <TableHead className="w-[100px]">User Name</TableHead> */}
+                                                <TableRow className="w-full bg-yellow-500">
                                                     <TableHead>Username</TableHead>
                                                     <TableHead>Actions</TableHead>
-                                                    {/* <TableHead className="text-right">Amount</TableHead> */}
                                                 </TableRow>
                                             </TableHeader>
-                                            <TableBody>
+                                            <TableBody className="w-full bg-pink-500">
                                                 {invoices.map((invoice) => (
-                                                    <TableRow key={invoice.invoice}>
-                                                        {/* <TableCell className="font-medium">{invoice.invoice}</TableCell> */}
+                                                    <TableRow className="w-full bg-red-500" key={invoice.invoice}>
                                                         <TableCell>{invoice.paymentStatus}</TableCell>
                                                         <TableCell>{invoice.paymentMethod}</TableCell>
-                                                        {/* <TableCell className="text-right">{invoice.totalAmount}</TableCell> */}
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
                                             <TableFooter>
                                                 <TableRow>
                                                     <TableCell colSpan={3}>Total</TableCell>
-                                                    <TableCell className="text-right">$2,500.00</TableCell>
+                                                    <TableCell className="text-right">2</TableCell>
                                                 </TableRow>
                                             </TableFooter>
-                                        </Table>
+                                        </Table> */}
+                                        <div className="w-full h-auto rounded-md border p-3">
+                                            <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                <span>Username</span>
+                                                <span>Actions</span>
+                                            </div>
+                                            {
+                                                students.map((student: any) => (
+                                                    <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                        <span>{student.username}</span>
+                                                        <Trash2 onClick={() => {
+                                                            const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                            setStudents(updatedStudents);
+                                                        }} className="h-4 w-4" />
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
                                     </CardContent>
-                                    {/* <CardFooter>
-                                    <Button onClick={async () => {
-                                        const Create = await addDoc(collection(db, "users"), {
-                                            username: username,
-                                            surname: "ManFromExistence",
-                                            avatar: "https://avater.com",
-                                            email: "ajju40959@gmail.com",
-                                            region: "Bangladesh",
-                                            accountType: "student",
-                                            youtube: "https://youtube.com",
-                                            twitter: "https://twitter.com",
-                                            instagram: "https://instagram.com",
-                                            facebook: "https://facebook.com",
-                                            linkdin: "https://linkdin.com",
-                                            password: password,
-                                        })
-                                        toast({
-                                            title: "Student Created Successfully!",
-                                            description: `All students are public.`,
-                                        });
-                                    }} className="w-full">Create Student</Button>
-                                </CardFooter> */}
                                 </Card>
                             </ScrollArea>
                             <Button onClick={async () => {
-                                const Create = await addDoc(collection(db, "users"), {
-                                    username: username,
-                                    surname: "ManFromExistence",
-                                    avatar: "https://avater.com",
-                                    email: "ajju40959@gmail.com",
-                                    region: "Bangladesh",
-                                    accountType: "student",
-                                    youtube: "https://youtube.com",
-                                    twitter: "https://twitter.com",
-                                    instagram: "https://instagram.com",
-                                    facebook: "https://facebook.com",
-                                    linkdin: "https://linkdin.com",
-                                    password: password,
+                                const Create = await addDoc(collection(db, "classrooms"), {
+                                    title: title,
+                                    thumbnail: thumbnail,
+                                    description: description,
+                                    students: students,
+                                    time: Date.now(),
                                 })
                                 toast({
-                                    title: "Student Created Successfully!",
-                                    description: `All students are public.`,
+                                    title: "Classroom Created Successfully!",
+                                    description: `All classrooms are public.`,
                                 });
                             }} className="w-full">Create Classroom</Button>
 

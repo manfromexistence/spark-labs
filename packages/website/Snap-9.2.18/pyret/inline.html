@@ -56,8 +56,12 @@
                 world = new WorldMorph(document.getElementById('world'), false);
                 ide.openIn(world);
                 ide.addMessageListener('update', txt => code.value = txt);
-                save.addEventListener('click', () => ide.saveXMLAs(
-                    ide.getSpriteScriptsXML(), 'snap-scripts'));
+                save.addEventListener('click', () => {
+                    // ide.prototype.save();
+                    console.log(`Save ${ide.getProjectXML()}`);
+                    // ide.saveXMLAs(ide.getSpriteScriptsXML(), 'snap-scripts');
+                    
+                });
                 clear.addEventListener('click', () =>
                     ide.loadSpriteScriptsXML('<>'));
                 load.addEventListener("change", () => {

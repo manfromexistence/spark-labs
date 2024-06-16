@@ -109,7 +109,7 @@ import { HoverBorderGradient } from "./magicui/hover-border-gradient"
 
 import firebase, { initializeApp } from 'firebase/app';
 import 'firebase/auth';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -178,6 +178,19 @@ export function SiteHeader() {
   const [region, setRegion] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleLogout = async () => {
+    // const auth = getAuth();
+    try {
+      await signOut(auth);
+      window.location.reload();
+      // Redirect to the login page or perform other actions after logout
+      // For example:
+      // window.location.href = "/login";
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchDocs = async () => {
@@ -455,7 +468,7 @@ export function SiteHeader() {
                         <span>API</span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Log out</span>
                         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

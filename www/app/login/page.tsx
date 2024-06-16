@@ -314,7 +314,7 @@ const Login: NextPage = () => {
         //   description: `Continue Using Ustudy Lovely User.`,
         // })
         // router.push('/calculator')
-        router.push('/home')
+        router.push('/dashboard')
       })
       .catch((error) => {
         toast({

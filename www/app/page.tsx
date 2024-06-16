@@ -573,7 +573,7 @@ export default function Home() {
             <img src="https://img.logo.dev/contra.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
 
           </Link>
-          <Link href='https://www.linkedin.com/in/minialgo-kz-a50180314/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
+          <Link href='https://www.linkedin.com/in/man-from-existence-a50180314/' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Linkdin</span>
             <LinkedIn className="h-4 w-4" />
           </Link>

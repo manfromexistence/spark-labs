@@ -12,7 +12,7 @@ import date from 'date-and-time';
 import { useEditableProps } from "@udecode/plate-common";
 import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe-button";
-import { CheckIcon, ChevronRightIcon, MonitorUp, Save, Send, Map, ChevronsRightLeft, CircleDashed, ArrowLeft, X, LayoutDashboard, UserRound, GraduationCap, BookOpenText, Rss, School, LockIcon, MapPinIcon, Instagram, ArrowUpFromDot } from "lucide-react";
+import { CheckIcon, ChevronRightIcon, MonitorUp, Save, Send, Map, ChevronsRightLeft, CircleDashed, ArrowLeft, X, LayoutDashboard, UserRound, GraduationCap, BookOpenText, Rss, School, LockIcon, MapPinIcon, Instagram, ArrowUpFromDot, Key, Mail } from "lucide-react";
 import { CoolMode } from "@/components/magicui/cool-mode";
 import { Button } from "@/components/ui/button";
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -187,10 +187,38 @@ function DockDemo() {
   );
 }
 
-
+// const fetchDocument = async (docId: any) => {
+//   const docRef = doc(db, "users", docId)
+//   const docSnap = await getDoc(docRef)
+//   return docSnap.data()
+// }
 
 export default function Home() {
 
+  const [users, setUsers] = useState<any>([]);
+  const [classrooms, setClassrooms] = useState<any>([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+      const newDocs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUsers(newDocs);
+    };
+    const fetchClassroom = async () => {
+      const q = query(collection(db, "classrooms"));
+      const querySnapshot = await getDocs(q);
+      const newDocs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setClassrooms(newDocs);
+    };
+    fetchClassroom();
+    fetchUsers();
+  }, []);
   const [now, setNow] = useState(new Date());
   // Snap Editor
   const [submitBar, setSubmitBar] = useState(false);
@@ -201,6 +229,7 @@ export default function Home() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
   const [classroom, setClassroom] = useState("");
   const [xml, setXml] = useState("");
   const [time, setTime] = useState(new Date());
@@ -234,8 +263,9 @@ export default function Home() {
       xml: xml,
       title: title,
       description: description,
-      classroom: classroom,
-      user: auth.currentUser && auth.currentUser.uid,
+      thumbnail: thumbnail,
+      classroomId: classroom,
+      userId: auth.currentUser && auth.currentUser.uid,
       time: time,
     })
     console.log("Document written with ID: ", Create.id)
@@ -253,8 +283,8 @@ export default function Home() {
       ),
     });
     // router.push("/specialties");
-    projectStatus(true);
-    projectId(Create.id);
+    setProjectStatus(true);
+    setProjectId(Create.id);
   }
 
 
@@ -379,34 +409,44 @@ export default function Home() {
       </div> */}
       <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", submitBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <Card className="w-full pb-5">
-          <CardHeader>
+          <CardHeader className="flex-center">
             <CardTitle>Submit Project</CardTitle>
             <CardDescription>Enter your project details.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title">Project Title</Label>
-              <Input id="title" placeholder="Enter project title" />
+              <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter project title" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="thumbnail">Thumbnail</Label>
+              <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter project thumbnail link" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" placeholder="Enter project description" />
+              <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter project description" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="class">Class</Label>
-              <Select>
+              <Label htmlFor="class">Classroom</Label>
+              <Select required onValueChange={(value: string) => setClassroom(value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select class" />
+                  <SelectValue placeholder="Select A Classroom" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="math">Math</SelectItem>
-                  <SelectItem value="science">Science</SelectItem>
-                  <SelectItem value="history">History</SelectItem>
-                  <SelectItem value="english">English</SelectItem>
+                  {classrooms.map((classroom: any) => <SelectItem key={classroom} value={classroom.id}>{classroom.title}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
-            <Button ref={buttonRef} onClick={submitProject} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
+            <Button ref={buttonRef} onClick={() => {
+              classroom === "" ? toast({
+                title: "PLZ select a classroom to submit project!",
+                description: (
+                  <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                    <span>Classroom is REQUIRED!</span>
+                  </div>
+                ),
+              }) : submitProject();
+            }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
               <Send className="h-4 w-4 mr-2" />
               Submit Project
             </Button>
@@ -441,75 +481,90 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
-        <Card className="mx-auto w-full bg-background rounded-xl overflow-hidden shadow-lg pb-5 font-mono tracking-tighter">
-          <CardHeader className="bg-primary-foreground text-primary px-6 py-4 flex items-center">
-            <div className="rounded-full border p-1">
-              <Avatar className="w-12 h-12">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>HF</AvatarFallback>
-              </Avatar>
-            </div>
 
-            <div className="flex-1">
-              <div className="text-lg font-semibold">Hareem Fatima</div>
-              <div className="text-foreground text-xs text-center w-full">@hareemfatima</div>
-            </div>
-          </CardHeader>
-          <CardContent className="px-6 py-5 grid gap-4 transform">
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <LockIcon className="w-5 h-5 text-foreground" />
-                <span className="text-foreground h-full text-center">UserId</span>
+      {users && users.map((user: any) => {
+        return (auth.currentUser && auth.currentUser.uid === user.userId ? <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+          <Card className="mx-auto w-full bg-background rounded-xl overflow-hidden shadow-lg pb-5 font-mono tracking-tighter">
+            <CardHeader className="bg-primary-foreground text-primary px-6 py-4 flex items-center">
+              <div className="rounded-full border p-1">
+                <Avatar className="w-12 h-12">
+                  <AvatarImage src="https://source.unsplash.com/random" />
+                  <AvatarFallback>SLW</AvatarFallback>
+                </Avatar>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">********</div>
-            </div>
-            <Separator />
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <MapPinIcon className="w-5 h-5 text-foreground" />
-                <span className="text-foreground h-full text-center">Region</span>
+
+              <div className="flex-1">
+                <div className="text-lg font-semibold">{user.surname}</div>
+                <div className="text-foreground text-xs text-center w-full">@{user.username}</div>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">New York, USA</div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <img src="https://img.logo.dev/instagram.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
-                <span className="text-foreground h-full text-center">Instagram</span>
+            </CardHeader>
+            <CardContent className="px-6 py-5 grid gap-4 transform">
+              <div className="grid grid-cols-2 gap-0 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <Key className="w-5 h-5 text-foreground" />
+                  <span className="text-foreground h-full text-center">UserId</span>
+                </div>
+                <div className="text-right text-muted-foreground font-sans w-full text-[10px] pt-[5px]">{auth.currentUser && auth.currentUser.uid}</div>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <YouTube className="w-5 h-5" />
-                <span className="text-foreground h-full text-center">YouTube</span>
+              <Separator />
+
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-foreground" />
+                  <span className="text-foreground h-full text-center">Email</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.email}</div>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">John Doe</div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <Facebook className="w-5 h-5" />
-                <span className="text-foreground h-full text-center">Facebook</span>
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <MapPinIcon className="w-5 h-5 text-foreground" />
+                  <span className="text-foreground h-full text-center">Region</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.region}</div>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">John Doe</div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <Twitter className="w-5 h-5" />
-                <span className="text-foreground h-full text-center">Twitter</span>
+
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <img src="https://img.logo.dev/instagram.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+                  <span className="text-foreground h-full text-center">Instagram</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.instagram}</div>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-              <div className="flex items-center gap-3">
-                <img src="https://img.logo.dev/messanger.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
-                <span className="text-foreground h-full text-center">Messanger</span>
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <YouTube className="w-5 h-5" />
+                  <span className="text-foreground h-full text-center">YouTube</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.youtube}</div>
               </div>
-              <div className="text-right text-muted-foreground text-sm italic font-sans">@johndoe</div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <Facebook className="w-5 h-5" />
+                  <span className="text-foreground h-full text-center">Facebook</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.facebook}</div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <Twitter className="w-5 h-5" />
+                  <span className="text-foreground h-full text-center">Twitter</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.twitter}</div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <img src="https://img.logo.dev/linkdin.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+                  <span className="text-foreground h-full text-center">Linkdin</span>
+                </div>
+                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.linkdin}</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div> : <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+          <span>Please Login to access this section!!!</span>
+        </div>)
+      })}
+
       <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", developerBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <div className="h-full w-full p-3 border rounded-md flex flex-col space-y-3 pb-12 !font-mono !tracking-tighter">
           <div className="border hover:bg-primary-foreground text-primary px-6 py-4 flex items-center rounded-md flex-col">

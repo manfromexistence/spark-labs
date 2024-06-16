@@ -58,26 +58,35 @@ export function MainNav() {
       <nav className="flex items-center text-sm lg:gap-6">
         {auth.currentUser ? (<>
           <Link
-            href="/home"
+            href="/dashboard"
             className={cn(
               "transition-colors hover:text-primary",
-              pathname === "/home" ? "text-foreground" : "text-foreground/60"
+              pathname === "/dashboard" ? "text-foreground" : "text-foreground/60"
             )}
           >
-            Home
+            Dashboard
           </Link>
           <Link
-            href="/profile"
+            href="/classrooms"
             className={cn(
               "transition-colors hover:text-primary",
-              pathname === "/profile" ? "text-foreground" : "text-foreground/60"
+              pathname === "/classrooms" ? "text-foreground" : "text-foreground/60"
             )}
           >
-            Profile
+            Classrooms
           </Link>
         </>) :
           <NavigationMenuDemo />}
 
+        <Link
+          href="/sunmissions"
+          className={cn(
+            "transition-colors hover:text-primary",
+            pathname === "/sunmissions" ? "text-foreground" : "text-foreground/60"
+          )}
+        >
+          Submissions
+        </Link>
         <Link
           href="/teachers"
           className={cn(
@@ -96,15 +105,15 @@ export function MainNav() {
         >
           Students
         </Link>
-        <Link
-          href="/submissions"
+        {/* <Link
+          href="/students"
           className={cn(
             "transition-colors hover:text-primary",
-            pathname === "/submissions" ? "text-foreground" : "text-foreground/60"
+            pathname === "/students" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Submissions
-        </Link>
+          Pro
+        </Link> */}
         {/* <Link
           href="/supports"
           className={cn(

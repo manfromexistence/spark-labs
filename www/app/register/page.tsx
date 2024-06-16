@@ -176,7 +176,7 @@ const Register: NextPage = () => {
     const { toast } = useToast()
     const router = useRouter()
     const [userDetailsDialog, setUserDetailsDialog] = useState(false);
-    const [accountType, setAccountType] = useState("student");
+    const [accountType, setAccountType] = useState("teacher");
     const [email, setEmail] = useState("");
     const [avatar, setAvatar] = useState("");
     const [userName, setUserName] = useState("");
@@ -184,6 +184,7 @@ const Register: NextPage = () => {
     const [twitter, setTwitter] = useState("");
     const [instagam, setInstagam] = useState("");
     const [facebook, setFacebook] = useState("");
+    const [linkdin, setLinkdin] = useState("");
     const [userId, setUserid] = useState<any>("");
     const [surname, setSurname] = useState("");
     const [untScore, setUntScore] = useState<any>(0);
@@ -336,7 +337,7 @@ const Register: NextPage = () => {
         //     userId: userId.uid
         // });
         const Create = await addDoc(collection(db, "users"), {
-            userName: userName,
+            username: userName,
             surname: surname,
             avatar: avatar,
             email: email,
@@ -346,11 +347,13 @@ const Register: NextPage = () => {
             youtube: youtube,
             twitter: twitter,
             instagam: instagam,
-            facebook: Facebook,
+            facebook: facebook,
+            linkdin: linkdin,
+            password: password,
         })
 
         toast({
-            title: "User registered up successfully!",
+            title: "User registered successfully!",
             description: `Continue Using Spark Labs ${surname}`,
         });
 
@@ -394,7 +397,7 @@ const Register: NextPage = () => {
             <div className="flex h-auto hover-glow-border relative hover:bg-primary-foreground w-auto items-center justify-center lg:m-0 lg:h-full lg:w-[500px] rounded-md border px-5 pt-10 pb-7">
                 <div className="mx-auto grid w-4/5 min-w-[300px] max-w-[550px] gap-5">
                     <div className="grid min-w-full gap-2 text-center">
-                        <h1 className="text-4xl font-bold">Create Account!</h1>
+                        <h1 className="text-2xl font-bold">Create Teacher Account!</h1>
                         <p className="text-balance text-muted-foreground">
                             Please enter your details.
                         </p>
@@ -402,11 +405,10 @@ const Register: NextPage = () => {
 
                     <div className="grid gap-4">
                         <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]" htmlFor="email">
+                            <Label className="text-[#804DFE]">
                                 Username
                             </Label>
                             <Input type="text" value={userName} id="userName" placeholder="manfromexistence" required onChange={(e) => setUserName(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
-
                         </div>
 
                         <div className="grid w-full gap-2">
@@ -414,7 +416,6 @@ const Register: NextPage = () => {
                                 Email
                             </Label>
                             <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
-
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
@@ -474,7 +475,7 @@ const Register: NextPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="grid w-full gap-2">
+                        {/* <div className="grid w-full gap-2">
                             <Label className="text-[#804DFE]" htmlFor="email">
                                 Account Type
                             </Label>
@@ -491,8 +492,7 @@ const Register: NextPage = () => {
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            {/* <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" /> */}
-                        </div>
+                        </div> */}
                         <div className="flex w-full items-center space-x-3.5 my-1">
                             <Checkbox required id="terms" />
                             <label
@@ -512,11 +512,11 @@ const Register: NextPage = () => {
                                     Register
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
+                            <DialogContent className="w-[425px] md:min-w-[750px]">
                                 <div className="mx-auto max-w-md space-y-6">
                                     <div className="space-y-2 text-center">
                                         <h1 className="text-3xl font-bold">More Information</h1>
-                                        <p className="text-gray-500 dark:text-gray-400">Please fill out the form below.</p>
+                                        <p className="text-muted-foreground">Please fill out the form below.</p>
                                     </div>
                                     <form className="space-y-4">
                                         <div className="space-y-2">
@@ -543,6 +543,10 @@ const Register: NextPage = () => {
                                         <div className="space-y-2">
                                             <Label htmlFor="facebook">Facebook</Label>
                                             <Input value={facebook} id="facebook" placeholder="Facebook profile or page link" required onChange={(e) => setFacebook(e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="facebook">Linkdin</Label>
+                                            <Input value={linkdin} id="facebook" placeholder="Facebook profile or page link" required onChange={(e) => setLinkdin(e.target.value)} />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="region">Region</Label>

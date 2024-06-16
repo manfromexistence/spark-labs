@@ -207,7 +207,7 @@ export function SiteHeader() {
                       return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div className="w-full h-auto flex items-center justify-end">
                         <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                           <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
-                            <div className="color-change-5x rounded-full h-4 w-4"></div>
+                            <div className="animate-ping bg-green-500 rounded-full h-4 w-4"></div>
                             Student
                           </div>
                         </div>
@@ -218,7 +218,7 @@ export function SiteHeader() {
                       return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div className="w-full h-auto flex items-center justify-end">
                         <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                           <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
-                            <div className="color-change-5x rounded-full h-4 w-4"></div>
+                            <div className="animate-ping bg-green-500 rounded-full h-4 w-4"></div>
                             Teacher
                           </div>
                         </div>
@@ -377,7 +377,9 @@ export function SiteHeader() {
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline">Open</Button>
+                      <div className="rounded-full border p-2.5">
+                        <User className="h-4 w-4" />
+                      </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                       <DropdownMenuLabel>My Account</DropdownMenuLabel>

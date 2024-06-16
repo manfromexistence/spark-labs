@@ -225,6 +225,8 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [now, setNow] = useState(new Date());
   // Snap Editor
   const [submitBar, setSubmitBar] = useState(false);
+  const [loadBar, setLoadBar] = useState(false);
+  const [saveBar, setSaveBar] = useState(false);
   const [navigationsBar, setNavigationsBar] = useState(false);
   const [detailsBar, setDetailsBar] = useState(false);
   const [developerBar, setDeveloperBar] = useState(false);
@@ -239,6 +241,8 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   const [projectStatus, setProjectStatus] = useState<any>(false);
   const [projectId, setProjectId] = useState<any>("");
+
+  const [saveFileName, setSaveFileName] = useState<any>("");
 
   const { toast } = useToast();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -378,7 +382,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
       {/* <div>My Post: {params.slug}</div> */}
       <canvas id="world" tabIndex={1} style={{ position: 'absolute' }} ref={worldRef}></canvas>
-      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", submitBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden ", submitBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <Card className="w-full pb-5">
           <CardHeader className="flex-center">
             <CardTitle>Submit Project</CardTitle>
@@ -425,7 +429,64 @@ export default function Page({ params }: { params: { slug: string } }) {
           </CardContent>
         </Card>
       </div>
-      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", navigationsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden ", loadBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+        <Card className="w-full pb-5">
+          <CardHeader className="flex-center">
+            <CardTitle>Load A Project!</CardTitle>
+            <CardDescription>Please Choose A From Your Computer.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="load">Load</Label>
+              <Input accept=".xml" type="file" onChange={(event: any) => {
+                const file = event.target.files?.[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onloadend = (e) => {
+                  const result = e.target?.result;
+                  if (!result) return;
+
+                  // Replace this with your function
+                  IDE_Morph.loadSpriteScriptsXML(result);
+                  console.log(result);
+                };
+                reader.readAsText(file);
+              }} id="load" placeholder="Choose A File" />
+            </div>
+            <Button ref={buttonRef} onClick={() => {
+              setLoadBar(false);
+            }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
+              <Send className="h-4 w-4 mr-2" />
+              Submit Project
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden ", saveBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+        <Card className="w-full pb-5">
+          <CardHeader className="flex-center">
+            <CardTitle>Save This Project!</CardTitle>
+            <CardDescription>Please Give A FileName To Save The Project.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="save">Save</Label>
+              <Input type="text" onChange={(e: any) => {
+                setSaveFileName(e.target.value);
+              }} id="save" placeholder="Enter A File Name" />
+            </div>
+            <Button ref={buttonRef} onClick={() => {
+              IDE_Morph.saveXMLAs(IDE_Morph.getSpriteScriptsXML(), saveFileName);
+            }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
+              <Send className="h-4 w-4 mr-2" />
+              Submit Project
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden", navigationsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <div className="h-full w-full p-3 border rounded-md flex flex-col space-y-3 pb-12 !font-mono !tracking-tighter">
           <Link href='/dashboard' className="flex items-center w-full justify-between p-3 border rounded-md hover:bg-primary hover:text-primary-foreground">
             <span>Dashboard</span>
@@ -454,7 +515,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         </div>
       </div>
       {users && users.map((user: any) => {
-        return (auth.currentUser && auth.currentUser.uid === user.userId ? <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+        return (auth.currentUser && auth.currentUser.uid === user.userId ? <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
           <Card className="mx-auto w-full bg-background rounded-xl overflow-hidden shadow-lg pb-5 font-mono tracking-tighter">
             <CardHeader className="bg-primary-foreground text-primary px-6 py-4 flex items-center">
               <div className="rounded-full border p-1">
@@ -531,11 +592,11 @@ export default function Page({ params }: { params: { slug: string } }) {
               </div>
             </CardContent>
           </Card>
-        </div> : <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+        </div> : <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
           <span>Please Login to access this section!!!</span>
         </div>)
       })}
-      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", developerBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden", developerBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <div className="h-full w-full p-3 border rounded-md flex flex-col space-y-3 pb-12 !font-mono !tracking-tighter">
           <div className="border hover:bg-primary-foreground text-primary px-6 py-4 flex items-center rounded-md flex-col">
             <div className="rounded-full border p-1">
@@ -592,7 +653,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           </Link>
         </div>
       </div>
-      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background", actionsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
+      <div className={cn("min-h-[500px] w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden", actionsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
         <div className="h-full w-full p-3 border rounded-md flex flex-col space-y-3 pb-12 !font-mono !tracking-tighter">
           <div onClick={() => {
             setSubmitBar(!submitBar);
@@ -659,6 +720,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       <Dock>
         <DockIcon onClick={() => {
           setSubmitBar(!submitBar);
+          setLoadBar(false);
+          setSaveBar(false);
           setNavigationsBar(false);
           setDetailsBar(false);
           setDeveloperBar(false);
@@ -667,32 +730,47 @@ export default function Page({ params }: { params: { slug: string } }) {
           {submitBar ? <X className="h-4 w-4" /> : <Send className="h-4 w-4" />}
         </DockIcon>
         <DockIcon onClick={() => {
-          // IDE_Morph.prototype.loadProjectXML();
-          console.log("Load");
-          toast({
-            title: "Load Your Project!",
-            description: (
-              <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                <span>You have to follow the Load Menu to load your project.</span>
-              </div>
-            ),
-          });
+          setSubmitBar(false);
+          setLoadBar(!loadBar);
+          setSaveBar(false);
+          setNavigationsBar(false);
+          setDetailsBar(false);
+          setDeveloperBar(false);
+          setActionsBar(false);
+          // console.log("Load");
+          // toast({
+          //   title: "Load Your Project!",
+          //   description: (
+          //     <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+          //       <span>You have to follow the Load Menu to load your project.</span>
+          //     </div>
+          //   ),
+          // });
         }} className={cn("hover:jello-vertical")}>
-          <MonitorUp className="h-4 w-4" />
+          {loadBar ? <X className="h-4 w-4" /> :
+            <MonitorUp className="h-4 w-4" />}
         </DockIcon>
         <DockIcon onClick={() => {
-          // IDE_Morph.prototype.resetUnsavedChanges();
-          console.log("Save");
-          toast({
-            title: "Save Your Project!",
-            description: (
-              <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                <span>You have to follow the Save Menu to save your project.</span>
-              </div>
-            ),
-          });
+          setSubmitBar(false);
+          setLoadBar(false);
+          setSaveBar(!saveBar);
+          setNavigationsBar(false);
+          setDetailsBar(false);
+          setDeveloperBar(false);
+          setActionsBar(false);
+          // console.log("Save");
+          // toast({
+          //   title: "Save Your Project!",
+          //   description: (
+          //     <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+          //       <span>You have to follow the Save Menu to save your project.</span>
+          //     </div>
+          //   ),
+          // });
         }} className={cn("hover:jello-vertical")}>
-          <Save className="h-4 w-4" />
+
+          {saveBar ? <X className="h-4 w-4" /> :
+            <Save className="h-4 w-4" />}
         </DockIcon>
         <DockIcon onClick={() => {
           setSubmitBar(false);

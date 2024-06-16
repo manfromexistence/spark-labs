@@ -276,7 +276,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       thumbnail: thumbnail,
       classroomId: classroom,
       userId: auth.currentUser && auth.currentUser.uid,
-      time: time,
+      time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
     })
     console.log("Document written with ID: ", Create.id)
     toast({

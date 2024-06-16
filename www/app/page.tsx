@@ -336,6 +336,8 @@ export default function Home() {
   return (
     <>
       <div className="bg-background">
+        {/* {now} */}
+        {/* {date.format(now, 'YYYY/MM/DD HH:mm:ss [GMT]Z', true)} */}
         <main className="isolate min-h-full w-full">
           <div className="relative pt-14 pb-32">
             <div

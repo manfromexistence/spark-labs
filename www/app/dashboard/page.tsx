@@ -47,6 +47,7 @@
 // export default StudentList;
 "use client"
 
+import date from 'date-and-time';
 import { initializeApp } from "firebase/app";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, getDoc, startAfter } from "firebase/firestore";
 import { useEffect, useRef } from "react";
@@ -464,7 +465,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchDocs = async () => {
             setLoading(true);
-            const q = query(collection(db, "universities"), limit(8));
+            const q = query(collection(db, "classrooms"), limit(8));
             const querySnapshot = await getDocs(q);
             const newDocs = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
@@ -472,25 +473,25 @@ const Dashboard = () => {
             }));
             setDocs(newDocs);
             // Configuring Data for Update:
-            docs.map((item: any) => {
-                setInputedAddress(item.address);
-                setInputedCost(item.educationCost);
-                setInputedEmail(item.email);
-                setInputedFacebook(item.facebook);
-                setInputedHostel(item.hostel);
-                setInputedImages(item.images);
-                setInputedImage(item.image);
-                setInputedInstagam(item.instagram);
-                setInputedMilitary(item.military);
-                setInputedPhoneNumber(item.phoneNumber);
-                setInputedRegion(item.region);
-                setInputedStatus(item.status);
-                setInputedCode(item.universityCode);
-                setInputedDescription(item.universityDescription);
-                setInputedName(item.universityName);
-                setInputedWebsite(item.website);
-                setInputedLogo(item.logo);
-            })
+            // docs.map((item: any) => {
+            //     setInputedAddress(item.address);
+            //     setInputedCost(item.educationCost);
+            //     setInputedEmail(item.email);
+            //     setInputedFacebook(item.facebook);
+            //     setInputedHostel(item.hostel);
+            //     setInputedImages(item.images);
+            //     setInputedImage(item.image);
+            //     setInputedInstagam(item.instagram);
+            //     setInputedMilitary(item.military);
+            //     setInputedPhoneNumber(item.phoneNumber);
+            //     setInputedRegion(item.region);
+            //     setInputedStatus(item.status);
+            //     setInputedCode(item.universityCode);
+            //     setInputedDescription(item.universityDescription);
+            //     setInputedName(item.universityName);
+            //     setInputedWebsite(item.website);
+            //     setInputedLogo(item.logo);
+            // })
             setLastDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
             setLoading(false);
         };
@@ -551,7 +552,7 @@ const Dashboard = () => {
     if (loading) {
         return <main className="w-full py-5 px-[5%] h-auto">
             <div className="flex items-center justify-between mb-6">
-                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Universities</span>
+                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Workshop</span>
             </div>
             <div className="admin-panel-lists-loading place-content-center">
                 <div className="flex flex-col space-y-3 rounded-xl border min-h-max p-5 w-full max-w-[90%]">
@@ -619,14 +620,9 @@ const Dashboard = () => {
 
     return (
         <main className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
-
-            {/* {addNewStudentBar && <div className="fixed top-0 left-0 h-screen w-full flex items-center justify-center">
-
-            </div>} */}
             <div className="flex items-center justify-between mb-6">
                 <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Workshop!</span>
                 <div className="flex-1 flex items-end justify-end gap-3">
-
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button variant="outline">Add New Student</Button>
@@ -696,20 +692,6 @@ const Dashboard = () => {
                                             <Label htmlFor="description">Description</Label>
                                             <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
                                         </div>
-                                        {/* <Select>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Students" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {users.map((user: any) => user.accountType === "student" &&
-                                                    (<SelectItem onClick={() => {
-                                                        deleteUser(user.id);
-                                                        setStudents([...students, { id: user.id, username: user.username }]);
-                                                    }} className="hover:bg-primary hover:text-primary-foreground" key={user.id} value={user.id}>{user.username}</SelectItem>
-                                                    ))}
-                                            </SelectContent>
-                                        </Select> */}
-
                                         <div className="w-full flex justify-between">
                                             <Button onClick={removeAllStudents} variant="outline">
                                                 Remove All Students
@@ -718,29 +700,6 @@ const Dashboard = () => {
                                                 Add All Students
                                             </Button>
                                         </div>
-                                        {/* <Table className="w-full border !rounded-md">
-                                            <TableCaption>A list of your recent invoices.</TableCaption>
-                                            <TableHeader>
-                                                <TableRow className="w-full bg-yellow-500">
-                                                    <TableHead>Username</TableHead>
-                                                    <TableHead>Actions</TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody className="w-full bg-pink-500">
-                                                {invoices.map((invoice) => (
-                                                    <TableRow className="w-full bg-red-500" key={invoice.invoice}>
-                                                        <TableCell>{invoice.paymentStatus}</TableCell>
-                                                        <TableCell>{invoice.paymentMethod}</TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                            <TableFooter>
-                                                <TableRow>
-                                                    <TableCell colSpan={3}>Total</TableCell>
-                                                    <TableCell className="text-right">2</TableCell>
-                                                </TableRow>
-                                            </TableFooter>
-                                        </Table> */}
                                         <div className="w-full h-auto rounded-md border p-3">
                                             <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
                                                 <span>Username</span>
@@ -766,8 +725,8 @@ const Dashboard = () => {
                                     title: title,
                                     thumbnail: thumbnail,
                                     description: description,
-                                    students: students,
-                                    time: Date.now(),
+                                    students: students.map((student) => student.id),
+                                    time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                 })
                                 toast({
                                     title: "Classroom Created Successfully!",
@@ -792,9 +751,7 @@ const Dashboard = () => {
                                     onMouseLeave={plugin.current.reset}
                                 >
                                     <CarouselContent>
-
                                         {items.images && items.images.length > 0 ? items.images.map((index: any) => (
-
                                             <CarouselItem key={index} className="h-[250px] border-b">
                                                 <div className="h-full">
                                                     <Card>
@@ -813,17 +770,14 @@ const Dashboard = () => {
                                                     </Card>
                                                 </div>
                                             </CarouselItem>
-
-
-
-                                        )) : items.image ? Array.from({ length: 5 }).map((_, index) => (
+                                        )) : items.thumbnail ? Array.from({ length: 5 }).map((_, index) => (
                                             <CarouselItem key={index} className="h-[250px] border-b">
                                                 <div className="h-full">
                                                     <Card>
                                                         <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
                                                             <AspectRatio ratio={16 / 9} className="h-[300px] ">
                                                                 <Image
-                                                                    src={items.image || "/placeholder.svg"}
+                                                                    src={items.thumbnail || "/placeholder.svg"}
                                                                     alt="Image"
                                                                     fill
                                                                     sizes="(min-width: 250px) 300px, 100vw"
@@ -839,23 +793,17 @@ const Dashboard = () => {
                                     </CarouselContent>
                                 </Carousel>
                             </div>
-                            {items.images && items.images.length > 0 ? "" : items.image ? "" : <div className="center rounded-md border h-[250px]">No image is provided.</div>}
-                            {/* <div className="absolute bottom-4 left-4">
-                <Avatar>
-                  <AvatarImage src={items.logo} alt="@Ustudy" />
-                  <AvatarFallback>UY</AvatarFallback>
-                </Avatar>
-              </div> */}
-                            <CardContent className="px-6 space-y-4 h-[200px] py-5 overflow-x-hidden overflow-y-auto">
+                            {/* {items.images && items.images.length > 0 ? "" : items.image ? "" : <div className="center rounded-md border h-[250px]">No image is provided.</div>} */}
+                            <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
                                 <div>
-                                    <h2 className="text-2xl font-bold w-full truncate">{items.universityName || "No Name Provided for this university."}</h2>
-                                    <div className="flex items-center space-x-2 text-sm text-primary mt-3">
+                                    <h2 className="text-2xl font-bold w-full truncate">{items.title || "No Name Provided for this university."}</h2>
+                                    {/* <div className="flex items-center space-x-2 text-sm text-primary mt-3">
                                         <LocateIcon className="h-4 w-4" />
-                                        <span>{items.address || "Nothing."}</span>
+                                        <span>{items. || "Nothing."}</span>
                                         <Separator className="h-4" orientation="vertical" />
                                         <GlobeIcon className="h-4 w-4" />
                                         <span>{items.region || "Nothing."}</span>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 {typeof items.universityDescription === "object" ? JSON.parse(items.universityDescription).map((item: any) => (
                                     <div key={item.id}>
@@ -863,179 +811,63 @@ const Dashboard = () => {
                                             <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground" key={child.text}>{child.text}</p>
                                         ))}
                                     </div>
-                                )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.universityDescription || "No Description Provided for this university."}</p>}
-                            </CardContent>
-                            <CardFooter className="flex !w-full items-center justify-between">
-
-                                <div className="">
-                                    <Avatar>
-                                        <AvatarImage src={items.logo} alt="@Ustudy" />
-                                        <AvatarFallback>UY</AvatarFallback>
-                                    </Avatar>
-                                </div>
-                                <div className="flex justify-end gap-1.5">
+                                )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
+                                <div className="flex flex-col flex-1 h-auto gap-3">
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <Button variant="outline">View</Button>
+                                            <Button className="w-full" variant="outline">View</Button>
                                         </DialogTrigger>
                                         <DialogContent className="lg:min-w-[650px]">
                                             <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
-                                                <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm">
+                                                <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
                                                     <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <University className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p className="flex flex-row text-center">University: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.universityName || "No Name is Provided."}</span>
+                                                        <p className="flex flex-row text-center">Title: </p>
+                                                        <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
                                                     </div>
                                                     <Separator />
                                                     <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Mail className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Email: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.email || "No Email is Provided."}</span>
+                                                        <p className="flex flex-row text-center">Description: </p>
+                                                        <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
                                                     </div>
                                                     <Separator />
                                                     <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Facebook className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Facebook: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.facebook || "No Facebook Link is Provided."}</span>
+                                                        <p className="flex flex-row text-center">Thumbnail: </p>
+                                                        <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
                                                     </div>
                                                     <Separator />
                                                     <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Instagram className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Instagram: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.instagram || "No Instagram Link is Provided."}</span>
+                                                        <p className="flex flex-row text-center">Time: </p>
+                                                        <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
                                                     </div>
                                                     <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <CircleDollarSign className="h-5 w-5 !p-0" />
+                                                    <div className="w-full h-auto rounded-md border p-3">
+                                                        <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                            <span>Students</span>
+                                                            {/* <span>Actions</span> */}
                                                         </div>
-                                                        <p>Education Cost: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.educationCost || "No Education Cost is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Chrome className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Website: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.website || "No Website Link is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Code className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>University Code: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.universityCode || "No University Code is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Code className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>University Image: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.image || "No University Code is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Code className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>University Logo: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.logo || "No University Code is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Phone className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Phone Number: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.phoneNumber || "No Phone Number is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Earth className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Address: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.address || "No Address is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <MapPinned className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Region: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.region || "No Region is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2 py-3">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <MessageCircleDashed className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <span className="max-w-[90%] select-all text-start font-semibold">Description: {items.universityDescription || "No Description is Provided."}</span>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Hotel className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Hostel: </p>
-                                                        <Badge
-                                                            className={cn(
-                                                                "w-fit text-center",
-                                                                items.hostel ? "bg-green-500 text-green-50" : "bg-destructive text-destructive-foreground"
-                                                            )}
-                                                        >
-                                                            {items.hostel || "No Hostel Information Provided."}
-                                                        </Badge>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <PocketKnife className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Military: </p>
-                                                        <Badge
-                                                            className={cn(
-                                                                "w-fit",
-                                                                items.military ? "bg-green-500 text-green-50" : "bg-destructive text-destructive-foreground"
-                                                            )}
-                                                        >
-                                                            {items.military || 'No Military Status Provided.'}
-                                                        </Badge>
-                                                    </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <div className="bg-primary-foreground flex h-[45px] w-[45px] items-center justify-center rounded-full p-1 pb-2">
-                                                            <Flame className="h-5 w-5 !p-0" />
-                                                        </div>
-                                                        <p>Status: </p>
-                                                        <Badge
-                                                            className={cn(
-                                                                "w-fit",
-                                                                items.status ? "bg-green-500 text-green-50" : "bg-destructive text-destructive-foreground"
-                                                            )}
-                                                        >
-                                                            {items.status || "No Status Provided."}
-                                                        </Badge>
+                                                        {
+                                                            items.students.map((student: any) => {
+                                                                return users.map((user: any) => {
+                                                                    if (user.id === student) {
+                                                                        return (
+                                                                            <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
+                                                                                <span>{user.username}</span>
+                                                                            </div>
+                                                                        );
+                                                                    }
+                                                                });
+                                                            })
+                                                        }
+
                                                     </div>
                                                 </div>
                                             </ ScrollArea>
                                         </DialogContent>
                                     </Dialog>
 
-                                    <Sheet>
+                                    {/* <Sheet>
                                         <SheetTrigger asChild>
-                                            <Button onClick={handleConfetti} variant="default">Update</Button>
+                                            <Button className="w-full" onClick={handleConfetti} variant="default">Update</Button>
                                         </SheetTrigger>
                                         <SheetContent side={"bottom"} className="h-[90vh] !max-w-[1600px] mx-auto rounded-xl">
                                             <ScrollArea className="h-full w-full rounded-md border">
@@ -1474,17 +1306,21 @@ const Dashboard = () => {
                                                 </div>
                                             </ScrollArea>
                                         </SheetContent>
-                                    </Sheet>
+                                    </Sheet> */}
 
                                     <Button onClick={async () => {
-                                        await deleteDoc(doc(db, "universities", items.id));
+                                        await deleteDoc(doc(db, "classrooms", items.id));
                                         const newDocs = docs.filter((item) => item.id !== items.id);
                                         setDocs(newDocs);
-                                    }} className="bg-red-500 text-white hover:bg-red-600" variant="destructive">
+                                    }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
                                         Delete
                                     </Button>
                                 </div>
-                            </CardFooter>
+
+                            </CardContent>
+
+                            {/* <CardFooter className="flex !w-full items-center justify-between">
+                            </CardFooter> */}
                         </Card>
                     </div>
                 ))}

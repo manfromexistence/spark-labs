@@ -505,7 +505,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             </div>
             <Button ref={buttonRef} onClick={() => {
               ide.saveXMLAs(ide.getSpriteScriptsXML(), saveFileName);
-              setSaveFileName(false);
+              setSaveBar(false);
             }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
               <Save className="h-4 w-4 mr-2" />
               Save

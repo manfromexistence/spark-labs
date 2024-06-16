@@ -409,7 +409,7 @@ export default function Page({ params }: { params: { slug: string } }) {
               </Select>
             </div>
             <Button ref={buttonRef} onClick={() => {
-              setXml(IDE_Morph.getProjectXML());
+              setXml(IDE_Morph.getSpriteScriptsXML());
               classroom === "" ? toast({
                 title: "PLZ select a classroom to submit project!",
                 description: (
@@ -667,7 +667,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           {submitBar ? <X className="h-4 w-4" /> : <Send className="h-4 w-4" />}
         </DockIcon>
         <DockIcon onClick={() => {
-          IDE_Morph.prototype.loadProjectXML()
+          // IDE_Morph.prototype.loadProjectXML();
           console.log("Load");
           toast({
             title: "Load Your Project!",
@@ -681,7 +681,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           <MonitorUp className="h-4 w-4" />
         </DockIcon>
         <DockIcon onClick={() => {
-          IDE_Morph.prototype.resetUnsavedChanges();
+          // IDE_Morph.prototype.resetUnsavedChanges();
           console.log("Save");
           toast({
             title: "Save Your Project!",

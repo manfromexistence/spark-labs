@@ -202,7 +202,7 @@ export function UserDetails() {
     <div>
       {docs && docs.map((user: any) => {
         if (user.accountType === "student") {
-          return auth && auth.currentUser && auth.currentUser.uid === user.id && 
+          return auth && auth.currentUser && auth.currentUser.uid === user.userId && 
           <div key={user.id} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
             <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
               <div className="flex flex-col items-center gap-2 mb-6">
@@ -262,7 +262,7 @@ export function UserDetails() {
           </div>
         }
         if (user.accountType === "teacher") {
-          return auth && auth.currentUser && auth.currentUser.uid === user.id && 
+          return auth && auth.currentUser && auth.currentUser.uid === user.userId && 
           <div key={user.id} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
             <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
               <div className="flex flex-col items-center gap-2 mb-6">

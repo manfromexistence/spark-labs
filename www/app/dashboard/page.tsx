@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable react/no-unescaped-entities */
 // "use client"
 // import React, { useState } from 'react';
 
@@ -113,7 +115,9 @@ import { Input } from "@/components/ui/input"
 import {
     Table,
     TableBody,
+    TableCaption,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -228,6 +232,60 @@ import { useUniversityImages } from "@/lib/store/university-images"
 import { Label } from "@/components/ui/label"
 import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation'
+// import {
+//     Table,
+//     TableBody,
+//     TableCaption,
+//     TableCell,
+//     TableFooter,
+//     TableHead,
+//     TableHeader,
+//     TableRow,
+//   } from "@/components/ui/table"
+const invoices = [
+    {
+        invoice: "INV001",
+        paymentStatus: "Paid",
+        totalAmount: "$250.00",
+        paymentMethod: "Credit Card",
+    },
+    {
+        invoice: "INV002",
+        paymentStatus: "Pending",
+        totalAmount: "$150.00",
+        paymentMethod: "PayPal",
+    },
+    {
+        invoice: "INV003",
+        paymentStatus: "Unpaid",
+        totalAmount: "$350.00",
+        paymentMethod: "Bank Transfer",
+    },
+    {
+        invoice: "INV004",
+        paymentStatus: "Paid",
+        totalAmount: "$450.00",
+        paymentMethod: "Credit Card",
+    },
+    {
+        invoice: "INV005",
+        paymentStatus: "Paid",
+        totalAmount: "$550.00",
+        paymentMethod: "PayPal",
+    },
+    {
+        invoice: "INV006",
+        paymentStatus: "Pending",
+        totalAmount: "$200.00",
+        paymentMethod: "Bank Transfer",
+    },
+    {
+        invoice: "INV007",
+        paymentStatus: "Unpaid",
+        totalAmount: "$300.00",
+        paymentMethod: "Credit Card",
+    },
+]
 
 const Dashboard = () => {
 
@@ -236,6 +294,8 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
     const [addNewStudentBar, setAddNewStudentBar] = React.useState(false);
     const [addNewClassroomBar, setAddNewClassroomBar] = React.useState(false);
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
     const [api, setApi] = React.useState<CarouselApi>()
     const [current, setCurrent] = React.useState(0)
@@ -529,15 +589,211 @@ const Dashboard = () => {
                             <Button variant="outline">Add New Student</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
-                            New Student
+                            <Card className="w-full max-w-md border-0">
+                                <CardHeader>
+                                    <CardTitle>Create New Student</CardTitle>
+                                    <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="username">Username</Label>
+                                        <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="password">Password</Label>
+                                        <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
+                                    </div>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button onClick={async () => {
+                                        const Create = await addDoc(collection(db, "users"), {
+                                            username: username,
+                                            surname: "ManFromExistence",
+                                            avatar: "https://avater.com",
+                                            email: "ajju40959@gmail.com",
+                                            region: "Bangladesh",
+                                            accountType: "student",
+                                            youtube: "https://youtube.com",
+                                            twitter: "https://twitter.com",
+                                            instagram: "https://instagram.com",
+                                            facebook: "https://facebook.com",
+                                            linkdin: "https://linkdin.com",
+                                            password: password,
+                                        })
+                                        toast({
+                                            title: "Student Created Successfully!",
+                                            description: `All students are public.`,
+                                        });
+                                    }} className="w-full">Create Student</Button>
+                                </CardFooter>
+                            </Card>
                         </DialogContent>
                     </Dialog>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="secondary">Add New Classroom</Button>
+                            <Button variant="outline">Add New Classroom</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
-                            New Classroom
+                            <ScrollArea className="h-[450px] w-full rounded-md border p-1">
+                                <Card className="w-full max-w-md border-0">
+                                    <CardHeader>
+                                        <CardTitle>Create New Classroom</CardTitle>
+                                        <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="title">Title</Label>
+                                            <Input onChange={(e: any) => setUsername(e.target.value)} id="title" placeholder="Enter Title" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="thumbnail">Thumbnail</Label>
+                                            <Input onChange={(e: any) => setUsername(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="description">Description</Label>
+                                            <Textarea onChange={(e: any) => setUsername(e.target.value)} id="description" placeholder="Enter Description" />
+                                        </div>
+                                        <Select>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Students" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>North America</SelectLabel>
+                                                    <SelectItem value="est">Eastern Standard Time (EST)</SelectItem>
+                                                    <SelectItem value="cst">Central Standard Time (CST)</SelectItem>
+                                                    <SelectItem value="mst">Mountain Standard Time (MST)</SelectItem>
+                                                    <SelectItem value="pst">Pacific Standard Time (PST)</SelectItem>
+                                                    <SelectItem value="akst">Alaska Standard Time (AKST)</SelectItem>
+                                                    <SelectItem value="hst">Hawaii Standard Time (HST)</SelectItem>
+                                                </SelectGroup>
+                                                <SelectGroup>
+                                                    <SelectLabel>Europe & Africa</SelectLabel>
+                                                    <SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
+                                                    <SelectItem value="cet">Central European Time (CET)</SelectItem>
+                                                    <SelectItem value="eet">Eastern European Time (EET)</SelectItem>
+                                                    <SelectItem value="west">
+                                                        Western European Summer Time (WEST)
+                                                    </SelectItem>
+                                                    <SelectItem value="cat">Central Africa Time (CAT)</SelectItem>
+                                                    <SelectItem value="eat">East Africa Time (EAT)</SelectItem>
+                                                </SelectGroup>
+                                                <SelectGroup>
+                                                    <SelectLabel>Asia</SelectLabel>
+                                                    <SelectItem value="msk">Moscow Time (MSK)</SelectItem>
+                                                    <SelectItem value="ist">India Standard Time (IST)</SelectItem>
+                                                    <SelectItem value="cst_china">China Standard Time (CST)</SelectItem>
+                                                    <SelectItem value="jst">Japan Standard Time (JST)</SelectItem>
+                                                    <SelectItem value="kst">Korea Standard Time (KST)</SelectItem>
+                                                    <SelectItem value="ist_indonesia">
+                                                        Indonesia Central Standard Time (WITA)
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                                <SelectGroup>
+                                                    <SelectLabel>Australia & Pacific</SelectLabel>
+                                                    <SelectItem value="awst">
+                                                        Australian Western Standard Time (AWST)
+                                                    </SelectItem>
+                                                    <SelectItem value="acst">
+                                                        Australian Central Standard Time (ACST)
+                                                    </SelectItem>
+                                                    <SelectItem value="aest">
+                                                        Australian Eastern Standard Time (AEST)
+                                                    </SelectItem>
+                                                    <SelectItem value="nzst">New Zealand Standard Time (NZST)</SelectItem>
+                                                    <SelectItem value="fjt">Fiji Time (FJT)</SelectItem>
+                                                </SelectGroup>
+                                                <SelectGroup>
+                                                    <SelectLabel>South America</SelectLabel>
+                                                    <SelectItem value="art">Argentina Time (ART)</SelectItem>
+                                                    <SelectItem value="bot">Bolivia Time (BOT)</SelectItem>
+                                                    <SelectItem value="brt">Brasilia Time (BRT)</SelectItem>
+                                                    <SelectItem value="clt">Chile Standard Time (CLT)</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <div className="w-full flex justify-between">
+                                            <Button variant="outline">
+                                                Remove All Students
+                                            </Button>
+                                            <Button variant="outline">
+                                                Add All Students
+                                            </Button>
+                                        </div>
+                                        <Table>
+                                            <TableCaption>A list of your recent invoices.</TableCaption>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    {/* <TableHead className="w-[100px]">User Name</TableHead> */}
+                                                    <TableHead>Username</TableHead>
+                                                    <TableHead>Actions</TableHead>
+                                                    {/* <TableHead className="text-right">Amount</TableHead> */}
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {invoices.map((invoice) => (
+                                                    <TableRow key={invoice.invoice}>
+                                                        {/* <TableCell className="font-medium">{invoice.invoice}</TableCell> */}
+                                                        <TableCell>{invoice.paymentStatus}</TableCell>
+                                                        <TableCell>{invoice.paymentMethod}</TableCell>
+                                                        {/* <TableCell className="text-right">{invoice.totalAmount}</TableCell> */}
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                            <TableFooter>
+                                                <TableRow>
+                                                    <TableCell colSpan={3}>Total</TableCell>
+                                                    <TableCell className="text-right">$2,500.00</TableCell>
+                                                </TableRow>
+                                            </TableFooter>
+                                        </Table>
+                                    </CardContent>
+                                    {/* <CardFooter>
+                                    <Button onClick={async () => {
+                                        const Create = await addDoc(collection(db, "users"), {
+                                            username: username,
+                                            surname: "ManFromExistence",
+                                            avatar: "https://avater.com",
+                                            email: "ajju40959@gmail.com",
+                                            region: "Bangladesh",
+                                            accountType: "student",
+                                            youtube: "https://youtube.com",
+                                            twitter: "https://twitter.com",
+                                            instagram: "https://instagram.com",
+                                            facebook: "https://facebook.com",
+                                            linkdin: "https://linkdin.com",
+                                            password: password,
+                                        })
+                                        toast({
+                                            title: "Student Created Successfully!",
+                                            description: `All students are public.`,
+                                        });
+                                    }} className="w-full">Create Student</Button>
+                                </CardFooter> */}
+                                </Card>
+                            </ScrollArea>
+                            <Button onClick={async () => {
+                                const Create = await addDoc(collection(db, "users"), {
+                                    username: username,
+                                    surname: "ManFromExistence",
+                                    avatar: "https://avater.com",
+                                    email: "ajju40959@gmail.com",
+                                    region: "Bangladesh",
+                                    accountType: "student",
+                                    youtube: "https://youtube.com",
+                                    twitter: "https://twitter.com",
+                                    instagram: "https://instagram.com",
+                                    facebook: "https://facebook.com",
+                                    linkdin: "https://linkdin.com",
+                                    password: password,
+                                })
+                                toast({
+                                    title: "Student Created Successfully!",
+                                    description: `All students are public.`,
+                                });
+                            }} className="w-full">Create Classroom</Button>
+
                         </DialogContent>
                     </Dialog>
                 </div>

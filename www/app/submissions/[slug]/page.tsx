@@ -278,7 +278,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       userId: auth.currentUser && auth.currentUser.uid,
       time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
     })
-    console.log("Document written with ID: ", Create.id)
+    console.log("Document written with ID", Create.id)
     toast({
       title: "Submissions has been added!",
       description: (

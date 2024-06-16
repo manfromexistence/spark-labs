@@ -53,6 +53,7 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, g
 import { useEffect, useRef } from "react";
 import { limit, query, onSnapshot } from "firebase/firestore";
 import { Chrome, CircleDollarSign, Code, Earth, Facebook, Flame, Hotel, Instagram, Mail, MapPinned, MessageCircleDashed, Phone, PocketKnife, Trash2, University } from "lucide-react"
+import { getAuth } from "firebase/auth";
 const firebaseConfig = {
     apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
     authDomain: "snap-workspace.firebaseapp.com",
@@ -61,11 +62,12 @@ const firebaseConfig = {
     messagingSenderId: "1092527848130",
     appId: "1:1092527848130:web:a6ad15060f8d379b43595b",
     measurementId: "G-JVEZGJHL8H"
-};
-// Iniialize Firebase
-const app = initializeApp(firebaseConfig);
+}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig)
 // Database
-const db: any = getFirestore(app);
+const db: any = getFirestore(app)
+const auth = getAuth(app);
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -619,716 +621,531 @@ const Dashboard = () => {
     }
 
     return (
-        <main className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
-            <div className="flex items-center justify-between mb-6">
-                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Workshop!</span>
-                <div className="flex-1 flex items-end justify-end gap-3">
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button variant="outline">Add New Student</Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                            <Card className="w-full max-w-md border-0">
-                                <CardHeader>
-                                    <CardTitle>Create New Student</CardTitle>
-                                    <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="username">Username</Label>
-                                        <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="password">Password</Label>
-                                        <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
-                                    </div>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button onClick={async () => {
-                                        const Create = await addDoc(collection(db, "users"), {
-                                            username: username,
-                                            surname: "ManFromExistence",
-                                            avatar: "https://avater.com",
-                                            email: "ajju40959@gmail.com",
-                                            region: "Bangladesh",
-                                            accountType: "student",
-                                            youtube: "https://youtube.com",
-                                            twitter: "https://twitter.com",
-                                            instagram: "https://instagram.com",
-                                            facebook: "https://facebook.com",
-                                            linkdin: "https://linkdin.com",
-                                            password: password,
-                                        })
-                                        toast({
-                                            title: "Student Created Successfully!",
-                                            description: `All students are public.`,
-                                        });
-                                    }} className="w-full">Create Student</Button>
-                                </CardFooter>
-                            </Card>
-                        </DialogContent>
-                    </Dialog>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button variant="outline">Add New Classroom</Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                            <ScrollArea className="h-[450px] w-full rounded-md border p-1">
-                                <Card className="w-full max-w-md border-0">
-                                    <CardHeader>
-                                        <CardTitle>Create New Classroom</CardTitle>
-                                        <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="space-y-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="title">Title</Label>
-                                            <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="thumbnail">Thumbnail</Label>
-                                            <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="description">Description</Label>
-                                            <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
-                                        </div>
-                                        <div className="w-full flex justify-between">
-                                            <Button onClick={removeAllStudents} variant="outline">
-                                                Remove All Students
-                                            </Button>
-                                            <Button onClick={addAllStudents} variant="outline">
-                                                Add All Students
-                                            </Button>
-                                        </div>
-                                        <div className="w-full h-auto rounded-md border p-3">
-                                            <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                <span>Username</span>
-                                                <span>Actions</span>
-                                            </div>
-                                            {
-                                                students.map((student: any) => (
-                                                    <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                        <span>{student.username}</span>
-                                                        <Trash2 onClick={() => {
-                                                            const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                            setStudents(updatedStudents);
-                                                        }} className="h-4 w-4" />
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </ScrollArea>
-                            <Button onClick={async () => {
-                                const Create = await addDoc(collection(db, "classrooms"), {
-                                    title: title,
-                                    thumbnail: thumbnail,
-                                    description: description,
-                                    students: students.map((student) => student.id),
-                                    time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
-                                })
-                                toast({
-                                    title: "Classroom Created Successfully!",
-                                    description: `All classrooms are public.`,
-                                });
-                            }} className="w-full">Create Classroom</Button>
 
-                        </DialogContent>
-                    </Dialog>
-                </div>
-            </div>
-            <div className="admin-panel-lists place-content-center">
-                {docs.map((items: any) => (
-                    <div key={items.id}>
-                        <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
-                            <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
-                                <Carousel
-                                    plugins={[plugin.current]}
-                                    setApi={setApi}
-                                    className="w-full !min-h-min"
-                                    onMouseEnter={plugin.current.stop}
-                                    onMouseLeave={plugin.current.reset}
-                                >
-                                    <CarouselContent>
-                                        {items.images && items.images.length > 0 ? items.images.map((index: any) => (
-                                            <CarouselItem key={index} className="h-[250px] border-b">
-                                                <div className="h-full">
-                                                    <Card>
-                                                        <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
-                                                            <AspectRatio ratio={16 / 9} className="h-[300px] ">
-                                                                <Image
-                                                                    src={index || "/placeholder.svg"}
-                                                                    alt="Images"
-                                                                    fill
-                                                                    sizes="(min-width: 250px) 300px, 100vw"
-                                                                    loading="lazy"
-                                                                    className="rounded-md object-cover"
-                                                                />
-                                                            </AspectRatio>
-                                                        </CardContent>
-                                                    </Card>
+        <>
+            {users && users.map((user: any) => {
+                if (user.accountType === "student") {
+                    return (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
+                        <div className="flex items-center justify-between mb-6">
+                            <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Student Workshop!</span>
+                            <div className="flex-1 flex items-end justify-end gap-3">
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">Add New Student</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                        <Card className="w-full max-w-md border-0">
+                                            <CardHeader>
+                                                <CardTitle>Create New Student</CardTitle>
+                                                <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
+                                            </CardHeader>
+                                            <CardContent className="space-y-4">
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="username">Username</Label>
+                                                    <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
                                                 </div>
-                                            </CarouselItem>
-                                        )) : items.thumbnail ? Array.from({ length: 5 }).map((_, index) => (
-                                            <CarouselItem key={index} className="h-[250px] border-b">
-                                                <div className="h-full">
-                                                    <Card>
-                                                        <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
-                                                            <AspectRatio ratio={16 / 9} className="h-[300px] ">
-                                                                <Image
-                                                                    src={items.thumbnail || "/placeholder.svg"}
-                                                                    alt="Image"
-                                                                    fill
-                                                                    sizes="(min-width: 250px) 300px, 100vw"
-                                                                    loading="lazy"
-                                                                    className="rounded-md object-cover"
-                                                                />
-                                                            </AspectRatio>
-                                                        </CardContent>
-                                                    </Card>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="password">Password</Label>
+                                                    <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
                                                 </div>
-                                            </CarouselItem>
-                                        )) : ""}
-                                    </CarouselContent>
-                                </Carousel>
-                            </div>
-                            {/* {items.images && items.images.length > 0 ? "" : items.image ? "" : <div className="center rounded-md border h-[250px]">No image is provided.</div>} */}
-                            <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
-                                <div>
-                                    <h2 className="text-2xl font-bold w-full truncate">{items.title || "No Name Provided for this university."}</h2>
-                                    {/* <div className="flex items-center space-x-2 text-sm text-primary mt-3">
-                                        <LocateIcon className="h-4 w-4" />
-                                        <span>{items. || "Nothing."}</span>
-                                        <Separator className="h-4" orientation="vertical" />
-                                        <GlobeIcon className="h-4 w-4" />
-                                        <span>{items.region || "Nothing."}</span>
-                                    </div> */}
-                                </div>
-                                {typeof items.universityDescription === "object" ? JSON.parse(items.universityDescription).map((item: any) => (
-                                    <div key={item.id}>
-                                        {item.children.map((child: any) => (
-                                            <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground" key={child.text}>{child.text}</p>
-                                        ))}
-                                    </div>
-                                )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
-                                <div className="flex flex-col flex-1 h-auto gap-3">
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <Button className="w-full" variant="outline">View</Button>
-                                        </DialogTrigger>
-                                        <DialogContent className="lg:min-w-[650px]">
-                                            <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
-                                                <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <p className="flex flex-row text-center">Title: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
+                                            </CardContent>
+                                            <CardFooter>
+                                                <Button onClick={async () => {
+                                                    const Create = await addDoc(collection(db, "users"), {
+                                                        username: username,
+                                                        surname: "ManFromExistence",
+                                                        avatar: "https://avater.com",
+                                                        email: "ajju40959@gmail.com",
+                                                        region: "Bangladesh",
+                                                        accountType: "student",
+                                                        youtube: "https://youtube.com",
+                                                        twitter: "https://twitter.com",
+                                                        instagram: "https://instagram.com",
+                                                        facebook: "https://facebook.com",
+                                                        linkdin: "https://linkdin.com",
+                                                        password: password,
+                                                    })
+                                                    toast({
+                                                        title: "Student Created Successfully!",
+                                                        description: `All students are public.`,
+                                                    });
+                                                }} className="w-full">Create Student</Button>
+                                            </CardFooter>
+                                        </Card>
+                                    </DialogContent>
+                                </Dialog>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">Add New Classroom</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                        <ScrollArea className="h-[450px] w-full rounded-md border p-1">
+                                            <Card className="w-full max-w-md border-0">
+                                                <CardHeader>
+                                                    <CardTitle>Create New Classroom</CardTitle>
+                                                    <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
+                                                </CardHeader>
+                                                <CardContent className="space-y-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="title">Title</Label>
+                                                        <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
                                                     </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <p className="flex flex-row text-center">Description: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="thumbnail">Thumbnail</Label>
+                                                        <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
                                                     </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <p className="flex flex-row text-center">Thumbnail: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="description">Description</Label>
+                                                        <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
                                                     </div>
-                                                    <Separator />
-                                                    <div className="flex items-center justify-start gap-2">
-                                                        <p className="flex flex-row text-center">Time: </p>
-                                                        <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
+                                                    <div className="w-full flex justify-between">
+                                                        <Button onClick={removeAllStudents} variant="outline">
+                                                            Remove All Students
+                                                        </Button>
+                                                        <Button onClick={addAllStudents} variant="outline">
+                                                            Add All Students
+                                                        </Button>
                                                     </div>
-                                                    <Separator />
                                                     <div className="w-full h-auto rounded-md border p-3">
-                                                        <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                            <span>Students</span>
-                                                            {/* <span>Actions</span> */}
+                                                        <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                            <span>Username</span>
+                                                            <span>Actions</span>
                                                         </div>
                                                         {
-                                                            items.students.map((student: any) => {
-                                                                return users.map((user: any) => {
-                                                                    if (user.id === student) {
-                                                                        return (
-                                                                            <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
-                                                                                <span>{user.username}</span>
-                                                                            </div>
-                                                                        );
-                                                                    }
-                                                                });
-                                                            })
+                                                            students.map((student: any) => (
+                                                                <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                    <span>{student.username}</span>
+                                                                    <Trash2 onClick={() => {
+                                                                        const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                        setStudents(updatedStudents);
+                                                                    }} className="h-4 w-4" />
+                                                                </div>
+                                                            ))
                                                         }
-
                                                     </div>
-                                                </div>
-                                            </ ScrollArea>
-                                        </DialogContent>
-                                    </Dialog>
+                                                </CardContent>
+                                            </Card>
+                                        </ScrollArea>
+                                        <Button onClick={async () => {
+                                            const Create = await addDoc(collection(db, "classrooms"), {
+                                                title: title,
+                                                thumbnail: thumbnail,
+                                                description: description,
+                                                students: students.map((student) => student.id),
+                                                time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
+                                            })
+                                            toast({
+                                                title: "Classroom Created Successfully!",
+                                                description: `All classrooms are public.`,
+                                            });
+                                        }} className="w-full">Create Classroom</Button>
 
-                                    {/* <Sheet>
-                                        <SheetTrigger asChild>
-                                            <Button className="w-full" onClick={handleConfetti} variant="default">Update</Button>
-                                        </SheetTrigger>
-                                        <SheetContent side={"bottom"} className="h-[90vh] !max-w-[1600px] mx-auto rounded-xl">
-                                            <ScrollArea className="h-full w-full rounded-md border">
-                                                <div className="create-university min-h-[100vh] lg:flex lg:flex-col space-y-3 p-10 pt-3 !min-w-full lg:!min-w-[1500px]">
-                                                    <div className="action w-full my-3 hidden lg:flex items-center justify-between ">
-                                                        <div className="w-full h-full flex items-start justify-start space-x-3">
-                                                            <Link href="/universities" className="z-50">
-                                                                <AnimatedButton variant="expandIcon" Icon={ArrowLeftIcon} iconPlacement="left" className="border border-input bg-background hover:bg-accent text-accent-foreground">
-                                                                    Back
-                                                                </AnimatedButton>
-                                                            </Link>
-                                                            <AnimatedButton onClick={handleInputedValues} variant="expandIcon" Icon={Projector} iconPlacement="left" className="border border-input bg-background hover:bg-accent text-accent-foreground">
-                                                                {inputedValues ? "Hide" : "Show"} Inputed Values
-                                                            </AnimatedButton>
-                                                        </div>
-
-                                                        <div className="w-full h-full flex items-end justify-end space-x-3">
-                                                            <Button
-                                                                className="!py-0"
-                                                                onClick={async () => {
-                                                                    const { clientWidth, clientHeight } = document.documentElement;
-                                                                    const boundingBox = buttonRef.current?.getBoundingClientRect?.();
-                                                                    const targetY = boundingBox?.y ?? 0;
-                                                                    const targetX = boundingBox?.x ?? 0;
-                                                                    const targetWidth = boundingBox?.width ?? 0;
-                                                                    const targetCenterX = targetX + targetWidth / 2;
-                                                                    const confetti = (await import("canvas-confetti")).default;
-                                                                    confetti({
-                                                                        zIndex: 999,
-                                                                        particleCount: 100,
-                                                                        spread: 70,
-                                                                        origin: {
-                                                                            y: targetY / clientHeight,
-                                                                            x: targetCenterX / clientWidth,
-                                                                        },
-                                                                    });
-
-
-                                                                    const updateRef = doc(db, "universities", items.id);
-                                                                    const Update = await updateDoc(updateRef, {
-                                                                        address: stateValue || items.address,
-                                                                        educationCost: inputedCost || items.educationCost,
-                                                                        email: inputedEmail || items.email,
-                                                                        facebook: inputedFacebook || items.facebook,
-                                                                        hostel: inputedHostel || items.hostel,
-                                                                        image: inputedImage || items.image,
-                                                                        instagram: inputedInstagam || items.instagram,
-                                                                        military: inputedMilitary || items.military,
-                                                                        phoneNumber: phone || items.phoneNumber,
-                                                                        region: countryValue || items.region,
-                                                                        status: inputedStatus || items.status,
-                                                                        universityCode: inputedCode || items.universityCode,
-                                                                        universityDescription: inputedDescription || items.universityDescription,
-                                                                        universityName: inputedName || items.universityName,
-                                                                        website: inputedWebsite || items.website,
-                                                                        logo: inputedLogo || items.logo
-                                                                    });
-                                                                    toast({
-                                                                        title: 'University has been Updated Successfully.',
-                                                                        description: (
-                                                                            <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                                                                                <span>You Can now view and delete this university!</span>
-                                                                                <pre className="max-h-[500px] overflow-x-auto overflow-y-auto bg-background">
-                                                                                </pre>
-                                                                            </div>
-                                                                        ),
-                                                                    });
-
-                                                                    location.reload();
-                                                                }}
-                                                            >
-                                                                Update
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                    {inputedValues && <div className="w-full flex flex-col gap-2 rounded-lg p-3 text-sm overflow-hidden border">
-                                                        <div className="flex gap-2">
-                                                            <p>Name: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedName || "No Name is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Email: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedEmail || "No Email is Provided."}</span>
-                                                        </div>
-
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Facebook: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedFacebook || "No Facebook Link is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Instagram: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedInstagam || "No Instagram Link is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Education Cost: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedCost || "No Education Cost is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Website: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedWebsite || "No Website Link is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>University Code: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedCode || "No University Code is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-
-
-                                                        <div className="flex gap-2">
-                                                            <p>Phone Number: </p>
-                                                            <span className="font-semibold w-auto text-start">{phone || "No Phone Number is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Logo: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedLogo || "No Logo is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Address: </p>
-                                                            <span className="font-semibold w-auto text-start">{stateValue || "No Address is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Region: </p>
-                                                            <span className="font-semibold w-auto text-start">{countryValue || "No Region is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Description: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedDescription || "No Description is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Image: </p>
-                                                            <span className="font-semibold w-auto text-start">{inputedImage || "No Image is Provided."}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Hostel: </p>
-                                                            {
-                                                                <Badge
-                                                                    className={cn(
-                                                                        "w-fit text-center",
-                                                                        inputedHostel ? "bg-green-500 text-green-50" : "bg-destructive text-destructive-foreground"
-                                                                    )}
-                                                                >
-                                                                    {inputedHostel || "No Hostel Information Provided."}
-                                                                </Badge>
-                                                            }
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Military: </p>
-                                                            {
-                                                                <Badge
-                                                                    className={cn(
-                                                                        "w-fit",
-                                                                        inputedMilitary ? "bg-green-500 text-green-50" : "bg-destructive text-destructive-foreground"
-                                                                    )}
-                                                                >
-                                                                    {inputedMilitary || 'No Military Status Provided.'}
-                                                                </Badge>
-                                                            }
-                                                        </div>
-
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Status: </p>
-                                                            {
-                                                                <Badge
-                                                                    className={cn(
-                                                                        "w-fit",
-                                                                        inputedStatus ? "bg-green-500 text-green-50" : "bg-destructive text-destructive-foreground"
-                                                                    )}
-                                                                >
-                                                                    {inputedStatus || "No Status Provided."}
-                                                                </Badge>
-                                                            }
-                                                        </div>
-                                                    </div>}
-                                                    <div className="name-logo-description-university w-full grid gap-3 ">
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Name</h1>
-                                                            <Input onChange={handleNameChange} type="text" placeholder="Enter University Name" />
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Email</h1>
-                                                            <Input onChange={handleEmailChange} type="email" placeholder="Enter University Email" />
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Status</h1>
-                                                            <Select onValueChange={handleStatusChange}>
-                                                                <SelectTrigger className="w-full">
-                                                                    <SelectValue placeholder="Select a status" />
-                                                                </SelectTrigger>
-                                                                <SelectContent>
-                                                                    <SelectGroup>
-                                                                        <SelectLabel>What is the operating method of this university?</SelectLabel>
-                                                                        <Separator className="mb-1" />
-                                                                        <SelectItem value="Non Profit">Non Profit</SelectItem>
-                                                                        <SelectItem value="Public">Public</SelectItem>
-                                                                        <SelectItem value="Liberal">Liberal</SelectItem>
-                                                                        <SelectItem value="Community">Community</SelectItem>
-                                                                        <SelectItem value="Corporatized">Corporatized</SelectItem>
-                                                                    </SelectGroup>
-                                                                </SelectContent>
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tag-location-university w-full grid gap-3 h-auto">
-
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left mb-3">Phone Number</h1>
-                                                            <PhoneInput className="!p-0 !m-0 w-full" value={phone} onChange={handleOnChange} />
-                                                            <Button onClick={showPhoneNumberDetails} className="w-full">{phoneNumberDetails ? "Hide" : "Show"} Phone Number Details</Button>
-                                                        </div>
-                                                        <div className="hover-glow-border flex flex-col items-start justify-center gap-3 w-full h-full border rounded-md p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Address & Region</h1>
-                                                            <div className="flex flex-col lg:flex-col items-start justify-start gap-3 w-full">
-                                                                <CountryDropdown />
-                                                                <StateDropdown />
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                        </div>
+                        <div className="admin-panel-lists place-content-center">
+                            {docs.map((items: any) => (
+                                <div key={items.id}>
+                                    <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
+                                        <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
+                                            <Carousel
+                                                plugins={[plugin.current]}
+                                                setApi={setApi}
+                                                className="w-full !min-h-min"
+                                                onMouseEnter={plugin.current.stop}
+                                                onMouseLeave={plugin.current.reset}
+                                            >
+                                                <CarouselContent>
+                                                    {items.images && items.images.length > 0 ? items.images.map((index: any) => (
+                                                        <CarouselItem key={index} className="h-[250px] border-b">
+                                                            <div className="h-full">
+                                                                <Card>
+                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
+                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
+                                                                            <Image
+                                                                                src={index || "/placeholder.svg"}
+                                                                                alt="Images"
+                                                                                fill
+                                                                                sizes="(min-width: 250px) 300px, 100vw"
+                                                                                loading="lazy"
+                                                                                className="rounded-md object-cover"
+                                                                            />
+                                                                        </AspectRatio>
+                                                                    </CardContent>
+                                                                </Card>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    {phoneNumberDetails && <div className="min-w-[99%] w-max mx-auto flex flex-col gap-2 border rounded-lg p-3 text-sm">
-                                                        <div className="flex gap-2">
-                                                            <p>Phone number: </p>
-                                                            <span className="font-semibold w-auto text-start">{phoneData.phoneNumber || "-"}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Country code: </p>
-                                                            <span className="font-semibold w-auto text-start">{phoneData.countryCode || "-"}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>Country calling code: </p>
-                                                            <span className="font-semibold w-auto text-start">
-                                                                {phoneData.countryCallingCode || "-"}
-                                                            </span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>National number: </p>
-                                                            <span className="font-semibold w-auto text-start">
-                                                                {phoneData.nationalNumber || "-"}
-                                                            </span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>International number: </p>
-                                                            <span className="font-semibold w-auto text-start">
-                                                                {phoneData.internationalNumber || "-"}
-                                                            </span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p>URI: </p>
-                                                            <span className="font-semibold w-auto text-start">{phoneData.uri || "-"}</span>
-                                                        </div>
-                                                        <Separator />
-                                                        <div className="flex gap-2">
-                                                            <p className="flex-shrink-0">Possible countries: </p>
-                                                            <span className="font-semibold w-auto text-start">
-                                                                {phoneData.possibleCountries || "-"}
-                                                            </span>
-                                                        </div>
-                                                        <Separator />
-                                                        <Badge
-                                                            className={cn(
-                                                                "w-fit",
-                                                                phoneData.isValid
-                                                                    ? "bg-green-500 text-green-50"
-                                                                    : "bg-destructive text-destructive-foreground",
-                                                            )}
-                                                        >
-                                                            VALID NUMBER
-                                                        </Badge>
-                                                        <Separator />
-                                                        <Badge
-                                                            className={cn(
-                                                                "w-fit",
-                                                                phoneData.isPossible
-                                                                    ? "bg-green-500 text-green-50"
-                                                                    : "bg-destructive text-destructive-foreground",
-                                                            )}
-                                                        >
-                                                            POSSIBLE NUMBER
-                                                        </Badge>
-                                                    </div>}
-                                                    <div className="hover-glow-border w-full border rounded-md mx-auto h-auto pt-3 flex flex-col space-y-3">
-                                                        <h1 className="text-4xl font-bold w-full text-left pl-4">Description</h1>
-                                                        <Textarea onChange={handleDescriptionChange} className="w-full min-h-[350px]" placeholder="Type your description here." />
-                                                    </div>
-                                                    <div className="name-logo-description-university w-full grid gap-3 ">
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Code</h1>
-                                                            <Input onChange={handleCodeChange} type="number" placeholder="Enter University Code" />
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Hostel</h1>
-                                                            <Select onValueChange={handleHostelChange}>
-                                                                <SelectTrigger className="w-full">
-                                                                    <SelectValue placeholder="Select a Hostel Availability" />
-                                                                </SelectTrigger>
-                                                                <SelectContent>
-                                                                    <SelectGroup>
-                                                                        <SelectLabel>Is there is a hostel in this university?</SelectLabel>
-                                                                        <Separator className="mb-1" />
-                                                                        <SelectItem value="yes">Yes</SelectItem>
-                                                                        <SelectItem value="no">No</SelectItem>
-                                                                    </SelectGroup>
-                                                                </SelectContent>
-                                                            </Select>
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Military</h1>
-                                                            <Select onValueChange={handleMilitaryChange}>
-                                                                <SelectTrigger className="w-full">
-                                                                    <SelectValue placeholder="Select a Military Campain" />
-                                                                </SelectTrigger>
-                                                                <SelectContent>
-                                                                    <SelectGroup>
-                                                                        <SelectLabel>Are there is a military campain in this university?</SelectLabel>
-                                                                        <Separator className="mb-1" />
-
-                                                                        <SelectItem value="yes">Yes</SelectItem>
-                                                                        <SelectItem value="no">No</SelectItem>
-                                                                    </SelectGroup>
-                                                                </SelectContent>
-                                                            </Select>
-                                                        </div>
-                                                    </div>
-                                                    <div className="name-logo-description-university w-full grid gap-3 ">
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Facebook</h1>
-                                                            <Input onChange={handleFacebookChange} type="text" placeholder="Enter University Facebook Link" />
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Instragam</h1>
-                                                            <Input onChange={handleInstagramChange} type="text" placeholder="Enter University Instragam Link" />
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Website</h1>
-                                                            <Input onChange={handleWebsiteChange} type="text" placeholder="Enter University Website Link" />
-                                                        </div>
-                                                        <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                            <h1 className="text-4xl font-bold w-full text-left">Cost</h1>
-                                                            <Input onChange={handleCostChange} type="text" placeholder="Enter University Website Link" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                        <h1 className="text-4xl font-bold w-full text-left">Logo</h1>
-                                                        <Input onChange={handleLogoChange} type="text" placeholder="Enter Logo Link" />
-                                                    </div>
-                                                    <div className="hover-glow-border w-full h-auto border rounded-md flex flex-col space-y-3 items-center justify-center p-10">
-                                                        <h1 className="text-4xl font-bold w-full text-left">Image</h1>
-                                                        <Input onChange={handleImageChange} type="text" placeholder="Enter Image Link" />
-                                                    </div>
-                                                    <div className="action w-full my-3 flex flex-col lg:hidden items-start justify-start space-y-3 lg:space-y-0">
-                                                        <Link href="/universities" className="z-50 w-full">
-                                                            <AnimatedButton variant="expandIcon" Icon={ArrowLeftIcon} iconPlacement="left" className="border border-input bg-secondary hover:bg-accent text-accent-foreground !min-w-full lg:w-auto pr-3 text-start">
-                                                                Back
-                                                            </AnimatedButton>
-                                                        </Link>
-                                                        <AnimatedButton onClick={handleInputedValues} variant="expandIcon" Icon={Projector} iconPlacement="left" className="border w-full border-input bg-background hover:bg-accent text-accent-foreground">
-                                                            {inputedValues ? "Hide" : "Show"} Inputed Values
-                                                        </AnimatedButton>
-                                                        <AnimatedButton
-                                                            className="!py-0 w-full"
-                                                            onClick={async () => {
-                                                                const { clientWidth, clientHeight } = document.documentElement;
-                                                                const boundingBox = buttonRef.current?.getBoundingClientRect?.();
-                                                                const targetY = boundingBox?.y ?? 0;
-                                                                const targetX = boundingBox?.x ?? 0;
-                                                                const targetWidth = boundingBox?.width ?? 0;
-                                                                const targetCenterX = targetX + targetWidth / 2;
-                                                                const confetti = (await import("canvas-confetti")).default;
-                                                                confetti({
-                                                                    zIndex: 999,
-                                                                    particleCount: 100,
-                                                                    spread: 70,
-                                                                    origin: {
-                                                                        y: targetY / clientHeight,
-                                                                        x: targetCenterX / clientWidth,
-                                                                    },
-                                                                });
-
-
-                                                                const updateRef = doc(db, "universities", items.id);
-                                                                const Update = await updateDoc(updateRef, {
-                                                                    address: stateValue || items.address,
-                                                                    educationCost: inputedCost || items.educationCost,
-                                                                    email: inputedEmail || items.email,
-                                                                    facebook: inputedFacebook || items.facebook,
-                                                                    hostel: inputedHostel || items.hostel,
-                                                                    image: inputedImage || items.image,
-                                                                    instagram: inputedInstagam || items.instagram,
-                                                                    military: inputedMilitary || items.military,
-                                                                    phoneNumber: phone || items.phoneNumber,
-                                                                    region: countryValue || items.region,
-                                                                    status: inputedStatus || items.status,
-                                                                    universityCode: inputedCode || items.universityCode,
-                                                                    universityDescription: inputedDescription || items.universityDescription,
-                                                                    universityName: inputedName || items.universityName,
-                                                                    website: inputedWebsite || items.website,
-                                                                    logo: inputedLogo || items.logo
-                                                                });
-                                                                toast({
-                                                                    title: 'University has been Updated Successfully.',
-                                                                    description: (
-                                                                        <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                                                                            <span>You Can now view and delete this university!</span>
-                                                                            <pre className="max-h-[500px] overflow-x-auto overflow-y-auto bg-background">
-                                                                            </pre>
-                                                                        </div>
-                                                                    ),
-                                                                });
-
-                                                                location.reload();
-                                                            }}
-                                                        >
-                                                            Update
-                                                        </AnimatedButton>
-
-                                                    </div>
-
+                                                        </CarouselItem>
+                                                    )) : items.thumbnail ? Array.from({ length: 5 }).map((_, index) => (
+                                                        <CarouselItem key={index} className="h-[250px] border-b">
+                                                            <div className="h-full">
+                                                                <Card>
+                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
+                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
+                                                                            <Image
+                                                                                src={items.thumbnail || "/placeholder.svg"}
+                                                                                alt="Image"
+                                                                                fill
+                                                                                sizes="(min-width: 250px) 300px, 100vw"
+                                                                                loading="lazy"
+                                                                                className="rounded-md object-cover"
+                                                                            />
+                                                                        </AspectRatio>
+                                                                    </CardContent>
+                                                                </Card>
+                                                            </div>
+                                                        </CarouselItem>
+                                                    )) : ""}
+                                                </CarouselContent>
+                                            </Carousel>
+                                        </div>
+                                        <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
+                                            <div>
+                                                <h2 className="text-2xl font-bold w-full truncate">{items.title || "No Name Provided for this university."}</h2>
+                                            </div>
+                                            {typeof items.universityDescription === "object" ? JSON.parse(items.universityDescription).map((item: any) => (
+                                                <div key={item.id}>
+                                                    {item.children.map((child: any) => (
+                                                        <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground" key={child.text}>{child.text}</p>
+                                                    ))}
                                                 </div>
-                                            </ScrollArea>
-                                        </SheetContent>
-                                    </Sheet> */}
+                                            )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
+                                            <div className="flex flex-col flex-1 h-auto gap-3">
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button className="w-full" variant="outline">View</Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="lg:min-w-[650px]">
+                                                        <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
+                                                            <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Title: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Description: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Thumbnail: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Time: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="w-full h-auto rounded-md border p-3">
+                                                                    <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                                        <span>Students</span>
+                                                                    </div>
+                                                                    {
+                                                                        items.students.map((student: any) => {
+                                                                            return users.map((user: any) => {
+                                                                                if (user.id === student) {
+                                                                                    return (
+                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
+                                                                                            <span>{user.username}</span>
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+                                                                            });
+                                                                        })
+                                                                    }
 
-                                    <Button onClick={async () => {
-                                        await deleteDoc(doc(db, "classrooms", items.id));
-                                        const newDocs = docs.filter((item) => item.id !== items.id);
-                                        setDocs(newDocs);
-                                    }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
-                                        Delete
-                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </ ScrollArea>
+                                                    </DialogContent>
+                                                </Dialog>
+                                                <Button onClick={async () => {
+                                                    await deleteDoc(doc(db, "classrooms", items.id));
+                                                    const newDocs = docs.filter((item) => item.id !== items.id);
+                                                    setDocs(newDocs);
+                                                }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
                                 </div>
+                            ))}
+                        </div>
+                        <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
+                            Load More
+                        </Button>
+                    </main>)
+                }
+                if (user.accountType === "teacher") {
+                    return (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
+                        <div className="flex items-center justify-between mb-6">
+                            <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Teacher Workshop!</span>
+                            <div className="flex-1 flex items-end justify-end gap-3">
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">Add New Student</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                        <Card className="w-full max-w-md border-0">
+                                            <CardHeader>
+                                                <CardTitle>Create New Student</CardTitle>
+                                                <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
+                                            </CardHeader>
+                                            <CardContent className="space-y-4">
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="username">Username</Label>
+                                                    <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="password">Password</Label>
+                                                    <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
+                                                </div>
+                                            </CardContent>
+                                            <CardFooter>
+                                                <Button onClick={async () => {
+                                                    const Create = await addDoc(collection(db, "users"), {
+                                                        username: username,
+                                                        surname: "ManFromExistence",
+                                                        avatar: "https://avater.com",
+                                                        email: "ajju40959@gmail.com",
+                                                        region: "Bangladesh",
+                                                        accountType: "student",
+                                                        youtube: "https://youtube.com",
+                                                        twitter: "https://twitter.com",
+                                                        instagram: "https://instagram.com",
+                                                        facebook: "https://facebook.com",
+                                                        linkdin: "https://linkdin.com",
+                                                        password: password,
+                                                    })
+                                                    toast({
+                                                        title: "Student Created Successfully!",
+                                                        description: `All students are public.`,
+                                                    });
+                                                }} className="w-full">Create Student</Button>
+                                            </CardFooter>
+                                        </Card>
+                                    </DialogContent>
+                                </Dialog>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">Add New Classroom</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                        <ScrollArea className="h-[450px] w-full rounded-md border p-1">
+                                            <Card className="w-full max-w-md border-0">
+                                                <CardHeader>
+                                                    <CardTitle>Create New Classroom</CardTitle>
+                                                    <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
+                                                </CardHeader>
+                                                <CardContent className="space-y-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="title">Title</Label>
+                                                        <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="thumbnail">Thumbnail</Label>
+                                                        <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="description">Description</Label>
+                                                        <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
+                                                    </div>
+                                                    <div className="w-full flex justify-between">
+                                                        <Button onClick={removeAllStudents} variant="outline">
+                                                            Remove All Students
+                                                        </Button>
+                                                        <Button onClick={addAllStudents} variant="outline">
+                                                            Add All Students
+                                                        </Button>
+                                                    </div>
+                                                    <div className="w-full h-auto rounded-md border p-3">
+                                                        <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                            <span>Username</span>
+                                                            <span>Actions</span>
+                                                        </div>
+                                                        {
+                                                            students.map((student: any) => (
+                                                                <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                    <span>{student.username}</span>
+                                                                    <Trash2 onClick={() => {
+                                                                        const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                        setStudents(updatedStudents);
+                                                                    }} className="h-4 w-4" />
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        </ScrollArea>
+                                        <Button onClick={async () => {
+                                            const Create = await addDoc(collection(db, "classrooms"), {
+                                                title: title,
+                                                thumbnail: thumbnail,
+                                                description: description,
+                                                students: students.map((student) => student.id),
+                                                time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
+                                            })
+                                            toast({
+                                                title: "Classroom Created Successfully!",
+                                                description: `All classrooms are public.`,
+                                            });
+                                        }} className="w-full">Create Classroom</Button>
 
-                            </CardContent>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                        </div>
+                        <div className="admin-panel-lists place-content-center">
+                            {docs.map((items: any) => (
+                                <div key={items.id}>
+                                    <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
+                                        <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
+                                            <Carousel
+                                                plugins={[plugin.current]}
+                                                setApi={setApi}
+                                                className="w-full !min-h-min"
+                                                onMouseEnter={plugin.current.stop}
+                                                onMouseLeave={plugin.current.reset}
+                                            >
+                                                <CarouselContent>
+                                                    {items.images && items.images.length > 0 ? items.images.map((index: any) => (
+                                                        <CarouselItem key={index} className="h-[250px] border-b">
+                                                            <div className="h-full">
+                                                                <Card>
+                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
+                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
+                                                                            <Image
+                                                                                src={index || "/placeholder.svg"}
+                                                                                alt="Images"
+                                                                                fill
+                                                                                sizes="(min-width: 250px) 300px, 100vw"
+                                                                                loading="lazy"
+                                                                                className="rounded-md object-cover"
+                                                                            />
+                                                                        </AspectRatio>
+                                                                    </CardContent>
+                                                                </Card>
+                                                            </div>
+                                                        </CarouselItem>
+                                                    )) : items.thumbnail ? Array.from({ length: 5 }).map((_, index) => (
+                                                        <CarouselItem key={index} className="h-[250px] border-b">
+                                                            <div className="h-full">
+                                                                <Card>
+                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
+                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
+                                                                            <Image
+                                                                                src={items.thumbnail || "/placeholder.svg"}
+                                                                                alt="Image"
+                                                                                fill
+                                                                                sizes="(min-width: 250px) 300px, 100vw"
+                                                                                loading="lazy"
+                                                                                className="rounded-md object-cover"
+                                                                            />
+                                                                        </AspectRatio>
+                                                                    </CardContent>
+                                                                </Card>
+                                                            </div>
+                                                        </CarouselItem>
+                                                    )) : ""}
+                                                </CarouselContent>
+                                            </Carousel>
+                                        </div>
+                                        <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
+                                            <div>
+                                                <h2 className="text-2xl font-bold w-full truncate">{items.title || "No Name Provided for this university."}</h2>
+                                            </div>
+                                            {typeof items.universityDescription === "object" ? JSON.parse(items.universityDescription).map((item: any) => (
+                                                <div key={item.id}>
+                                                    {item.children.map((child: any) => (
+                                                        <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground" key={child.text}>{child.text}</p>
+                                                    ))}
+                                                </div>
+                                            )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
+                                            <div className="flex flex-col flex-1 h-auto gap-3">
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button className="w-full" variant="outline">View</Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="lg:min-w-[650px]">
+                                                        <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
+                                                            <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Title: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Description: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Thumbnail: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="flex items-center justify-start gap-2">
+                                                                    <p className="flex flex-row text-center">Time: </p>
+                                                                    <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
+                                                                </div>
+                                                                <Separator />
+                                                                <div className="w-full h-auto rounded-md border p-3">
+                                                                    <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                                        <span>Students</span>
+                                                                    </div>
+                                                                    {
+                                                                        items.students.map((student: any) => {
+                                                                            return users.map((user: any) => {
+                                                                                if (user.id === student) {
+                                                                                    return (
+                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
+                                                                                            <span>{user.username}</span>
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+                                                                            });
+                                                                        })
+                                                                    }
 
-                            {/* <CardFooter className="flex !w-full items-center justify-between">
-                            </CardFooter> */}
-                        </Card>
-                    </div>
-                ))}
-            </div>
-            <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
-                Load More
-            </Button>
-        </main>
+                                                                </div>
+                                                            </div>
+                                                        </ ScrollArea>
+                                                    </DialogContent>
+                                                </Dialog>
+                                                <Button onClick={async () => {
+                                                    await deleteDoc(doc(db, "classrooms", items.id));
+                                                    const newDocs = docs.filter((item) => item.id !== items.id);
+                                                    setDocs(newDocs);
+                                                }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            ))}
+                        </div>
+                        <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
+                            Load More
+                        </Button>
+                    </main>)
+                }
+            })}
+
+
+            {auth.currentUser ? null : <div className="min-h-[500px] w-full flex items-center justify-center flex-col gap-5 dark:bg-yellow-500 rounded-md">
+                <span className="rainbow-text font-bold text-center">Please Login to see your dashboard details!</span>
+                <Link href="/login" className="">
+                    <Button>Login</Button>
+                </Link>
+            </div>}
+
+
+        </>
     );
 };
 export default Dashboard;

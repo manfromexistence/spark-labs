@@ -567,13 +567,15 @@ export default function Page({ params }: { params: { slug: string } }) {
               </div>
               <Separator />
 
-              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-                <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground h-full text-center">Email</span>
+              <Link href={user.email}>
+                <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-5 h-5 text-foreground" />
+                    <span className="text-foreground h-full text-center">Email</span>
+                  </div>
+                  <div className="text-right text-muted-foreground italic font-sans text-[10px]">{user.email}</div>
                 </div>
-                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.email}</div>
-              </div>
+              </Link>
               <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
                 <div className="flex items-center gap-3">
                   <MapPinIcon className="w-5 h-5 text-foreground" />
@@ -582,41 +584,49 @@ export default function Page({ params }: { params: { slug: string } }) {
                 <div className="text-right text-muted-foreground text-sm italic font-sans">{user.region}</div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-                <div className="flex items-center gap-3">
-                  <img src="https://img.logo.dev/instagram.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
-                  <span className="text-foreground h-full text-center">Instagram</span>
+              <Link href={user.instagram}>
+                <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                  <div className="flex items-center gap-3">
+                    <img src="https://img.logo.dev/instagram.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
+                    <span className="text-foreground h-full text-center">Instagram</span>
+                  </div>
+                  <div className="text-right text-muted-foreground text-sm italic font-sans">{user.instagram}</div>
                 </div>
-                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.instagram}</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-                <div className="flex items-center gap-3">
-                  <YouTube className="w-5 h-5" />
-                  <span className="text-foreground h-full text-center">YouTube</span>
+              </Link> <Link href={user.youtube}>
+                <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                  <div className="flex items-center gap-3">
+                    <YouTube className="w-5 h-5" />
+                    <span className="text-foreground h-full text-center">YouTube</span>
+                  </div>
+                  <div className="text-right text-muted-foreground text-sm italic font-sans">{user.youtube}</div>
                 </div>
-                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.youtube}</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-                <div className="flex items-center gap-3">
-                  <Facebook className="w-5 h-5" />
-                  <span className="text-foreground h-full text-center">Facebook</span>
+              </Link> <Link href={user.facebook}>
+                <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                  <div className="flex items-center gap-3">
+                    <Facebook className="w-5 h-5" />
+                    <span className="text-foreground h-full text-center">Facebook</span>
+                  </div>
+                  <div className="text-right text-muted-foreground text-sm italic font-sans">{user.facebook}</div>
                 </div>
-                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.facebook}</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-                <div className="flex items-center gap-3">
-                  <Twitter className="w-5 h-5" />
-                  <span className="text-foreground h-full text-center">Twitter</span>
+              </Link> <Link href={user.twitter}>
+                <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                  <div className="flex items-center gap-3">
+                    <Twitter className="w-5 h-5" />
+                    <span className="text-foreground h-full text-center">Twitter</span>
+                  </div>
+                  <div className="text-right text-muted-foreground text-sm italic font-sans">{user.twitter}</div>
                 </div>
-                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.twitter}</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
-                <div className="flex items-center gap-3">
-                  <img src="https://img.logo.dev/linkdin.com?token=pk_FRtFXWo8TQSbXclg8rMaYA" className="h-4 w-4 rounded-md" />
-                  <span className="text-foreground h-full text-center">Linkdin</span>
+              </Link>
+              <Link href={user.linkdin}>
+                <div className="grid grid-cols-2 gap-4 hover:bg-primary-foreground hover:text-primary text-center hover:p-3 rounded-md">
+                  <div className="flex items-center gap-3">
+                    <LinkedIn className="h-4 w-4" />
+                    <span className="text-foreground h-full text-center">Linkdin</span>
+                  </div>
+                  <div className="text-right text-muted-foreground text-sm italic font-sans">{user.linkdin}</div>
                 </div>
-                <div className="text-right text-muted-foreground text-sm italic font-sans">{user.linkdin}</div>
-              </div>
+              </Link>
+
             </CardContent>
           </Card>
         </div> : <div className={cn("min-h-max w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden", detailsBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>

@@ -111,6 +111,8 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -291,7 +293,7 @@ const invoices = [
 ]
 
 const Dashboard = () => {
-
+    const [position, setPosition] = React.useState("bottom")
     const [docs, setDocs] = useState<any[]>([]);
     const [users, setUsers] = useState<any>([]);
     const [classrooms, setClassrooms] = useState<any>([]);
@@ -624,50 +626,50 @@ const Dashboard = () => {
 
     const handleSignUp = async () => {
         try {
-          // 1. Attempt to create the user with Firebase Authentication
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          return signOut(auth);
-      
-          // 2. If successful, get the user's UID
-          const user = userCredential.user;
-          const userId = user.uid;
-      
-          // 3. Create the user document in Firestore
-          const Create = await addDoc(collection(db, "users"), {
-            username: "your_username", // Replace with your username input
-            surname: "ManFromExistence",
-            avatar: "https://avater.com",
-            email: email,
-            region: "Bangladesh",
-            accountType: "student",
-            youtube: "https://youtube.com",
-            twitter: "https://twitter.com",
-            instagram: "https://instagram.com",
-            facebook: "https://facebook.com",
-            linkdin: "https://linkdin.com",
-            password: password, // Store the password securely (see note below)
-            userId: userId,
-          });
-      
-          // 4. Show success toast
-          toast({
-            title: "Student Created Successfully!",
-            description: `All students are public.`,
-          });
-        } catch (error:any) {
-          // 5. Handle errors from Firebase Authentication
-          console.error("Error creating user:", error);
-          toast({
-            title: "Uh oh! Something went wrong with your SignUp.",
-            description: (
-              <div className="flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1">
-                <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-                <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-              </div>
-            ),
-          });
+            // 1. Attempt to create the user with Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            return signOut(auth);
+
+            // 2. If successful, get the user's UID
+            const user = userCredential.user;
+            const userId = user.uid;
+
+            // 3. Create the user document in Firestore
+            const Create = await addDoc(collection(db, "users"), {
+                username: "your_username", // Replace with your username input
+                surname: "ManFromExistence",
+                avatar: "https://avater.com",
+                email: email,
+                region: "Bangladesh",
+                accountType: "student",
+                youtube: "https://youtube.com",
+                twitter: "https://twitter.com",
+                instagram: "https://instagram.com",
+                facebook: "https://facebook.com",
+                linkdin: "https://linkdin.com",
+                password: password, // Store the password securely (see note below)
+                userId: userId,
+            });
+
+            // 4. Show success toast
+            toast({
+                title: "Student Created Successfully!",
+                description: `All students are public.`,
+            });
+        } catch (error: any) {
+            // 5. Handle errors from Firebase Authentication
+            console.error("Error creating user:", error);
+            toast({
+                title: "Uh oh! Something went wrong with your SignUp.",
+                description: (
+                    <div className="flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1">
+                        <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+                        <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+                    </div>
+                ),
+            });
         }
-      };
+    };
 
     const EnhancedErrors = (input: any): string | null => {
         switch (input) {
@@ -708,119 +710,31 @@ const Dashboard = () => {
                             <div className="flex items-center justify-between mb-6">
                                 <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Student Workshop!</span>
                                 <div className="flex-1 flex items-end justify-end gap-3">
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <Button variant="outline">Add New Student</Button>
-                                        </DialogTrigger>
-                                        <DialogContent className="sm:max-w-[425px]">
-                                            <Card className="w-full max-w-md border-0">
-                                                <CardHeader>
-                                                    <CardTitle>Create New Student</CardTitle>
-                                                    <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
-                                                </CardHeader>
-                                                <CardContent className="space-y-4">
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="username">Username</Label>
-                                                        <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="password">Password</Label>
-                                                        <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
-                                                    </div>
-                                                </CardContent>
-                                                <CardFooter>
-                                                    <Button onClick={async () => {
-                                                        const Create = await addDoc(collection(db, "users"), {
-                                                            username: username,
-                                                            surname: "ManFromExistence",
-                                                            avatar: "https://avater.com",
-                                                            email: "ajju40959@gmail.com",
-                                                            region: "Bangladesh",
-                                                            accountType: "student",
-                                                            youtube: "https://youtube.com",
-                                                            twitter: "https://twitter.com",
-                                                            instagram: "https://instagram.com",
-                                                            facebook: "https://facebook.com",
-                                                            linkdin: "https://linkdin.com",
-                                                            password: password,
-                                                        })
-                                                        toast({
-                                                            title: "Student Created Successfully!",
-                                                            description: `All students are public.`,
-                                                        });
-                                                    }} className="w-full">Create Student</Button>
-                                                </CardFooter>
-                                            </Card>
-                                        </DialogContent>
-                                    </Dialog>
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <Button variant="outline">Add New Classroom</Button>
-                                        </DialogTrigger>
-                                        <DialogContent className="sm:max-w-[425px]">
-                                            <ScrollArea className="h-[450px] w-full rounded-md border p-1">
-                                                <Card className="w-full max-w-md border-0">
-                                                    <CardHeader>
-                                                        <CardTitle>Create New Classroom</CardTitle>
-                                                        <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
-                                                    </CardHeader>
-                                                    <CardContent className="space-y-4">
-                                                        <div className="space-y-2">
-                                                            <Label htmlFor="title">Title</Label>
-                                                            <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
-                                                        </div>
-                                                        <div className="space-y-2">
-                                                            <Label htmlFor="thumbnail">Thumbnail</Label>
-                                                            <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
-                                                        </div>
-                                                        <div className="space-y-2">
-                                                            <Label htmlFor="description">Description</Label>
-                                                            <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
-                                                        </div>
-                                                        <div className="w-full flex justify-between">
-                                                            <Button onClick={removeAllStudents} variant="outline">
-                                                                Remove All Students
-                                                            </Button>
-                                                            <Button onClick={addAllStudents} variant="outline">
-                                                                Add All Students
-                                                            </Button>
-                                                        </div>
-                                                        <div className="w-full h-auto rounded-md border p-3">
-                                                            <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                <span>Username</span>
-                                                                <span>Actions</span>
-                                                            </div>
-                                                            {
-                                                                students.map((student: any) => (
-                                                                    <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                        <span>{student.username}</span>
-                                                                        <Trash2 onClick={() => {
-                                                                            const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                            setStudents(updatedStudents);
-                                                                        }} className="h-4 w-4" />
-                                                                    </div>
-                                                                ))
-                                                            }
-                                                        </div>
-                                                    </CardContent>
-                                                </Card>
-                                            </ScrollArea>
-                                            <Button onClick={async () => {
-                                                const Create = await addDoc(collection(db, "classrooms"), {
-                                                    title: title,
-                                                    thumbnail: thumbnail,
-                                                    description: description,
-                                                    students: students.map((student) => student.id),
-                                                    time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
-                                                })
-                                                toast({
-                                                    title: "Classroom Created Successfully!",
-                                                    description: `All classrooms are public.`,
-                                                });
-                                            }} className="w-full">Create Classroom</Button>
-
-                                        </DialogContent>
-                                    </Dialog>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="outline">Submit A Project</Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-56">
+                                            <DropdownMenuLabel>Available Classrooms</DropdownMenuLabel>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+                                                <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+                                                <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+                                                <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+                                            </DropdownMenuRadioGroup>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                                {/* <div className="space-y-2">
+              <Label htmlFor="class">Classroom</Label>
+              <Select required onValueChange={(value: string) => setClassroom(value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select A Classroom" />
+                </SelectTrigger>
+                <SelectContent>
+                  {classrooms.map((classroom: any) => <SelectItem key={classroom} value={classroom.id}>{classroom.title}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div> */}
                                 </div>
                             </div>
                             <div className="admin-panel-lists place-content-center">

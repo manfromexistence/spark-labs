@@ -222,6 +222,30 @@ declare var IDE_Morph: any;
 // }
 
 export default function Page({ params }: { params: { slug: string } }) {
+  // let match = params.slug.match(/[^+]+/);
+  // if (match !== null) {
+  //   return match[0];  // Outputs: 97thUCAE6WOMGI11NLzp
+  // }
+  function regexClassroomId(input: string, regex: RegExp): string | null {
+    const match = input.match(regex);
+    return match ? match[0] : null;
+  }
+  // function regexStudentId(input: string, regex: RegExp): string | null {
+  //   const match = input.match(regex);
+  //   return match ? match[0] : null;
+  // }
+
+  function regexStudentId(input: string, regex: RegExp, n: number): string | null {
+    const matches = input.match(regex);
+    return matches && matches.length >= n ? matches[n - 1] : null;
+  }
+
+
+  // const text = "97thUCAE6WOMGI11NLzp%zdQaxlCnSKfPK5ueDx1IvQQj4aw2%random%texts";
+  const regex = /[^%]+/;
+  // alert(getFirstMatch(params.slug, regex));  // Outputs: 97thUCAE6WOMGI11NLzp
+  // alert(params.slug)
+
   const worldRef = useRef<HTMLCanvasElement | null>(null);
   let lastTime = 0;
   const [ide, setIde] = useState<any>("");
@@ -274,7 +298,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       title: title,
       description: description,
       thumbnail: thumbnail,
-      classroomId: params.slug,
+      classroomId: regexClassroomId(params.slug, regex),
       userId: auth.currentUser && auth.currentUser.uid,
       time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
     })
@@ -452,10 +476,12 @@ export default function Page({ params }: { params: { slug: string } }) {
               <Send className="h-4 w-4 mr-2" />
               Submit Project
             </Button> */}
-            <Button ref={buttonRef} onClick={() => {
+            {/* <Button ref={buttonRef} onClick={() => {
               setXml(ide.getSpriteScriptsXML());
               classrooms.map((classroom: any) => {
-                if (classroom.id !== params.slug) {
+                if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
+                  submitProject();
+                } else {
                   toast({
                     title: "You Are Not Joined In This Class!",
                     description: (
@@ -464,8 +490,26 @@ export default function Page({ params }: { params: { slug: string } }) {
                       </div>
                     ),
                   });
-                } else {
+                }
+              });
+            }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
+              <Send className="h-4 w-4 mr-2" />
+              Submit Project
+            </Button> */}
+            <Button ref={buttonRef} onClick={() => {
+              setXml(ide.getSpriteScriptsXML());
+              classrooms.map((classroom: any) => {
+                if (classroom.id === regexClassroomId(params.slug, regex)) {
                   submitProject();
+                } else {
+                  toast({
+                    title: "You Are Not Joined In This Class!",
+                    description: (
+                      <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                        <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
+                      </div>
+                    ),
+                  });
                 }
               });
             }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">

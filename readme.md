@@ -1,3 +1,10 @@
+Things to do:
+1. functinality to add many student by csv file.
+2. close menu after action
+3. add automatically after creating classrooms
+4. preview prjoect & remove unnessasary socail account links
+5. giving you access to firebase & deploying to your hosting
+
 # Workshop Website for Scratch Visual Programming Language
 
 ## Project Overview

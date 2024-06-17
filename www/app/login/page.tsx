@@ -178,7 +178,28 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 
 
-
+// async function signInWithUsernameAndPassword(username, password) {
+//   try {
+//     const studentDoc = await db.collection('Users').where('username', '==', username).get();
+//     if (studentDoc.empty) {
+//       throw new Error('User not found');
+//     }
+//     const student = studentDoc.docs[0].data();
+//     // Verify password (using bcrypt or another hashing library)
+//     if (await bcrypt.compare(password, student.password)) {
+//       // Create custom JWT token
+//       const token = jwt.sign({ username: student.username, role: 'student' }, 'your-secret-key');
+//       // Store token in local storage or cookie
+//       localStorage.setItem('authToken', token);
+//       return true;
+//     } else {
+//       throw new Error('Incorrect password');
+//     }
+//   } catch (error) {
+//     console.error('Login error:', error);
+//     throw error;
+//   }
+// }
 
 const Login: NextPage = () => {
 
@@ -363,37 +384,76 @@ const Login: NextPage = () => {
   //   }) : null);
   // };
 
+  // const handleStudentSignIn = async (e: any) => {
+  //   e.preventDefault();
+  //   docs.map((user:any) => user.accountType === "student" && user.username === studentUsername ? signInWithEmailAndPassword(auth, user.email, user.password)
+  //   .then((userCredential) => {
+  //     // Signed in 
+  //     const user = userCredential.user;
+  //     setUserId(user);
+  //     userDocId(user.uid);
+
+  //     router.push('/dashboard')
+  //   })
+  //   .catch((error:any) => {
+  //     toast({
+  //       title: "Uh oh! Something went wrong with your SignIn.",
+  //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+  //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+  //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+  //       </div>),
+  //     })
+  //   }) : toast({
+  //     title: "We got your request Student...",
+  //     description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+  //       <span className="text-muted-foreground">{`Till then stay tunded!`}</span>
+  //     </div>),
+  //   }));
+
+
+  //   const updateRef = doc(db, "users", userDocId);
+  //   const Update = await updateDoc(updateRef, {
+  //     usreId: userId.id,
+  //   })
+  // };
+
   const handleStudentSignIn = async (e: any) => {
     e.preventDefault();
-    docs.map((user:any) => user.accountType === "student" && user.username === studentUsername ? signInWithEmailAndPassword(auth, user.email, studentPassword)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      setUserId(user);
-      userDocId(user.uid);
 
-      router.push('/dashboard')
-    })
-    .catch((error:any) => {
-      toast({
-        title: "Uh oh! Something went wrong with your SignIn.",
-        description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-          <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-          <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-        </div>),
-      })
-    }) : toast({
-      title: "We got your request Student...",
-      description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-        <span className="text-muted-foreground">{`Till then stay tunded!`}</span>
-      </div>),
-    }));
+    // const userExists = docs.some((user: any) => user.accountType === "student" && user.username === studentUsername);
 
+    // if (userExists) {
+    //     signInWithEmailAndPassword(auth, studentUsername, studentPassword)
+    //         .then((userCredential) => {
+    //             // Signed in 
+    //             const user = userCredential.user;
+    //             setUserId(user);
+    //             userDocId(user.uid);
 
-    const updateRef = doc(db, "users", userDocId);
-    const Update = await updateDoc(updateRef, {
-      usreId: userId.id,
-    })
+    //             router.push('/dashboard')
+    //         })
+    //         .catch((error:any) => {
+    //             toast({
+    //                 title: "Uh oh! Something went wrong with your SignIn.",
+    //                 description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+    //                     <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+    //                     <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+    //                 </div>),
+    //             })
+    //         });
+    // } else {
+    //     toast({
+    //         title: "We got your request Student...",
+    //         description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+    //             <span className="text-muted-foreground">{`Till then stay tunded!`}</span>
+    //         </div>),
+    //     });
+    // }
+
+    // const updateRef = doc(db, "users", userDocId);
+    // const Update = await updateDoc(updateRef, {
+    //     usreId: userId.id,
+    // })
   };
 
 
@@ -476,7 +536,76 @@ const Login: NextPage = () => {
             </Link>
           </div>
         </div> */}
-        <Tabs defaultValue="student" className="w-full">
+
+
+        <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
+          <div className="grid min-w-full gap-2 text-center">
+            <h1 className="text-3xl font-bold">Welcome back Teacher!</h1>
+            <p className="text-balance text-muted-foreground">
+              Please enter your details
+            </p>
+          </div>
+          <div className="grid gap-4 px-3">
+            <div className="grid w-full gap-2">
+              <Label htmlFor="email">
+                Email
+              </Label>
+              <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">
+                  Password
+                </Label>
+              </div>
+              <div className="w-full relative">
+                <Input
+                  required
+                  value={password}
+                  type={isVisiblePassword ? "text" : "password"}
+                  id="password"
+                  placeholder="YourPassword123"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-md !border text-muted-foreground"
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                >
+                  {isVisiblePassword ? (
+                    <Eye className="hover:text-[#804DFE]" />
+                  ) : (
+                    <EyeOff className="hover:text-[#804DFE]" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/forgot-password"
+              className="flex w-full items-end justify-end text-sm underline"
+            >
+              Forgot your password?
+            </Link>
+            <Button
+              onClick={handleSignIn}
+              className="w-full bg-[#804DFE] text-white hover:bg-secondary"
+            >
+              Login
+            </Button>
+          </div>
+          <div className="mt-4 min-w-full space-x-1 text-center text-sm">
+            <span>Don't have an account?</span>
+            <Link
+              href="/register"
+              className="bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text font-bold text-transparent"
+            >
+              Register
+            </Link>
+          </div>
+        </div>
+        {/* <Tabs defaultValue="student" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="teacher">Teacher</TabsTrigger>
             <TabsTrigger value="student">Student</TabsTrigger>
@@ -551,8 +680,6 @@ const Login: NextPage = () => {
             </div>
           </TabsContent>
           <TabsContent value="student">
-
-
             <Card>
               <CardHeader>
                 <CardTitle>Hello Student</CardTitle>
@@ -562,8 +689,8 @@ const Login: NextPage = () => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="username">Username</Label>
-                  <Input onChange={(e) => setStudentUsername(e.target.value)} id="username" placeholder="student" />
+                  <Label htmlFor="username">Email</Label>
+                  <Input onChange={(e) => setStudentUsername(e.target.value)} id="username" placeholder="student" type="email" />
                 </div>
                 <div className="flex items-center">
                   <Label htmlFor="password">
@@ -597,7 +724,7 @@ const Login: NextPage = () => {
               </CardFooter>
             </Card>
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
       </div>
     </div>
   )

@@ -61,7 +61,7 @@ import {
   updateDoc,
 } from "firebase/firestore"
 import type { SVGProps } from "react";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
@@ -238,6 +238,8 @@ export default function Page({ params }: { params: { slug: string } }) {
     const match = input.match(regex);
     return match ? match[0] : null;
   }
+  // const router = useRouter();
+
   // function regexStudentId(input: string, regex: RegExp): string | null {
   //   const match = input.match(regex);
   //   return match ? match[0] : null;
@@ -324,9 +326,8 @@ export default function Page({ params }: { params: { slug: string } }) {
         </div>
       ),
     });
-    router.push("/dashboard");
-    setProjectStatus(true);
-    setProjectId(Create.id);
+    // router.push("/dashboard")
+    window.location.replace("/dashboard")
   }
 
   useEffect(() => {
@@ -511,24 +512,24 @@ export default function Page({ params }: { params: { slug: string } }) {
                   console.log(err);
                 } else {
                   XML_XML = builder.buildObject(result);
-                  alert(JSON.stringify(result));
+                  // alert(JSON.stringify(result));
                   setXml(JSON.stringify(result));
                 }
               });
 
-              
+
               classrooms.map((classroom: any) => {
                 if (classroom.id === regexClassroomId(params.slug, regex)) {
                   submitProject();
                 } else {
-                  toast({
-                    title: "You Are Not Joined In This Class!",
-                    description: (
-                      <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                        <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
-                      </div>
-                    ),
-                  });
+                  // toast({
+                  //   title: "You Are Not Joined In This Class!",
+                  //   description: (
+                  //     <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                  //       <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
+                  //     </div>
+                  //   ),
+                  // });
                 }
               });
             }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">

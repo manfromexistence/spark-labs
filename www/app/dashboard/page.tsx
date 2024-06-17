@@ -295,6 +295,7 @@ const invoices = [
 const Dashboard = () => {
     const [position, setPosition] = React.useState("bottom")
     const [docs, setDocs] = useState<any[]>([]);
+    const [submissions, setSubmissions] = useState<any[]>([]);
     const [users, setUsers] = useState<any>([]);
     const [classrooms, setClassrooms] = useState<any>([]);
     const [students, setStudents] = useState<any[]>([]);
@@ -478,29 +479,22 @@ const Dashboard = () => {
                 ...doc.data(),
             }));
             setDocs(newDocs);
-            // Configuring Data for Update:
-            // docs.map((item: any) => {
-            //     setInputedAddress(item.address);
-            //     setInputedCost(item.educationCost);
-            //     setInputedEmail(item.email);
-            //     setInputedFacebook(item.facebook);
-            //     setInputedHostel(item.hostel);
-            //     setInputedImages(item.images);
-            //     setInputedImage(item.image);
-            //     setInputedInstagam(item.instagram);
-            //     setInputedMilitary(item.military);
-            //     setInputedPhoneNumber(item.phoneNumber);
-            //     setInputedRegion(item.region);
-            //     setInputedStatus(item.status);
-            //     setInputedCode(item.universityCode);
-            //     setInputedDescription(item.universityDescription);
-            //     setInputedName(item.universityName);
-            //     setInputedWebsite(item.website);
-            //     setInputedLogo(item.logo);
-            // })
             setLastDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
             setLoading(false);
         };
+        const fetchSubmissions = async () => {
+            setLoading(true);
+            const q = query(collection(db, "submissions"), limit(8));
+            const querySnapshot = await getDocs(q);
+            const newDocs = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setSubmissions(newDocs);
+            setLastDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
+            setLoading(false);
+        };
+        fetchSubmissions();
         fetchDocs();
     }, []);
     useEffect(() => {
@@ -717,28 +711,13 @@ const Dashboard = () => {
                                         <DropdownMenuContent className="w-56">
                                             <DropdownMenuLabel>Available Classrooms</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-                                                <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-                                                <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-                                                <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
-                                            </DropdownMenuRadioGroup>
+                                            {docs.map((classroom: any) => classroom.students.some((student: any) => student === user.userId) && <Link href={`submissions/edit/${classroom.id}/${user.userId}`} key={classroom.id}><DropdownMenuItem>{classroom.title}</DropdownMenuItem></Link>)}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
-                                    {/* <div className="space-y-2">
-              <Label htmlFor="class">Classroom</Label>
-              <Select required onValueChange={(value: string) => setClassroom(value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select A Classroom" />
-                </SelectTrigger>
-                <SelectContent>
-                  {classrooms.map((classroom: any) => <SelectItem key={classroom} value={classroom.id}>{classroom.title}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div> */}
                                 </div>
                             </div>
-                            <div className="admin-panel-lists place-content-center">
-                                {docs.map((items: any) => (
+                            <div className="admin-panel-lists">
+                                {submissions.map((items: any) => (
                                     <div key={items.id}>
                                         <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
                                             <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
@@ -806,7 +785,7 @@ const Dashboard = () => {
                                                 <div className="flex flex-col flex-1 h-auto gap-3">
                                                     <Dialog>
                                                         <DialogTrigger asChild>
-                                                            <Button className="w-full" variant="outline">View</Button>
+                                                            <Button className="w-full" variant="outline">View Details</Button>
                                                         </DialogTrigger>
                                                         <DialogContent className="lg:min-w-[650px]">
                                                             <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
@@ -832,10 +811,15 @@ const Dashboard = () => {
                                                                     </div>
                                                                     <Separator />
                                                                     <div className="w-full h-auto rounded-md border p-3">
-                                                                        <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                            <span>Students</span>
+                                                                        <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3 border-b mb-3">
+                                                                            <span>Xml</span>
                                                                         </div>
-                                                                        {
+                                                                        {/* <pre className='w-auto p-3'>
+                                                                            <code className="w-auto select-all h-auto font-mono text-xs">{items.xml || "No Title is Provided."}</code>
+                                                                        </pre> */}
+                                                                        <span className="w-auto select-all text-start font-semibold outline rounded-md">{items.xml || "No Title is Provided."}</span>
+
+                                                                        {/* {
                                                                             items.students.map((student: any) => {
                                                                                 return users.map((user: any) => {
                                                                                     if (user.id === student) {
@@ -847,20 +831,19 @@ const Dashboard = () => {
                                                                                     }
                                                                                 });
                                                                             })
-                                                                        }
+                                                                        } */}
 
                                                                     </div>
                                                                 </div>
                                                             </ ScrollArea>
                                                         </DialogContent>
                                                     </Dialog>
-                                                    <Button onClick={async () => {
-                                                        await deleteDoc(doc(db, "classrooms", items.id));
-                                                        const newDocs = docs.filter((item) => item.id !== items.id);
-                                                        setDocs(newDocs);
-                                                    }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
-                                                        Delete
-                                                    </Button>
+                                                    <Link href={`submissions/presentation/${items.id}`}>
+                                                        <Button className="w-full bg-red-500 text-foreground hover:bg-red-600" variant="destructive">
+                                                            Run This Project
+                                                        </Button>
+                                                    </Link>
+
                                                 </div>
                                             </CardContent>
                                         </Card>
@@ -902,45 +885,6 @@ const Dashboard = () => {
                                                     </div>
                                                 </CardContent>
                                                 <CardFooter>
-                                                    {/* <Button onClick={async () => {
-
-                                                        createUserWithEmailAndPassword(auth, email, password)
-                                                            .then((userCredential) => {
-                                                                // Signed up 
-                                                                const user: any = userCredential.user;
-                                                                setUserId(user);
-                                                            })
-                                                            .catch((error: any) => {
-                                                                toast({
-                                                                    title: "Uh oh! Something went wrong with your SignUp.",
-                                                                    description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-                                                                        <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-                                                                        <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-                                                                    </div>),
-                                                                })
-                                                            })
-
-                                                        const Create = await addDoc(collection(db, "users"), {
-                                                            username: username,
-                                                            surname: "ManFromExistence",
-                                                            avatar: "https://avater.com",
-                                                            email: email,
-                                                            region: "Bangladesh",
-                                                            accountType: "student",
-                                                            youtube: "https://youtube.com",
-                                                            twitter: "https://twitter.com",
-                                                            instagram: "https://instagram.com",
-                                                            facebook: "https://facebook.com",
-                                                            linkdin: "https://linkdin.com",
-                                                            password: password,
-                                                            userId: userId;
-                                                        })
-                                                        toast({
-                                                            title: "Student Created Successfully!",
-                                                            description: `All students are public.`,
-                                                        });
-
-                                                    }} className="w-full">Create Student</Button> */}
                                                     <Button onClick={handleSignUp} className="w-full">Create Student</Button>
                                                 </CardFooter>
                                             </Card>

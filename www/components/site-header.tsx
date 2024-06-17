@@ -217,7 +217,7 @@ export function SiteHeader() {
                 <div className="flex items-center gap-2">
                   {docs && docs.map((user: any) => {
                     if (user.accountType === "student") {
-                      return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div className="w-full h-auto flex items-center justify-end">
+                      return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div key={user.id} className="w-full h-auto flex items-center justify-end">
                         <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                           <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
                             <div className="animate-ping bg-green-500 rounded-full h-4 w-4"></div>
@@ -228,7 +228,7 @@ export function SiteHeader() {
 
                     }
                     if (user.accountType === "teacher") {
-                      return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div className="w-full h-auto flex items-center justify-end">
+                      return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div key={user.id}  className="w-full h-auto flex items-center justify-end">
                         <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                           <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
                             <div className="animate-ping bg-green-500 rounded-full h-4 w-4"></div>

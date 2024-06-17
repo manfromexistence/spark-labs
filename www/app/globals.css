@@ -188,7 +188,7 @@
 .admin-panel-lists {
   display: grid;
   grid-gap: 2em;
-  grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 500px));
 }
 
 .footer-lists {

@@ -53,7 +53,7 @@ import {
   updateDoc,
 } from "firebase/firestore"
 import type { SVGProps } from "react";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
@@ -316,7 +316,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         </div>
       ),
     });
-    // router.push("/specialties");
+    router.push("/dashboard");
     setProjectStatus(true);
     setProjectId(Create.id);
   }

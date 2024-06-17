@@ -711,7 +711,7 @@ const Dashboard = () => {
                                         <DropdownMenuContent className="w-56">
                                             <DropdownMenuLabel>Available Classrooms</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
-                                            {docs.map((classroom: any) => classroom.students.some((student: any) => student === user.userId) && <Link href={`submissions/edit/${classroom.id}/${user.userId}`} key={classroom.id}><DropdownMenuItem>{classroom.title}</DropdownMenuItem></Link>)}
+                                            {docs.map((classroom: any) => classroom.students.some((student: any) => student === user.userId) && <Link href={`submissions/edit/${classroom.id}+${user.userId}`} key={classroom.id}><DropdownMenuItem>{classroom.title}</DropdownMenuItem></Link>)}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </div>

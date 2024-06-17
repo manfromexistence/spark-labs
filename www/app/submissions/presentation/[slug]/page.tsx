@@ -862,6 +862,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         {submissions.map((submission: any) => submission.id === params.slug && <Button onClick={() => {
           ide.loadSpriteScriptsXML(submission.xml);
           setRunProject(!runProject);
+          console.log(submission.xml)
         }} key={submission.id}>{submission.description}</Button>)}
       </div>}
 

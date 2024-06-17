@@ -53,7 +53,7 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, g
 import { useEffect, useRef } from "react";
 import { limit, query, onSnapshot } from "firebase/firestore";
 import { Chrome, CircleDollarSign, Code, Earth, Facebook, Flame, Hotel, Instagram, Mail, MapPinned, MessageCircleDashed, Phone, PocketKnife, Trash2, University } from "lucide-react"
-import { getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signOut } from "firebase/auth";
 const firebaseConfig = {
     apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
     authDomain: "snap-workspace.firebaseapp.com",
@@ -316,10 +316,12 @@ const Dashboard = () => {
     const [addNewStudentBar, setAddNewStudentBar] = React.useState(false);
     const [addNewClassroomBar, setAddNewClassroomBar] = React.useState(false);
     const [username, setUsername] = React.useState("");
+    const [email, setEmail] = React.useState("");
     const [title, setTitle] = React.useState("");
     const [thumbnail, setThumbnail] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [userId, setUserId] = React.useState("");
 
     const [api, setApi] = React.useState<CarouselApi>()
     const [current, setCurrent] = React.useState(0)
@@ -620,6 +622,82 @@ const Dashboard = () => {
         </main>;
     }
 
+    const handleSignUp = async () => {
+        try {
+          // 1. Attempt to create the user with Firebase Authentication
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          return signOut(auth);
+      
+          // 2. If successful, get the user's UID
+          const user = userCredential.user;
+          const userId = user.uid;
+      
+          // 3. Create the user document in Firestore
+          const Create = await addDoc(collection(db, "users"), {
+            username: "your_username", // Replace with your username input
+            surname: "ManFromExistence",
+            avatar: "https://avater.com",
+            email: email,
+            region: "Bangladesh",
+            accountType: "student",
+            youtube: "https://youtube.com",
+            twitter: "https://twitter.com",
+            instagram: "https://instagram.com",
+            facebook: "https://facebook.com",
+            linkdin: "https://linkdin.com",
+            password: password, // Store the password securely (see note below)
+            userId: userId,
+          });
+      
+          // 4. Show success toast
+          toast({
+            title: "Student Created Successfully!",
+            description: `All students are public.`,
+          });
+        } catch (error:any) {
+          // 5. Handle errors from Firebase Authentication
+          console.error("Error creating user:", error);
+          toast({
+            title: "Uh oh! Something went wrong with your SignUp.",
+            description: (
+              <div className="flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1">
+                <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+                <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+              </div>
+            ),
+          });
+        }
+      };
+
+    const EnhancedErrors = (input: any): string | null => {
+        switch (input) {
+            case "auth/email-already-in-use": return "Email in use.";
+            case "auth/invalid-email": return "Invalid email.";
+            case "auth/operation-not-allowed": return "Operation not allowed.";
+            case "auth/weak-password": return "Weak password.";
+            case "auth/user-disabled": return "User disabled.";
+            case "auth/user-not-found": return "User not found.";
+            case "auth/wrong-password": return "Wrong password.";
+            case "auth/too-many-requests": return "Too many requests.";
+            case "auth/network-request-failed": return "Network error.";
+            default: return "Signup error.";
+        }
+    };
+
+    const SuggestSolutions = (input: any): string | null => {
+        switch (input) {
+            case "auth/email-already-in-use": return "Try logging in or use a different email.";
+            case "auth/invalid-email": return "Check format.";
+            case "auth/operation-not-allowed": return "Contact support.";
+            case "auth/weak-password": return "Choose a stronger one.";
+            case "auth/user-disabled": return "Contact support.";
+            case "auth/user-not-found": return "Check email or create new account.";
+            case "auth/wrong-password": return "Try again.";
+            case "auth/too-many-requests": return "Wait and try again.";
+            case "auth/network-request-failed": return "Check internet connection.";
+            default: return "Try again later or contact support.";
+        }
+    };
     return (
 
         <>
@@ -901,17 +979,38 @@ const Dashboard = () => {
                                                         <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
                                                     </div>
                                                     <div className="space-y-2">
+                                                        <Label htmlFor="email">Email</Label>
+                                                        <Input onChange={(e: any) => setEmail(e.target.value)} id="email" placeholder="Enter email" />
+                                                    </div>
+                                                    <div className="space-y-2">
                                                         <Label htmlFor="password">Password</Label>
                                                         <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
                                                     </div>
                                                 </CardContent>
                                                 <CardFooter>
-                                                    <Button onClick={async () => {
+                                                    {/* <Button onClick={async () => {
+
+                                                        createUserWithEmailAndPassword(auth, email, password)
+                                                            .then((userCredential) => {
+                                                                // Signed up 
+                                                                const user: any = userCredential.user;
+                                                                setUserId(user);
+                                                            })
+                                                            .catch((error: any) => {
+                                                                toast({
+                                                                    title: "Uh oh! Something went wrong with your SignUp.",
+                                                                    description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+                                                                        <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+                                                                        <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+                                                                    </div>),
+                                                                })
+                                                            })
+
                                                         const Create = await addDoc(collection(db, "users"), {
                                                             username: username,
                                                             surname: "ManFromExistence",
                                                             avatar: "https://avater.com",
-                                                            email: "ajju40959@gmail.com",
+                                                            email: email,
                                                             region: "Bangladesh",
                                                             accountType: "student",
                                                             youtube: "https://youtube.com",
@@ -920,12 +1019,15 @@ const Dashboard = () => {
                                                             facebook: "https://facebook.com",
                                                             linkdin: "https://linkdin.com",
                                                             password: password,
+                                                            userId: userId;
                                                         })
                                                         toast({
                                                             title: "Student Created Successfully!",
                                                             description: `All students are public.`,
                                                         });
-                                                    }} className="w-full">Create Student</Button>
+
+                                                    }} className="w-full">Create Student</Button> */}
+                                                    <Button onClick={handleSignUp} className="w-full">Create Student</Button>
                                                 </CardFooter>
                                             </Card>
                                         </DialogContent>

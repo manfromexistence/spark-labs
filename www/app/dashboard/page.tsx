@@ -809,31 +809,13 @@ const Dashboard = () => {
                                                                         <p className="flex flex-row text-center">Time: </p>
                                                                         <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
                                                                     </div>
-                                                                    <Separator />
+                                                                    {/* <Separator />
                                                                     <div className="w-full h-auto rounded-md border p-3">
                                                                         <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3 border-b mb-3">
                                                                             <span>Xml</span>
                                                                         </div>
-                                                                        {/* <pre className='w-auto p-3'>
-                                                                            <code className="w-auto select-all h-auto font-mono text-xs">{items.xml || "No Title is Provided."}</code>
-                                                                        </pre> */}
                                                                         <span className="w-auto select-all text-start font-semibold outline rounded-md">{items.xml || "No Title is Provided."}</span>
-
-                                                                        {/* {
-                                                                            items.students.map((student: any) => {
-                                                                                return users.map((user: any) => {
-                                                                                    if (user.id === student) {
-                                                                                        return (
-                                                                                            <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
-                                                                                                <span>{user.username}</span>
-                                                                                            </div>
-                                                                                        );
-                                                                                    }
-                                                                                });
-                                                                            })
-                                                                        } */}
-
-                                                                    </div>
+                                                                    </div> */}
                                                                 </div>
                                                             </ ScrollArea>
                                                         </DialogContent>

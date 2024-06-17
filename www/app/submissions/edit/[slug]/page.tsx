@@ -221,8 +221,8 @@ const scripts = [
   "/snap/sha512.js",
   "/snap/FileSaver.min.js"
 ];
-declare var WorldMorph: any;
-declare var IDE_Morph: any;
+declare let WorldMorph: any;
+declare let IDE_Morph: any;
 // declare global {
 //   interface Window {
 //     IDE_Morph: any;
@@ -508,13 +508,15 @@ export default function Page({ params }: { params: { slug: string } }) {
 
               parser.parseString(ide.getSpriteScriptsXML(), (err: any, result: any) => {
                 if (err) {
-                  console.error(err);
+                  console.log(err);
                 } else {
                   XML_XML = builder.buildObject(result);
-                  XML_STRING = JSON.stringify(result);
+                  alert(JSON.stringify(result));
+                  setXml(JSON.stringify(result));
                 }
               });
-              setXml(XML_STRING);
+
+              
               classrooms.map((classroom: any) => {
                 if (classroom.id === regexClassroomId(params.slug, regex)) {
                   submitProject();

@@ -190,7 +190,8 @@ const Login: NextPage = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
-  const [userId, setUserid] = useState<any>("");
+  const [userId, setUserId] = useState<any>("");
+  const [userDocId, setUserDocId] = useState<any>("");
   const [surname, setSurname] = useState("");
   const [untScore, setUntScore] = useState<any>(0);
   const [docs, setDocs] = useState<any>([]);
@@ -368,9 +369,12 @@ const Login: NextPage = () => {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
+      setUserId(user);
+      userDocId(user.id);
+
       router.push('/dashboard')
     })
-    .catch((error) => {
+    .catch((error:any) => {
       toast({
         title: "Uh oh! Something went wrong with your SignIn.",
         description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
@@ -379,11 +383,17 @@ const Login: NextPage = () => {
         </div>),
       })
     }) : toast({
-      title: "We got your request Student",
+      title: "We got your request Student...",
       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
         <span className="text-muted-foreground">{`Till then stay tunded!`}</span>
       </div>),
     }));
+
+
+    const updateRef = doc(db, "users", userDocId);
+    const Update = await updateDoc(updateRef, {
+      usreId: userId.id,
+    })
   };
 
 
@@ -408,7 +418,7 @@ const Login: NextPage = () => {
           </div>
           <div className="grid gap-4">
             <div className="grid w-full gap-2">
-              <Label className="text-[#804DFE]" htmlFor="email">
+              <Label htmlFor="email">
                 Email
               </Label>
               <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
@@ -416,7 +426,7 @@ const Login: NextPage = () => {
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label className="text-[#804DFE]" htmlFor="password">
+                <Label htmlFor="password">
                   Password
                 </Label>
               </div>
@@ -481,7 +491,7 @@ const Login: NextPage = () => {
               </div>
               <div className="grid gap-4 px-3">
                 <div className="grid w-full gap-2">
-                  <Label className="text-[#804DFE]" htmlFor="email">
+                  <Label htmlFor="email">
                     Email
                   </Label>
                   <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
@@ -489,7 +499,7 @@ const Login: NextPage = () => {
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
-                    <Label className="text-[#804DFE]" htmlFor="password">
+                    <Label htmlFor="password">
                       Password
                     </Label>
                   </div>

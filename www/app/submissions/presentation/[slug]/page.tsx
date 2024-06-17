@@ -868,7 +868,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       {runProject && <div className="flex-center fixed top-0 left-0 h-full w-full rounded-md border bg-background">
         {submissions.map((submission: any) => submission.id === params.slug && <Button onClick={() => {
           console.log(builder.buildObject(JSON.parse(submission.xml)));
-          ide.loadProjectXML(builder.buildObject(JSON.parse(submission.xml)))
+          ide.loadSpriteScriptsXML(builder.buildObject(JSON.parse(submission.xml)))
           // ide.loadSpriteScriptsXML();
           setRunProject(!runProject);
         }} key={submission.id}>{submission.description}</Button>)}

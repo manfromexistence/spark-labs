@@ -618,51 +618,89 @@ const Dashboard = () => {
         </main>;
     }
 
+    function generateRandomEmail(): string {
+        const chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
+        const tlds = ['com', 'net', 'org', 'edu', 'gov'];
+
+        const randomString = (length: number): string => {
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        };
+
+        const localPart = randomString(24);
+        return `${localPart}@gmail.com`;
+    }
+
     const handleSignUp = async () => {
-        try {
-            // 1. Attempt to create the user with Firebase Authentication
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            return signOut(auth);
+        const Create = await addDoc(collection(db, "users"), {
+            username: username, // Replace with your username input
+            surname: "ManFromExistence",
+            avatar: "https://avater.com",
+            email: generateRandomEmail(),
+            region: "Bangladesh",
+            accountType: "student",
+            youtube: "https://youtube.com",
+            twitter: "https://twitter.com",
+            instagram: "https://instagram.com",
+            facebook: "https://facebook.com",
+            linkdin: "https://linkdin.com",
+            password: password, // Store the password securely (see note below)
+            userId: userId,
+        });
 
-            // 2. If successful, get the user's UID
-            const user = userCredential.user;
-            const userId = user.uid;
+        // 4. Show success toast
+        toast({
+            title: "Student Created Successfully!",
+            description: `All students are public.`,
+        });
 
-            // 3. Create the user document in Firestore
-            const Create = await addDoc(collection(db, "users"), {
-                username: "your_username", // Replace with your username input
-                surname: "ManFromExistence",
-                avatar: "https://avater.com",
-                email: email,
-                region: "Bangladesh",
-                accountType: "student",
-                youtube: "https://youtube.com",
-                twitter: "https://twitter.com",
-                instagram: "https://instagram.com",
-                facebook: "https://facebook.com",
-                linkdin: "https://linkdin.com",
-                password: password, // Store the password securely (see note below)
-                userId: userId,
-            });
+        // try {
+        //     // 1. Attempt to create the user with Firebase Authentication
+        //     // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        //     // return signOut(auth);
 
-            // 4. Show success toast
-            toast({
-                title: "Student Created Successfully!",
-                description: `All students are public.`,
-            });
-        } catch (error: any) {
-            // 5. Handle errors from Firebase Authentication
-            console.error("Error creating user:", error);
-            toast({
-                title: "Uh oh! Something went wrong with your SignUp.",
-                description: (
-                    <div className="flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1">
-                        <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-                        <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-                    </div>
-                ),
-            });
-        }
+        //     // // 2. If successful, get the user's UID
+        //     // const user = userCredential.user;
+        //     // const userId = user.uid;
+
+        //     // 3. Create the user document in Firestore
+        //     const Create = await addDoc(collection(db, "users"), {
+        //         username: username, // Replace with your username input
+        //         surname: "ManFromExistence",
+        //         avatar: "https://avater.com",
+        //         email: generateRandomEmail(),
+        //         region: "Bangladesh",
+        //         accountType: "student",
+        //         youtube: "https://youtube.com",
+        //         twitter: "https://twitter.com",
+        //         instagram: "https://instagram.com",
+        //         facebook: "https://facebook.com",
+        //         linkdin: "https://linkdin.com",
+        //         password: password, // Store the password securely (see note below)
+        //         userId: userId,
+        //     });
+
+        //     // 4. Show success toast
+        //     toast({
+        //         title: "Student Created Successfully!",
+        //         description: `All students are public.`,
+        //     });
+        // } catch (error: any) {
+        //     // 5. Handle errors from Firebase Authentication
+        //     console.error("Error creating user:", error);
+        //     toast({
+        //         title: "Uh oh! Something went wrong with your SignUp.",
+        //         description: (
+        //             <div className="flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1">
+        //                 <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+        //                 <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+        //             </div>
+        //         ),
+        //     });
+        // }
     };
 
     const EnhancedErrors = (input: any): string | null => {
@@ -857,17 +895,35 @@ const Dashboard = () => {
                                                         <Label htmlFor="username">Username</Label>
                                                         <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
                                                     </div>
-                                                    <div className="space-y-2">
+                                                    {/* <div className="space-y-2">
                                                         <Label htmlFor="email">Email</Label>
                                                         <Input onChange={(e: any) => setEmail(e.target.value)} id="email" placeholder="Enter email" />
-                                                    </div>
+                                                    </div> */}
                                                     <div className="space-y-2">
                                                         <Label htmlFor="password">Password</Label>
                                                         <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
                                                     </div>
                                                 </CardContent>
                                                 <CardFooter>
-                                                    <Button onClick={handleSignUp} className="w-full">Create Student</Button>
+                                                    {/* <Button onClick={() => {
+                                                        users.map((user:any) => user.username === username ? toast({
+                                                            title: "Please Choose A Different Username",
+                                                            description: `There is already a student with this username`,
+                                                        }) : handleSignUp)
+                                                    }} className="w-full">Create Student</Button> */}
+                                                    <Button onClick={() => {
+                                                        const userExists = users.some((user: any) => user.username === username);
+
+                                                        if (userExists) {
+                                                            toast({
+                                                                title: "Please Choose A Different Username",
+                                                                description: `There is already a student with this username`,
+                                                            });
+                                                        } else {
+                                                            handleSignUp();
+                                                        }
+                                                    }} className="w-full">Create Student</Button>
+
                                                 </CardFooter>
                                             </Card>
                                         </DialogContent>
@@ -942,7 +998,7 @@ const Dashboard = () => {
                                     </Dialog>
                                 </div>
                             </div>
-                            <div className="admin-panel-lists place-content-center">
+                            <div className="admin-panel-lists">
                                 {docs.map((items: any) => (
                                     <div key={items.id}>
                                         <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">

@@ -370,7 +370,7 @@ const Login: NextPage = () => {
       // Signed in 
       const user = userCredential.user;
       setUserId(user);
-      userDocId(user.id);
+      userDocId(user.uid);
 
       router.push('/dashboard')
     })

@@ -68,7 +68,10 @@
                 var frd = new FileReader();
                 if (!load.files[0]) { return; }
                 frd.onloadend = (e) => {
-                    ide.loadSpriteScriptsXML(e.target.result);
+                    // ide.loadSpriteScriptsXML(e.target.result);
+                    ide.loadSpriteScriptsXML(`
+<scriptsonly app="Spark Labs Workspace, https://snap.berkeley.edu" version="2"><script x="32" y="25.333333333333343"><block s="forward"><l>10</l></block></script><script x="10" y="67.33333333333334"><block s="turn"><l>15</l></block></script><script x="34" y="114.33333333333334"><block s="setHeading"><l>180</l></block></script></scriptsonly>
+                    `);
                     console.log(e.target.result);
                 }
                 frd.readAsText(load.files[0]);

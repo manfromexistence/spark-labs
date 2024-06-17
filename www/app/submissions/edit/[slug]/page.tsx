@@ -4,6 +4,14 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
+// Import the xml2js library
+import * as xml2js from 'xml2js';
+
+// Create an instance of the xml2js parser
+const parser = new xml2js.Parser();
+const builder = new xml2js.Builder();
+let XML_STRING: any;
+let XML_XML: any;
 import "./style.css";
 import Script from 'next/script';
 import IntroText from "@/components/landing/intro-text";
@@ -497,7 +505,16 @@ export default function Page({ params }: { params: { slug: string } }) {
               Submit Project
             </Button> */}
             <Button ref={buttonRef} onClick={() => {
-              setXml(ide.getSpriteScriptsXML());
+
+              parser.parseString(ide.getSpriteScriptsXML(), (err: any, result: any) => {
+                if (err) {
+                  console.error(err);
+                } else {
+                  XML_XML = builder.buildObject(result);
+                  XML_STRING = JSON.stringify(result);
+                }
+              });
+              setXml(XML_STRING);
               classrooms.map((classroom: any) => {
                 if (classroom.id === regexClassroomId(params.slug, regex)) {
                   submitProject();

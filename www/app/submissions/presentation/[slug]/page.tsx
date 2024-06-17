@@ -4,6 +4,13 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
+import * as xml2js from 'xml2js';
+
+// Create an instance of the xml2js parser
+const parser = new xml2js.Parser();
+const builder = new xml2js.Builder();
+let XML_STRING: any;
+let XML_XML: any;
 import "./style.css";
 import Script from 'next/script';
 import IntroText from "@/components/landing/intro-text";
@@ -860,7 +867,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
       {runProject && <div className="flex-center fixed top-0 left-0 h-full w-full rounded-md border bg-background">
         {submissions.map((submission: any) => submission.id === params.slug && <Button onClick={() => {
-          ide.loadSpriteScriptsXML(submission.xml);
+          ide.loadSpriteScriptsXML(builder.buildObject(JSON.parse(submission.xml)));
           setRunProject(!runProject);
           console.log(submission.xml)
         }} key={submission.id}>{submission.description}</Button>)}

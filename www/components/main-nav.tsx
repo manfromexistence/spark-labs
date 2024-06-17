@@ -67,6 +67,15 @@ export function MainNav() {
             Dashboard
           </Link>
           <Link
+            href="/profile"
+            className={cn(
+              "transition-colors hover:text-primary",
+              pathname === "/profile" ? "text-foreground" : "text-foreground/60"
+            )}
+          >
+            Profile
+          </Link>
+          <Link
             href="/classrooms"
             className={cn(
               "transition-colors hover:text-primary",

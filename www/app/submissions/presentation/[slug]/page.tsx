@@ -269,6 +269,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [xml, setXml] = useState("");
   const [time, setTime] = useState(new Date());
 
+  const [runProject, setRunProject] = useState<any>(true);
   const [projectStatus, setProjectStatus] = useState<any>(false);
   const [projectId, setProjectId] = useState<any>("");
 
@@ -417,8 +418,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     if (worldRef.current) {
 
       const world = new WorldMorph(worldRef.current);
-
-
       const ideInstance = new IDE_Morph({
         mode: "presentation",
         hideControls: true,
@@ -428,17 +427,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       });
 
       // submissions.map((submission:any) => submission.id === regexClassroomId(params.slug, regex) && ideInstance.loadSpriteScriptsXML(submission.xml))
-      const submission = submissions.find((submission: any) => submission.id === params.slug);
-      if (submission) {
-          ideInstance.loadSpriteScriptsXML(submission.xml);
-          console.log(submission.xml);
-      }else{
-        console.log(submission.id);
-        console.log(submission.xml);
-        console.log(submission.params.slug);
-        console.log("Sumon")
-      }
-      
+
+
 
       ideInstance.openIn(world);
       setIde(ideInstance);
@@ -457,6 +447,20 @@ export default function Page({ params }: { params: { slug: string } }) {
       requestAnimationFrame(loop);
     }
   }, []);
+
+
+  // const submission = submissions.find((submission: any) => submission.id === params.slug);
+  // if (submission) {
+  //   ide.loadSpriteScriptsXML(submission.xml);
+  //   console.log(submission.xml);
+  // } else {
+  //   // console.log(submission.id);
+  //   // console.log(submission.xml);
+  //   alert(params.slug);
+  //   console.log("Sumon")
+  // }
+
+  // submissions.map((submission: any) => console.log(submission.id))
 
   return (
     <>
@@ -853,6 +857,14 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </div>
+
+      {runProject && <div className="flex-center fixed top-0 left-0 h-full w-full rounded-md border bg-background">
+        {submissions.map((submission: any) => submission.id === params.slug && <Button onClick={() => {
+          ide.loadSpriteScriptsXML(submission.xml);
+          setRunProject(!runProject);
+        }} key={submission.id}>{submission.description}</Button>)}
+      </div>}
+
       <Dock>
         {/* <DockIcon onClick={() => {
           setSubmitBar(!submitBar);

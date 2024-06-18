@@ -293,6 +293,9 @@ const invoices = [
 ]
 
 const Dashboard = () => {
+    const [addStudentsMenu, setAddStudentsMenu] = useState(false);
+    const [addClassroomMenu, setAddClassroomMenu] = useState(false);
+
     const [position, setPosition] = React.useState("bottom")
     const [docs, setDocs] = useState<any[]>([]);
     const [submissions, setSubmissions] = useState<any[]>([]);
@@ -637,24 +640,24 @@ const Dashboard = () => {
     const handleSignUp = async () => {
         const Create = await addDoc(collection(db, "users"), {
             username: username, // Replace with your username input
-            surname: "ManFromExistence",
-            avatar: "https://avater.com",
+            password: password,
             email: generateRandomEmail(),
-            region: "Bangladesh",
-            accountType: "student",
-            youtube: "https://youtube.com",
-            twitter: "https://twitter.com",
-            instagram: "https://instagram.com",
-            facebook: "https://facebook.com",
-            linkdin: "https://linkdin.com",
-            password: password, // Store the password securely (see note below)
-            userId: userId,
+            userId: "",
+            // region: "Bangladesh",
+            // accountType: "student",
+            // youtube: "https://youtube.com",
+            // twitter: "https://twitter.com",
+            // instagram: "https://instagram.com",
+            // facebook: "https://facebook.com",
+            // linkdin: "https://linkdin.com",
+            // surname: "ManFromExistence",
+            // avatar: "https://avater.com",
         });
 
         // 4. Show success toast
         toast({
-            title: "Student Created Successfully!",
-            description: `All students are public.`,
+            title: "Success!",
+            description: `Student created from username and password.`,
         });
 
         // try {
@@ -880,59 +883,83 @@ const Dashboard = () => {
                             <div className="flex items-center justify-between mb-6">
                                 <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Teacher Workshop!</span>
                                 <div className="flex-1 flex items-end justify-end gap-3">
-                                    <Dialog>
+                                    <Dialog open={addStudentsMenu}>
                                         <DialogTrigger asChild>
                                             <Button variant="outline">Add New Student</Button>
                                         </DialogTrigger>
-                                        <DialogContent className="sm:max-w-[425px]">
-                                            <Card className="w-full max-w-md border-0">
-                                                <CardHeader>
-                                                    <CardTitle>Create New Student</CardTitle>
-                                                    <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
-                                                </CardHeader>
-                                                <CardContent className="space-y-4">
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="username">Username</Label>
-                                                        <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
-                                                    </div>
-                                                    {/* <div className="space-y-2">
-                                                        <Label htmlFor="email">Email</Label>
-                                                        <Input onChange={(e: any) => setEmail(e.target.value)} id="email" placeholder="Enter email" />
-                                                    </div> */}
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="password">Password</Label>
-                                                        <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
-                                                    </div>
-                                                </CardContent>
-                                                <CardFooter>
-                                                    {/* <Button onClick={() => {
-                                                        users.map((user:any) => user.username === username ? toast({
-                                                            title: "Please Choose A Different Username",
-                                                            description: `There is already a student with this username`,
-                                                        }) : handleSignUp)
-                                                    }} className="w-full">Create Student</Button> */}
-                                                    <Button onClick={() => {
-                                                        const userExists = users.some((user: any) => user.username === username);
+                                        <DialogContent className="min-w-[450px] max-w-[90%] lg:w-[650px]">
+                                            <Tabs defaultValue="manually" className="w-[400px]">
+                                                <TabsList className="grid w-full grid-cols-2">
+                                                    <TabsTrigger value="manually">Manually</TabsTrigger>
+                                                    <TabsTrigger value="automatic">Automatic</TabsTrigger>
+                                                </TabsList>
+                                                <TabsContent value="manually">
+                                                    <Card className="w-full max-w-md border-0">
+                                                        <CardHeader>
+                                                            <CardTitle>Create New Student</CardTitle>
+                                                            <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
+                                                        </CardHeader>
+                                                        <CardContent className="space-y-4">
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor="username">Username</Label>
+                                                                <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
+                                                            </div>
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor="password">Password</Label>
+                                                                <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
+                                                            </div>
+                                                        </CardContent>
+                                                        <CardFooter>
+                                                            <Button onClick={() => {
+                                                                const userExists = users.some((user: any) => user.username === username);
+                                                                if (userExists) {
+                                                                    toast({
+                                                                        title: "Please Choose a different Username",
+                                                                        description: `There is already a student with this username`,
+                                                                    });
+                                                                } else {
+                                                                    handleSignUp();
+                                                                }
+                                                                setAddStudentsMenu(!addStudentsMenu);
 
-                                                        if (userExists) {
-                                                            toast({
-                                                                title: "Please Choose A Different Username",
-                                                                description: `There is already a student with this username`,
-                                                            });
-                                                        } else {
-                                                            handleSignUp();
-                                                        }
-                                                    }} className="w-full">Create Student</Button>
+                                                            }} className="w-full">Create Student</Button>
+                                                        </CardFooter>
+                                                    </Card>
+                                                </TabsContent>
+                                                <TabsContent value="automatic">
+                                                    <Card>
+                                                        <CardHeader>
+                                                            <CardTitle>From CSV File</CardTitle>
+                                                            <CardDescription>
+                                                                automatically create many students from a csv file(username and password).
+                                                            </CardDescription>
+                                                        </CardHeader>
+                                                        <CardContent className="space-y-2">
+                                                            <div className="space-y-1">
+                                                                <Label htmlFor="current">Choose</Label>
+                                                                <Input id="csv" type="file" accept='csv' />
+                                                            </div>
+                                                        </CardContent>
+                                                        <CardFooter>
+                                                            <Button onClick={() => {
+                                                                setAddStudentsMenu(!addStudentsMenu);
+                                                                toast({
+                                                                    title: "Success!",
+                                                                    description: `Students created from csv file.`,
+                                                                });
+                                                            }}>Create Students</Button>
+                                                        </CardFooter>
+                                                    </Card>
+                                                </TabsContent>
+                                            </Tabs>
 
-                                                </CardFooter>
-                                            </Card>
                                         </DialogContent>
                                     </Dialog>
-                                    <Dialog>
+                                    <Dialog open={addClassroomMenu}>
                                         <DialogTrigger asChild>
                                             <Button variant="outline">Add New Classroom</Button>
                                         </DialogTrigger>
-                                        <DialogContent className="sm:max-w-[425px]">
+                                        <DialogContent className="min-w-[450px] max-w-[90%] lg:w-[650px]">
                                             <ScrollArea className="h-[450px] w-full rounded-md border p-1">
                                                 <Card className="w-full max-w-md border-0">
                                                     <CardHeader>
@@ -981,7 +1008,7 @@ const Dashboard = () => {
                                                 </Card>
                                             </ScrollArea>
                                             <Button onClick={async () => {
-                                                const Create = await addDoc(collection(db, "classrooms"), {
+                                                await addDoc(collection(db, "classrooms"), {
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
@@ -992,6 +1019,14 @@ const Dashboard = () => {
                                                     title: "Classroom Created Successfully!",
                                                     description: `All classrooms are public.`,
                                                 });
+                                                setAddClassroomMenu(!addClassroomMenu);
+                                                setDocs(prevDocs => [...prevDocs, {
+                                                    title: title,
+                                                    thumbnail: thumbnail,
+                                                    description: description,
+                                                    students: students.map((student) => student.id),
+                                                    time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
+                                                }]);
                                             }} className="w-full">Create Classroom</Button>
 
                                         </DialogContent>
@@ -1092,7 +1127,7 @@ const Dashboard = () => {
                                                                         <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
                                                                     </div>
                                                                     <Separator />
-                                                                    <div className="w-full h-auto rounded-md border p-3">
+                                                                    {/* <div className="w-full h-auto rounded-md border p-3">
                                                                         <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
                                                                             <span>Students</span>
                                                                         </div>
@@ -1109,7 +1144,23 @@ const Dashboard = () => {
                                                                                 });
                                                                             })
                                                                         }
-
+                                                                    </div> */}
+                                                                    <div className="w-full h-auto rounded-md border p-3">
+                                                                        <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                                            <span>Username</span>
+                                                                            <span>Actions</span>
+                                                                        </div>
+                                                                        {
+                                                                            items.students.map((student: any) => (
+                                                                                <div key={student} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                    <span>{student}</span>
+                                                                                    <Trash2 onClick={() => {
+                                                                                        const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                                        setStudents(updatedStudents);
+                                                                                    }} className="h-4 w-4" />
+                                                                                </div>
+                                                                            ))
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </ ScrollArea>

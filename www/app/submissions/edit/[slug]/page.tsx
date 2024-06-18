@@ -507,17 +507,17 @@ export default function Page({ params }: { params: { slug: string } }) {
             </Button> */}
             <Button ref={buttonRef} onClick={() => {
 
-              parser.parseString(ide.getSpriteScriptsXML(), (err: any, result: any) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  XML_XML = builder.buildObject(result);
-                  // alert(JSON.stringify(result));
-                  setXml(JSON.stringify(result));
-                }
-              });
+              // parser.parseString(ide.getSpriteScriptsXML(), (err: any, result: any) => {
+              //   if (err) {
+              //     console.log(err);
+              //   } else {
+              //     XML_XML = builder.buildObject(result);
+              //     // alert(JSON.stringify(result));
+              //     setXml(JSON.stringify(result));
+              //   }
+              // });
 
-
+              setXml(`${ide.getSpriteScriptsXML()}`);
               classrooms.map((classroom: any) => {
                 if (classroom.id === regexClassroomId(params.slug, regex)) {
                   submitProject();

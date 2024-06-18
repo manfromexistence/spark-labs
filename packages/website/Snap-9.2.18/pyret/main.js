@@ -34,8 +34,8 @@ window.onload = function () {
         var frd = new FileReader();
         if (!load.files[0]) { return; }
         frd.onloadend = (e) => {
-            ide.loadSpriteScriptsXML(xmlString);
-            console.log(xmlString);
+            ide.loadSpriteScriptsXML(ide.getSpriteScriptsXML());
+            console.log(ide.getSpriteScriptsXML());
 
         }
         frd.readAsText(load.files[0]);

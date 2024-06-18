@@ -12,9 +12,14 @@ import { Checkbox } from "@/registry/default/ui/checkbox"
 import { Input } from "@/registry/default/ui/input"
 import { Label } from "@/registry/default/ui/label"
 import React, { useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { useAuth } from "@clerk/nextjs";
+import { useToast } from "@/registry/default/ui/use-toast"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { X } from "lucide-react"
+import { set } from 'date-fns';
+import { useRouter } from 'next/navigation'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import {
     addDoc,
@@ -31,13 +36,6 @@ import {
     updateDoc,
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
-import { useToast } from "@/registry/default/ui/use-toast"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
-import { set } from 'date-fns';
-import { useRouter } from 'next/navigation'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 const firebaseConfig = {
     apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
     authDomain: "snap-workspace.firebaseapp.com",

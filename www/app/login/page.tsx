@@ -208,6 +208,7 @@ const Login: NextPage = () => {
   const [userDetailsDialog, setUserDetailsDialog] = useState(false);
   const [studentUsername, setStudentUsername] = useState("");
   const [studentPassword, setStudentPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
@@ -321,35 +322,56 @@ const Login: NextPage = () => {
 
   const handleSignIn = async (e: any) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        docs.map((users: any) => {
-          if (users.acccountType === "student") {
-            user.uid === users.userId && toast({
-              title: "Student logged in successfully!",
-              description: `Continue Using Spark Labs Lovely User ${users.surname}`,
-            })
-          }
-          if (users.accountType === "teacher") {
-            user.uid === users.userId && toast({
-              title: "Teacher signed in successfully!",
-              description: `Continue Using Spark Labs ${users.surname}`,
-            })
-          }
-        })
-        router.push('/dashboard')
-      })
-      .catch((error) => {
-        toast({
-          title: "Uh oh! Something went wrong with your SignIn.",
-          description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-            <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-            <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-          </div>),
-        })
+    const USER_DETAILS = docs.filter((user: any) => user.username === username);
+    if (USER_DETAILS.length > 0) {
+      toast({
+          title: "Thanks for signing in!",
+          description: `${USER_DETAILS}`,
       });
+  } else {
+      toast({
+        title: "There is no user with this Username!",
+        description: `${username} is not available. Choose a different Username`,
+    });
+  }
+
+
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => {
+    //     // Signed in 
+    //     const user = userCredential.user;
+    //     toast({
+    //       title: "User signed in successfully!",
+    //       description: `Continue Using Spark Labs.`,
+    //     })
+    //     // docs.map((users: any) => {
+    //     //   if (users.acccountType === "student") {
+    //     //     user.uid === users.userId && toast({
+    //     //       title: "Student logged in successfully!",
+    //     //       description: `Continue Using Spark Labs Lovely User ${users.username}`,
+    //     //     })
+    //     //   }
+    //     //   if (users.accountType === "teacher") {
+    //     //     user.uid === users.userId && toast({
+    //     //       title: "Teacher signed in successfully!",
+    //     //       description: `Continue Using Spark Labs ${users.username}`,
+    //     //     })
+    //     //   }
+    //     // })
+    //     router.push('/dashboard')
+    //   })
+    //   .catch((error) => {
+    //     toast({
+    //       title: "Uh oh! Something went wrong with your SignIn.",
+    //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+    //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+    //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+    //       </div>),
+    //     })
+    //   });
+
+
+
   };
   // const handleStudentSignIn = async (e: any) => {
   //   e.preventDefault();
@@ -538,7 +560,7 @@ const Login: NextPage = () => {
         </div> */}
 
 
-        <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
+        {/* <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
           <div className="grid min-w-full gap-2 text-center">
             <h1 className="text-3xl font-bold">Welcome back Teacher!</h1>
             <p className="text-balance text-muted-foreground">
@@ -604,8 +626,8 @@ const Login: NextPage = () => {
               Register
             </Link>
           </div>
-        </div>
-        {/* <Tabs defaultValue="student" className="w-full">
+        </div> */}
+        <Tabs defaultValue="teacher" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="teacher">Teacher</TabsTrigger>
             <TabsTrigger value="student">Student</TabsTrigger>
@@ -620,10 +642,10 @@ const Login: NextPage = () => {
               </div>
               <div className="grid gap-4 px-3">
                 <div className="grid w-full gap-2">
-                  <Label htmlFor="email">
-                    Email
+                  <Label htmlFor="username">
+                    Username
                   </Label>
-                  <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+                  <Input value={username} id="username" type="text" placeholder="Emon" required onChange={(e) => setUsername(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
 
                 </div>
                 <div className="grid gap-2">
@@ -663,7 +685,7 @@ const Login: NextPage = () => {
                 </Link>
                 <Button
                   onClick={handleSignIn}
-                  className="w-full bg-[#804DFE] text-white hover:bg-secondary"
+                  className="w-full"
                 >
                   Login
                 </Button>
@@ -724,7 +746,7 @@ const Login: NextPage = () => {
               </CardFooter>
             </Card>
           </TabsContent>
-        </Tabs> */}
+        </Tabs>
       </div>
     </div>
   )

@@ -11,7 +11,7 @@ import { Button, buttonVariants } from "@/registry/default/ui/button"
 import { Checkbox } from "@/registry/default/ui/checkbox"
 import { Input } from "@/registry/default/ui/input"
 import { Label } from "@/registry/default/ui/label"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useToast } from "@/registry/default/ui/use-toast"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
@@ -171,13 +171,14 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 
 const Register: NextPage = () => {
+    const [users, setUsers] = useState<any>([]);
     const { toast } = useToast()
     const router = useRouter()
     const [userDetailsDialog, setUserDetailsDialog] = useState(false);
     const [accountType, setAccountType] = useState("teacher");
     const [email, setEmail] = useState("");
     const [avatar, setAvatar] = useState("");
-    const [userName, setUserName] = useState("");
+    const [username, setUsername] = useState("");
     const [youtube, setYoutube] = useState("");
     const [twitter, setTwitter] = useState("");
     const [instagam, setInstagam] = useState("");
@@ -189,6 +190,27 @@ const Register: NextPage = () => {
     const [region, setRegion] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [isVisiblePassword, setIsVisiblePassword] = React.useState(true)
+    const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
+        React.useState(true)
+    const togglePasswordVisibility = () =>
+        setIsVisiblePassword(!isVisiblePassword)
+    const toggleConfirmPasswordVisibility = () =>
+        setIsVisibleConfirmPassword(!isVisibleConfirmPassword)
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const q = query(collection(db, "users"));
+            const querySnapshot = await getDocs(q);
+            const newDocs = querySnapshot.docs.map((doc: { id: any; data: () => any }) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setUsers(newDocs);
+        };
+        fetchUsers();
+    }, []);
 
     const EnhancedErrors = (input: any): string | null => {
         switch (input) {
@@ -220,83 +242,53 @@ const Register: NextPage = () => {
         }
     };
     const handleSignUp = async (event: { preventDefault: () => void }) => {
+        // event.preventDefault();
+        // const USER_DETAILS = users.filter((user: any) => user.username === username);
+        // USER_DETAILS ? toast({
+        //     title: "There is already a user with this Username!",
+        //     description: `${username} is not a available. Choose a different Username`,
+        // }) : confirmPassword === password && ?
+        //     createUserWithEmailAndPassword(auth, email, password)
+        //         .then((userCredential: { user: any }) => {
+        //             // Signed up 
+        //             const user = userCredential.user;
+        //             setUserid(user)
+        //             console.log("Register");
+        //             setUserDetailsDialog(true);
+        //         })
+        //         .catch((error: { code: any }) => {
+        //             setUserid("Error");
+        //             console.log("Error");
+
+        //             toast({
+        //                 title: "Uh oh! Something went wrong with your SignUp.",
+        //                 description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+        //                     <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+        //                     <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+        //                 </div>),
+        //             })
+        //         })
+        //     : toast({
+        //         title: "Password and Confirm Password donot match!",
+        //         description: `Please match them Password${password} & Confirm Passwrod:${confirmPassword}`,
+        //     })
         event.preventDefault();
-        // confirmPassword === password ?
-        // setUserDetailsDialog(true)
-        // // createUserWithEmailAndPassword(auth, email, password)
-        // //   .then((userCredential) => {
-        // //     // Signed up 
-        // //     const user = userCredential.user;
-        // //     setUserid(user)
-        // //     console.log("Register");
-
-        // //     const Create = await addDoc(collection(db, "users"), {
-        // //       accountType: "Admin",
-        // //       email: email,
-        // //       name: name,
-        // //       adminName: userName,
-        // //       region: region,
-        // //       surname: surname,
-        // //       adminId: userId.uid
-        // //     });
-
-        // //     console.log("Document written with ID: ", Create.id);
-
-        // //     toast({
-        // //       title: "Admin signed up successfully!",
-        // //       description: `Continue Using Ustudy ${userId.uid}`,
-        // //     })
-
-        // //     setUserDetailsDialog(false);
-        // //     router.push('/login')
-
-        // //   })
-        // //   .catch((error) => {
-        // //     setUserid("Error");
-        // //     console.log("Error");
-
-        // //     toast({
-        // //       title: "Uh oh! Something went wrong with your SignUp.",
-        // //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-        // //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-        // //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-        // //       </div>),
-        // //     })
-        // //   })
-        // : toast({
-        //   title: "Password and Confirm Password donot match!",
-        //   description: `Please match them Password${password} & Confirm Passwrod:${confirmPassword}`,
-        // })
-        confirmPassword === password ?
+        const USER_DETAILS = users.filter((user: any) => user.username === username);
+        if (USER_DETAILS.length > 0) {
+            setUserDetailsDialog(false);
+            toast({
+                title: "There is already a user with this Username!",
+                description: `${username} is not available. Choose a different Username`,
+            });
+        } else if (confirmPassword === password) {
             createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then((userCredential: { user: any }) => {
                     // Signed up 
                     const user = userCredential.user;
                     setUserid(user)
-                    console.log("Register");
-                    setUserDetailsDialog(true)
-                    // const Create = await addDoc(collection(db, "users"), {
-                    //   accountType: "Admin",
-                    //   email: email,
-                    //   name: name,
-                    //   adminName: userName,
-                    //   region: region,
-                    //   surname: surname,
-                    //   adminId: userId.uid
-                    // });
-
-                    // console.log("Document written with ID: ", Create.id);
-
-                    // toast({
-                    //   title: "Admin signed up successfully!",
-                    //   description: `Continue Using Ustudy ${userId.uid}`,
-                    // })
-
-                    // setUserDetailsDialog(false);
-                    // router.push('/login')
-
+                    setUserDetailsDialog(true);
                 })
-                .catch((error) => {
+                .catch((error: { code: any }) => {
                     setUserid("Error");
                     console.log("Error");
 
@@ -307,95 +299,50 @@ const Register: NextPage = () => {
                             <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
                         </div>),
                     })
-                })
-            : toast({
-                title: "Password and Confirm Password donot match!",
-                description: `Please match them Password${password} & Confirm Passwrod:${confirmPassword}`,
-            })
-
-
+                });
+        } else {
+            setUserDetailsDialog(false);
+            toast({
+                title: "Password and Confirm Password do not match!",
+                description: `Please match them Password${password} & Confirm Password:${confirmPassword}`,
+            });
+        }
 
     };
     const userDetails = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-
-        // accountType === "student" ? await addDoc(collection(db, "students"), {
-        //     userName: userName,
-        //     surname: surname,
-        //     avater: avater,
-        //     email: email,
-        //     region: region,
-        //     userId: userId.uid
-        // }) : await addDoc(collection(db, "teachers"), {
-        //     userName: userName,
-        //     surname: surname,
-        //     avater: avater,
-        //     email: email,
-        //     region: region,
-        //     userId: userId.uid
-        // });
-        const Create = await addDoc(collection(db, "users"), {
-            username: userName,
-            surname: surname,
-            avatar: avatar,
-            email: email,
-            region: region,
-            userId: userId.uid,
-            accountType: accountType,
-            youtube: youtube,
-            twitter: twitter,
-            instagam: instagam,
-            facebook: facebook,
-            linkdin: linkdin,
-            password: password,
-        })
-
-        toast({
-            title: "User registered successfully!",
-            description: `Continue Using Spark Labs ${surname}`,
-        });
-
-        setUserDetailsDialog(false);
-        router.push('/login');
-    };
-
-
-
-    const handleSignIn = async () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                toast({
-                    title: "User signed in successfully!",
-                    description: `Continue Using Ustudy ${user.email}`,
-                })
+        if (userDetailsDialog) {
+            const Create = await addDoc(collection(db, "users"), {
+                role: accountType,
+                username: username,
+                email: email,
+                password: password,
+                userId: userId.uid,
+                // surname: surname,
+                // avatar: avatar,
+                // region: region,
+                // accountType: accountType,
+                // youtube: youtube,
+                // twitter: twitter,
+                // instagam: instagam,
+                // facebook: facebook,
+                // linkdin: linkdin,
             })
-            .catch((error) => {
-                toast({
-                    title: "Uh oh! Something went wrong with your SignIn.",
-                    description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-                        <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-                        <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-                    </div>),
-                })
+            toast({
+                title: "Teacher registered successfully!",
+                description: `Continue Using Spark Labs ${username}`,
             });
-
+            router.push('/login')
+        }
     };
-    const [isVisiblePassword, setIsVisiblePassword] = React.useState(true)
-    const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
-        React.useState(true)
-    const togglePasswordVisibility = () =>
-        setIsVisiblePassword(!isVisiblePassword)
-    const toggleConfirmPasswordVisibility = () =>
-        setIsVisibleConfirmPassword(!isVisibleConfirmPassword)
+
 
     return (
         <div className="flex h-auto w-full items-center justify-center min-h-[100vh]">
             <div className="flex h-auto hover-glow-border relative hover:bg-primary-foreground w-auto items-center justify-center lg:m-0 lg:h-full lg:w-[500px] rounded-md border px-5 pt-10 pb-7">
                 <div className="mx-auto grid w-4/5 min-w-[300px] max-w-[550px] gap-5">
                     <div className="grid min-w-full gap-2 text-center">
-                        <h1 className="text-2xl font-bold">Create Teacher Account!</h1>
+                        <h1 className="text-2xl font-bold">Create Teacher Account.</h1>
                         <p className="text-balance text-muted-foreground">
                             Please enter your details.
                         </p>
@@ -403,21 +350,21 @@ const Register: NextPage = () => {
 
                     <div className="grid gap-4">
                         <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]">
+                            <Label >
                                 Username
                             </Label>
-                            <Input type="text" value={userName} id="userName" placeholder="manfromexistence" required onChange={(e) => setUserName(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+                            <Input type="text" value={username} id="userName" placeholder="manfromexistence" required onChange={(e) => setUsername(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
                         </div>
 
                         <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]" htmlFor="email">
+                            <Label htmlFor="email">
                                 Email
                             </Label>
                             <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
-                                <Label className="text-[#804DFE]" htmlFor="password">
+                                <Label htmlFor="password">
                                     Password
                                 </Label>
                             </div>
@@ -445,7 +392,7 @@ const Register: NextPage = () => {
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
-                                <Label className="text-[#804DFE]" htmlFor="password">
+                                <Label htmlFor="password">
                                     Confirm Password
                                 </Label>
                             </div>
@@ -474,7 +421,7 @@ const Register: NextPage = () => {
                             </div>
                         </div>
                         {/* <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]" htmlFor="email">
+                            <Label  htmlFor="email">
                                 Account Type
                             </Label>
                             <Select value={accountType} onValueChange={(e: any) => { setAccountType(e.target.value) }}>
@@ -501,7 +448,17 @@ const Register: NextPage = () => {
                             </label>
                         </div>
 
-                        <Dialog open={userDetailsDialog}>
+                        <Button
+                            onClick={(e: any) => {
+                                handleSignUp(e);
+                                userDetails(e);
+                            }}
+                            className="w-full"
+                        >
+                            Register
+                        </Button>
+
+                        {/* <Dialog open={userDetailsDialog}>
                             <DialogTrigger>
                                 <Button
                                     onClick={handleSignUp}
@@ -557,7 +514,7 @@ const Register: NextPage = () => {
                                     </form>
                                 </div>
                             </DialogContent>
-                        </Dialog>
+                        </Dialog> */}
                     </div>
                     <div className="min-w-full space-x-2.5 text-center text-sm !mb-7">
                         <span>Already have an account?</span>
@@ -568,7 +525,6 @@ const Register: NextPage = () => {
                             Login
                         </Link>
                     </div>
-
                 </div>
             </div>
         </div>

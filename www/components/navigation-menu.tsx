@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import * as React from "react"
@@ -15,87 +16,89 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
-const components: { title: string; href: string; description: string }[] = [
+const workshopComponents: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
+    title: "Scratch Introduction",
+    href: "/workshop/scratch-introduction",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "An introductory course to get students started with Scratch programming. Covers the basics of using the Spark Labs editor.",
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
+    title: "Animation with Scratch",
+    href: "/workshop/animation-with-scratch",
     description:
-      "For sighted users to preview content available behind a link.",
+      "A course that teaches students how to create animations using Scratch. Students will learn to use various animation techniques in the Spark Labs editor.",
   },
   {
-    title: "Progress",
-    href: "/docs/primitives/progress",
+    title: "Game Development with Scratch",
+    href: "/workshop/game-development-with-scratch",
     description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "This course introduces students to game development using Scratch. They will learn to create interactive games using the Spark Labs editor.",
   },
   {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
+    title: "Advanced Scratch Projects",
+    href: "/workshop/advanced-scratch-projects",
+    description: "A course for students who have mastered the basics and are ready to tackle more complex Scratch projects using the Spark Labs editor.",
   },
   {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
+    title: "Teacher Resources",
+    href: "/workshop/teacher-resources",
     description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      "A collection of resources for teachers to assist them in teaching Scratch programming using the Spark Labs editor.",
   },
   {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
+    title: "Student Gallery",
+    href: "/workshop/student-gallery",
     description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "A showcase of projects created by students in the workshop, demonstrating what they've learned about Scratch programming using the Spark Labs editor.",
   },
 ]
+
 
 export function NavigationMenuDemo() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-foreground">Getting started</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-foreground">Workshop</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <a
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/"
+                    href="/workshop/scratch-introduction"
                   >
-                    <Icons.logo className="h-6 w-6" />
+                    <img className="h-20 w-auto" src="./logo.png" alt="logo" />
                     <div className="mb-2 mt-4 text-lg font-medium">
-                      shadcn/ui
+                      Scratch Introduction
                     </div>
                     <p className="text-sm leading-tight text-muted-foreground">
-                      Beautifully designed components that you can copy and
-                      paste into your apps. Accessible. Customizable. Open
-                      Source.
+                      An introductory course to get students started with Scratch programming. Covers the basics of using the Spark Labs editor.
                     </p>
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
+              <ListItem href="/workshop/animation-with-scratch" title="Animation with Scratch">
+                A course that teaches students how to create animations using Scratch. Students will learn to use various animation techniques in the Spark Labs editor.
               </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
+              <ListItem href="/workshop/game-development-with-scratch" title="Game Development with Scratch">
+                This course introduces students to game development using Scratch. They will learn to create interactive games using the Spark Labs editor.
               </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
+              <ListItem href="/workshop/advanced-scratch-projects" title="Advanced Scratch Projects">
+                A course for students who have mastered the basics and are ready to tackle more complex Scratch projects using the Spark Labs editor.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-foreground">Resources</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-foreground ml-1">Explore</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
+              {workshopComponents.map((component) => (
                 <ListItem
                   key={component.title}
                   title={component.title}
@@ -107,7 +110,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-          {/* <Link href="/teachers" legacyBehavior passHref>
+        {/* <Link href="/teachers" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Teachers
             </NavigationMenuLink>
@@ -126,7 +129,7 @@ export function NavigationMenuDemo() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem> */}
-        
+
       </NavigationMenuList>
     </NavigationMenu>
   )

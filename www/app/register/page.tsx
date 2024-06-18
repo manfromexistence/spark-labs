@@ -11,10 +11,15 @@ import { Button, buttonVariants } from "@/registry/default/ui/button"
 import { Checkbox } from "@/registry/default/ui/checkbox"
 import { Input } from "@/registry/default/ui/input"
 import { Label } from "@/registry/default/ui/label"
-import React, { useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { useAuth } from "@clerk/nextjs";
+import React, { useEffect, useState } from 'react';
+import { useToast } from "@/registry/default/ui/use-toast"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { X } from "lucide-react"
+import { set } from 'date-fns';
+import { useRouter } from 'next/navigation'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import {
     addDoc,
@@ -31,13 +36,6 @@ import {
     updateDoc,
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
-import { useToast } from "@/registry/default/ui/use-toast"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
-import { set } from 'date-fns';
-import { useRouter } from 'next/navigation'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 const firebaseConfig = {
     apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
     authDomain: "snap-workspace.firebaseapp.com",
@@ -173,23 +171,46 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 
 const Register: NextPage = () => {
+    const [users, setUsers] = useState<any>([]);
     const { toast } = useToast()
     const router = useRouter()
     const [userDetailsDialog, setUserDetailsDialog] = useState(false);
-    const [accountType, setAccountType] = useState("student");
+    const [accountType, setAccountType] = useState("teacher");
     const [email, setEmail] = useState("");
     const [avatar, setAvatar] = useState("");
-    const [userName, setUserName] = useState("");
+    const [username, setUsername] = useState("");
     const [youtube, setYoutube] = useState("");
     const [twitter, setTwitter] = useState("");
     const [instagam, setInstagam] = useState("");
     const [facebook, setFacebook] = useState("");
+    const [linkdin, setLinkdin] = useState("");
     const [userId, setUserid] = useState<any>("");
     const [surname, setSurname] = useState("");
     const [untScore, setUntScore] = useState<any>(0);
     const [region, setRegion] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [isVisiblePassword, setIsVisiblePassword] = React.useState(true)
+    const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
+        React.useState(true)
+    const togglePasswordVisibility = () =>
+        setIsVisiblePassword(!isVisiblePassword)
+    const toggleConfirmPasswordVisibility = () =>
+        setIsVisibleConfirmPassword(!isVisibleConfirmPassword)
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const q = query(collection(db, "users"));
+            const querySnapshot = await getDocs(q);
+            const newDocs = querySnapshot.docs.map((doc: { id: any; data: () => any }) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setUsers(newDocs);
+        };
+        fetchUsers();
+    }, []);
 
     const EnhancedErrors = (input: any): string | null => {
         switch (input) {
@@ -222,179 +243,89 @@ const Register: NextPage = () => {
     };
     const handleSignUp = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        // confirmPassword === password ?
-        // setUserDetailsDialog(true)
-        // // createUserWithEmailAndPassword(auth, email, password)
-        // //   .then((userCredential) => {
-        // //     // Signed up 
-        // //     const user = userCredential.user;
-        // //     setUserid(user)
-        // //     console.log("Register");
-
-        // //     const Create = await addDoc(collection(db, "users"), {
-        // //       accountType: "Admin",
-        // //       email: email,
-        // //       name: name,
-        // //       adminName: userName,
-        // //       region: region,
-        // //       surname: surname,
-        // //       adminId: userId.uid
-        // //     });
-
-        // //     console.log("Document written with ID: ", Create.id);
-
-        // //     toast({
-        // //       title: "Admin signed up successfully!",
-        // //       description: `Continue Using Ustudy ${userId.uid}`,
-        // //     })
-
-        // //     setUserDetailsDialog(false);
-        // //     router.push('/login')
-
-        // //   })
-        // //   .catch((error) => {
-        // //     setUserid("Error");
-        // //     console.log("Error");
-
-        // //     toast({
-        // //       title: "Uh oh! Something went wrong with your SignUp.",
-        // //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-        // //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-        // //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-        // //       </div>),
-        // //     })
-        // //   })
-        // : toast({
-        //   title: "Password and Confirm Password donot match!",
-        //   description: `Please match them Password${password} & Confirm Passwrod:${confirmPassword}`,
-        // })
-        confirmPassword === password ?
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Signed up 
-                    const user = userCredential.user;
-                    setUserid(user)
-                    console.log("Register");
-                    setUserDetailsDialog(true)
-                    // const Create = await addDoc(collection(db, "users"), {
-                    //   accountType: "Admin",
-                    //   email: email,
-                    //   name: name,
-                    //   adminName: userName,
-                    //   region: region,
-                    //   surname: surname,
-                    //   adminId: userId.uid
-                    // });
-
-                    // console.log("Document written with ID: ", Create.id);
-
-                    // toast({
-                    //   title: "Admin signed up successfully!",
-                    //   description: `Continue Using Ustudy ${userId.uid}`,
-                    // })
-
-                    // setUserDetailsDialog(false);
-                    // router.push('/login')
-
-                })
-                .catch((error) => {
-                    setUserid("Error");
-                    console.log("Error");
-
-                    toast({
-                        title: "Uh oh! Something went wrong with your SignUp.",
-                        description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-                            <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-                            <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-                        </div>),
-                    })
-                })
-            : toast({
-                title: "Password and Confirm Password donot match!",
-                description: `Please match them Password${password} & Confirm Passwrod:${confirmPassword}`,
-            })
-
-
-
-    };
-    const userDetails = async (event: { preventDefault: () => void }) => {
-        event.preventDefault();
-
-        // accountType === "student" ? await addDoc(collection(db, "students"), {
-        //     userName: userName,
-        //     surname: surname,
-        //     avater: avater,
-        //     email: email,
-        //     region: region,
-        //     userId: userId.uid
-        // }) : await addDoc(collection(db, "teachers"), {
-        //     userName: userName,
-        //     surname: surname,
-        //     avater: avater,
-        //     email: email,
-        //     region: region,
-        //     userId: userId.uid
-        // });
-        const Create = await addDoc(collection(db, "users"), {
-            userName: userName,
-            surname: surname,
-            avatar: avatar,
-            email: email,
-            region: region,
-            userId: userId.uid,
-            accountType: accountType,
-            youtube: youtube,
-            twitter: twitter,
-            instagam: instagam,
-            facebook: Facebook,
-        })
-
-        toast({
-            title: "User registered up successfully!",
-            description: `Continue Using Spark Labs ${surname}`,
-        });
-
-        setUserDetailsDialog(false);
-        router.push('/login');
-    };
-
-
-
-    const handleSignIn = async () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in 
+        const USER_DETAILS = users.find((user: any) => user.username === username);
+        if (!USER_DETAILS && confirmPassword === password) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
+
+                await addDoc(collection(db, "users"), {
+                    role: accountType,
+                    username: username,
+                    email: email,
+                    password: password,
+                    userId: user.uid,
+                    // surname: surname,
+                    // avatar: avatar,
+                    // region: region,
+                    // accountType: accountType,
+                    // youtube: youtube,
+                    // twitter: twitter,
+                    // instagam: instagam,
+                    // facebook: facebook,
+                    // linkdin: linkdin,
+                });
                 toast({
-                    title: "User signed in successfully!",
-                    description: `Continue Using Ustudy ${user.email}`,
-                })
-            })
-            .catch((error) => {
+                    title: "Teacher registered successfully!",
+                    description: `Continue Using Spark Labs ${username}`,
+                });
+                router.push('/dashboard');
+            } catch (error: any) {
                 toast({
-                    title: "Uh oh! Something went wrong with your SignIn.",
+                    title: "Uh oh! Something went wrong with your SignUp.",
                     description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
                         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
                         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
                     </div>),
                 })
+            }
+        } else if (USER_DETAILS) {
+            toast({
+                title: "There is already a user with this Username!",
+                description: `${username} is not available. Choose a different Username`,
             });
-
+        } else if (confirmPassword !== password) {
+            toast({
+                title: "Password and Confirm Password do not match!",
+                description: `Password:${password} is not same as Confirm Password:${confirmPassword}`,
+            });
+        }
     };
-    const [isVisiblePassword, setIsVisiblePassword] = React.useState(true)
-    const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
-        React.useState(true)
-    const togglePasswordVisibility = () =>
-        setIsVisiblePassword(!isVisiblePassword)
-    const toggleConfirmPasswordVisibility = () =>
-        setIsVisibleConfirmPassword(!isVisibleConfirmPassword)
+
+    // const userDetails = async (event: { preventDefault: () => void }) => {
+    //     event.preventDefault();
+    //     if (userDetailsDialog) {
+    //         const Create = await addDoc(collection(db, "users"), {
+    //             role: accountType,
+    //             username: username,
+    //             email: email,
+    //             password: password,
+    //             userId: userId.uid,
+    //             // surname: surname,
+    //             // avatar: avatar,
+    //             // region: region,
+    //             // accountType: accountType,
+    //             // youtube: youtube,
+    //             // twitter: twitter,
+    //             // instagam: instagam,
+    //             // facebook: facebook,
+    //             // linkdin: linkdin,
+    //         })
+    //         toast({
+    //             title: "Teacher registered successfully!",
+    //             description: `Continue Using Spark Labs ${username}`,
+    //         });
+    //         router.push('/login')
+    //     }
+    // };
+
 
     return (
         <div className="flex h-auto w-full items-center justify-center min-h-[100vh]">
             <div className="flex h-auto hover-glow-border relative hover:bg-primary-foreground w-auto items-center justify-center lg:m-0 lg:h-full lg:w-[500px] rounded-md border px-5 pt-10 pb-7">
                 <div className="mx-auto grid w-4/5 min-w-[300px] max-w-[550px] gap-5">
                     <div className="grid min-w-full gap-2 text-center">
-                        <h1 className="text-4xl font-bold">Create Account!</h1>
+                        <h1 className="text-2xl font-bold">Create Teacher Account.</h1>
                         <p className="text-balance text-muted-foreground">
                             Please enter your details.
                         </p>
@@ -402,23 +333,21 @@ const Register: NextPage = () => {
 
                     <div className="grid gap-4">
                         <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]" htmlFor="email">
+                            <Label >
                                 Username
                             </Label>
-                            <Input type="text" value={userName} id="userName" placeholder="manfromexistence" required onChange={(e) => setUserName(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
-
+                            <Input type="text" value={username} id="userName" placeholder="manfromexistence" required onChange={(e) => setUsername(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
                         </div>
 
                         <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]" htmlFor="email">
+                            <Label htmlFor="email">
                                 Email
                             </Label>
                             <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
-
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
-                                <Label className="text-[#804DFE]" htmlFor="password">
+                                <Label htmlFor="password">
                                     Password
                                 </Label>
                             </div>
@@ -446,7 +375,7 @@ const Register: NextPage = () => {
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
-                                <Label className="text-[#804DFE]" htmlFor="password">
+                                <Label htmlFor="password">
                                     Confirm Password
                                 </Label>
                             </div>
@@ -474,8 +403,8 @@ const Register: NextPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="grid w-full gap-2">
-                            <Label className="text-[#804DFE]" htmlFor="email">
+                        {/* <div className="grid w-full gap-2">
+                            <Label  htmlFor="email">
                                 Account Type
                             </Label>
                             <Select value={accountType} onValueChange={(e: any) => { setAccountType(e.target.value) }}>
@@ -491,9 +420,8 @@ const Register: NextPage = () => {
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            {/* <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" /> */}
-                        </div>
-                        <div className="flex w-full items-center space-x-3.5 my-1">
+                        </div> */}
+                        {/* <div className="flex w-full items-center space-x-3.5 my-1">
                             <Checkbox required id="terms" />
                             <label
                                 htmlFor="terms"
@@ -501,9 +429,19 @@ const Register: NextPage = () => {
                             >
                                 I agree to the term of services and privacy statement
                             </label>
-                        </div>
+                        </div> */}
 
-                        <Dialog open={userDetailsDialog}>
+                        <Button
+                            onClick={(e: any) => {
+                                handleSignUp(e);
+                                // userDetails(e);
+                            }}
+                            className="w-full"
+                        >
+                            Register
+                        </Button>
+
+                        {/* <Dialog open={userDetailsDialog}>
                             <DialogTrigger>
                                 <Button
                                     onClick={handleSignUp}
@@ -512,11 +450,11 @@ const Register: NextPage = () => {
                                     Register
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
+                            <DialogContent className="w-[425px] md:min-w-[750px]">
                                 <div className="mx-auto max-w-md space-y-6">
                                     <div className="space-y-2 text-center">
                                         <h1 className="text-3xl font-bold">More Information</h1>
-                                        <p className="text-gray-500 dark:text-gray-400">Please fill out the form below.</p>
+                                        <p className="text-muted-foreground">Please fill out the form below.</p>
                                     </div>
                                     <form className="space-y-4">
                                         <div className="space-y-2">
@@ -545,6 +483,10 @@ const Register: NextPage = () => {
                                             <Input value={facebook} id="facebook" placeholder="Facebook profile or page link" required onChange={(e) => setFacebook(e.target.value)} />
                                         </div>
                                         <div className="space-y-2">
+                                            <Label htmlFor="facebook">Linkdin</Label>
+                                            <Input value={linkdin} id="facebook" placeholder="Facebook profile or page link" required onChange={(e) => setLinkdin(e.target.value)} />
+                                        </div>
+                                        <div className="space-y-2">
                                             <Label htmlFor="region">Region</Label>
                                             <Input value={region} id="region" placeholder="New York" required onChange={(e) => setRegion(e.target.value)} />
                                         </div>
@@ -555,7 +497,7 @@ const Register: NextPage = () => {
                                     </form>
                                 </div>
                             </DialogContent>
-                        </Dialog>
+                        </Dialog> */}
                     </div>
                     <div className="min-w-full space-x-2.5 text-center text-sm !mb-7">
                         <span>Already have an account?</span>
@@ -566,7 +508,6 @@ const Register: NextPage = () => {
                             Login
                         </Link>
                     </div>
-
                 </div>
             </div>
         </div>

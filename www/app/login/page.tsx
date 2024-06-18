@@ -38,6 +38,15 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 import { set } from 'date-fns';
 import { useRouter } from 'next/navigation'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 const firebaseConfig = {
   apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
   authDomain: "snap-workspace.firebaseapp.com",
@@ -169,20 +178,45 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 
 
-
+// async function signInWithUsernameAndPassword(username, password) {
+//   try {
+//     const studentDoc = await db.collection('Users').where('username', '==', username).get();
+//     if (studentDoc.empty) {
+//       throw new Error('User not found');
+//     }
+//     const student = studentDoc.docs[0].data();
+//     // Verify password (using bcrypt or another hashing library)
+//     if (await bcrypt.compare(password, student.password)) {
+//       // Create custom JWT token
+//       const token = jwt.sign({ username: student.username, role: 'student' }, 'your-secret-key');
+//       // Store token in local storage or cookie
+//       localStorage.setItem('authToken', token);
+//       return true;
+//     } else {
+//       throw new Error('Incorrect password');
+//     }
+//   } catch (error) {
+//     console.error('Login error:', error);
+//     throw error;
+//   }
+// }
 
 const Login: NextPage = () => {
 
   const { toast } = useToast()
   const router = useRouter()
   const [userDetailsDialog, setUserDetailsDialog] = useState(false);
+  const [studentUsername, setStudentUsername] = useState("");
+  const [studentPassword, setStudentPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
-  const [userId, setUserid] = useState<any>("");
+  const [userId, setUserId] = useState<any>("");
+  const [userDocId, setUserDocId] = useState<any>("");
   const [surname, setSurname] = useState("");
   const [untScore, setUntScore] = useState<any>(0);
-  const [docs, setDocs] = useState<any>([]);
+  const [users, setUsers] = useState<any>([]);
   const [region, setRegion] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -195,7 +229,7 @@ const Login: NextPage = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      setDocs(newDocs);
+      setUsers(newDocs);
     };
     fetchDocs();
   }, []);
@@ -288,45 +322,218 @@ const Login: NextPage = () => {
 
   const handleSignIn = async (e: any) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-
-
-        docs.map((users: any) => {
-          if (users.acccountType === "student") {
-            user.uid === users.userId && toast({
-              title: "Student logged in successfully!",
-              description: `Continue Using Spark Labs Lovely User ${users.surname}`,
-            })
-          }
-
-          if (users.accountType === "teacher") {
-            user.uid === users.userId && toast({
-              title: "Teacher signed in successfully!",
-              description: `Continue Using Spark Labs ${users.surname}`,
-            })
-          }
-        })
-        // toast({
-        //   title: "User logged in successfully!",
-        //   description: `Continue Using Ustudy Lovely User.`,
-        // })
-        // router.push('/calculator')
-        router.push('/home')
-      })
-      .catch((error) => {
-        toast({
-          title: "Uh oh! Something went wrong with your SignIn.",
-          description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-            <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-            <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-          </div>),
-        })
+    const USER_DETAILS = users.find((user: any) => user.username === username);
+    if (USER_DETAILS) {
+      if (USER_DETAILS.userId === "") {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, USER_DETAILS.email, password);
+          const user = userCredential.user;
+          const updateRef = doc(db, "users", USER_DETAILS.id);
+          await updateDoc(updateRef,{
+            userId: user.uid,
+          });
+          toast({
+              title: "User logged in successfully!",
+              description: `Continue Using Spark Labs ${username}`,
+          });
+          router.push('/dashboard');
+      } catch (error: any) {
+          toast({
+              title: "Uh oh! Something went wrong with your SignIn (Student).",
+              description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+                  <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+                  <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+              </div>),
+          })
+      }
+      }else{
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, USER_DETAILS.email, password);
+          toast({
+            title: "Teacher logged in successfully!",
+            description: `Continue Using Spark Labs ${username}`,
+          });
+          router.push('/dashboard');
+        } catch (error: any) {
+          toast({
+            title: "Uh oh! Something went wrong with your SignIn (Teacher).",
+            description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+              <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+              <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+            </div>),
+          })
+        }
+      }
+    } else {
+      toast({
+        title: "There is no user with this Username!",
+        description: `${username} is not available. Choose a different Username`,
       });
+    }
+    // const USER_DETAILS = docs.filter((user: any) => user.username === username);
+    // if (USER_DETAILS) {
+
+
+    //   toast({
+    //     title: "Thanks for signing in!",
+    //     description: `${JSON.stringify(USER_DETAILS)}`,
+    //   });
+
+
+
+
+
+    // } else {
+    //   toast({
+    //     title: "There is no user with this Username!",
+    //     description: `${username} is not available. Choose a different Username`,
+    //   });
+    // }
+
+
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => {
+    //     // Signed in 
+    //     const user = userCredential.user;
+    //     toast({
+    //       title: "User signed in successfully!",
+    //       description: `Continue Using Spark Labs.`,
+    //     })
+    //     // docs.map((users: any) => {
+    //     //   if (users.acccountType === "student") {
+    //     //     user.uid === users.userId && toast({
+    //     //       title: "Student logged in successfully!",
+    //     //       description: `Continue Using Spark Labs Lovely User ${users.username}`,
+    //     //     })
+    //     //   }
+    //     //   if (users.accountType === "teacher") {
+    //     //     user.uid === users.userId && toast({
+    //     //       title: "Teacher signed in successfully!",
+    //     //       description: `Continue Using Spark Labs ${users.username}`,
+    //     //     })
+    //     //   }
+    //     // })
+    //     router.push('/dashboard')
+    //   })
+    //   .catch((error) => {
+    //     toast({
+    //       title: "Uh oh! Something went wrong with your SignIn.",
+    //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+    //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+    //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+    //       </div>),
+    //     })
+    //   });
+
+
 
   };
+  // const handleStudentSignIn = async (e: any) => {
+  //   e.preventDefault();
+  //   docs.map((user:any) => user.username === studentUsername ? signInWithEmailAndPassword(auth, user.email, studentPassword)
+  //   .then((userCredential) => {
+  //     // Signed in 
+  //     const user = userCredential.user;
+  //     docs.map((users: any) => {
+  //       if (users.acccountType === "student") {
+  //         user.uid === users.userId && toast({
+  //           title: "Student logged in successfully!",
+  //           description: `Continue Using Spark Labs Lovely User ${users.surname}`,
+  //         })
+  //       }
+  //       if (users.accountType === "teacher") {
+  //         user.uid === users.userId && toast({
+  //           title: "Teacher signed in successfully!",
+  //           description: `Continue Using Spark Labs ${users.surname}`,
+  //         })
+  //       }
+  //     })
+  //     router.push('/dashboard')
+  //   })
+  //   .catch((error) => {
+  //     toast({
+  //       title: "Uh oh! Something went wrong with your SignIn.",
+  //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+  //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+  //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+  //       </div>),
+  //     })
+  //   }) : null);
+  // };
+
+  // const handleStudentSignIn = async (e: any) => {
+  //   e.preventDefault();
+  //   docs.map((user:any) => user.accountType === "student" && user.username === studentUsername ? signInWithEmailAndPassword(auth, user.email, user.password)
+  //   .then((userCredential) => {
+  //     // Signed in 
+  //     const user = userCredential.user;
+  //     setUserId(user);
+  //     userDocId(user.uid);
+
+  //     router.push('/dashboard')
+  //   })
+  //   .catch((error:any) => {
+  //     toast({
+  //       title: "Uh oh! Something went wrong with your SignIn.",
+  //       description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+  //         <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+  //         <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+  //       </div>),
+  //     })
+  //   }) : toast({
+  //     title: "We got your request Student...",
+  //     description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+  //       <span className="text-muted-foreground">{`Till then stay tunded!`}</span>
+  //     </div>),
+  //   }));
+
+
+  //   const updateRef = doc(db, "users", userDocId);
+  //   const Update = await updateDoc(updateRef, {
+  //     usreId: userId.id,
+  //   })
+  // };
+
+  const handleStudentSignIn = async (e: any) => {
+    e.preventDefault();
+
+    // const userExists = docs.some((user: any) => user.accountType === "student" && user.username === studentUsername);
+
+    // if (userExists) {
+    //     signInWithEmailAndPassword(auth, studentUsername, studentPassword)
+    //         .then((userCredential) => {
+    //             // Signed in 
+    //             const user = userCredential.user;
+    //             setUserId(user);
+    //             userDocId(user.uid);
+
+    //             router.push('/dashboard')
+    //         })
+    //         .catch((error:any) => {
+    //             toast({
+    //                 title: "Uh oh! Something went wrong with your SignIn.",
+    //                 description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+    //                     <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+    //                     <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+    //                 </div>),
+    //             })
+    //         });
+    // } else {
+    //     toast({
+    //         title: "We got your request Student...",
+    //         description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+    //             <span className="text-muted-foreground">{`Till then stay tunded!`}</span>
+    //         </div>),
+    //     });
+    // }
+
+    // const updateRef = doc(db, "users", userDocId);
+    // const Update = await updateDoc(updateRef, {
+    //     usreId: userId.id,
+    // })
+  };
+
+
   const [isVisiblePassword, setIsVisiblePassword] = React.useState(true)
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
     React.useState(true)
@@ -339,7 +546,7 @@ const Login: NextPage = () => {
   return (
     <div className="flex h-auto w-full items-center justify-center min-h-[100vh]">
       <div className="flex h-auto hover-glow-border relative hover:bg-primary-foreground w-auto items-center justify-center lg:m-0 lg:h-full lg:w-[500px] rounded-md border px-5 pt-10 pb-7">
-        <div className="mx-auto grid w-4/5 min-w-[300px] max-w-[550px] gap-5">
+        {/* <div className="mx-auto grid w-4/5 min-w-[300px] max-w-[550px] gap-5">
           <div className="grid min-w-full gap-2 text-center">
             <h1 className="text-4xl font-bold">Welcome back!</h1>
             <p className="text-balance text-muted-foreground">
@@ -348,7 +555,7 @@ const Login: NextPage = () => {
           </div>
           <div className="grid gap-4">
             <div className="grid w-full gap-2">
-              <Label className="text-[#804DFE]" htmlFor="email">
+              <Label htmlFor="email">
                 Email
               </Label>
               <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
@@ -356,7 +563,7 @@ const Login: NextPage = () => {
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label className="text-[#804DFE]" htmlFor="password">
+                <Label htmlFor="password">
                   Password
                 </Label>
               </div>
@@ -375,9 +582,9 @@ const Login: NextPage = () => {
                   className="absolute right-3.5 top-1/2 translate-y-[-50%]"
                 >
                   {isVisiblePassword ? (
-                    <Eye className="hover:text-[#804DFE]" />
+                    <Eye className="hover:text-primary-foreground" />
                   ) : (
-                    <EyeOff className="hover:text-[#804DFE]" />
+                    <EyeOff className="hover:text-primary-foreground" />
                   )}
                 </div>
               </div>
@@ -392,6 +599,262 @@ const Login: NextPage = () => {
             <Button
               onClick={handleSignIn}
               className="w-full bg-[#804DFE] text-white hover:bg-secondary"
+            >
+              Login
+            </Button>
+          </div>
+          <div className="mt-4 min-w-full space-x-1 text-center text-sm">
+            <span>Don't have an account?</span>
+            <Link
+              href="/register"
+              className="bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text font-bold text-transparent"
+            >
+              Register
+            </Link>
+          </div>
+        </div> */}
+
+
+        {/* <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
+          <div className="grid min-w-full gap-2 text-center">
+            <h1 className="text-3xl font-bold">Welcome back Teacher!</h1>
+            <p className="text-balance text-muted-foreground">
+              Please enter your details
+            </p>
+          </div>
+          <div className="grid gap-4 px-3">
+            <div className="grid w-full gap-2">
+              <Label htmlFor="email">
+                Email
+              </Label>
+              <Input value={email} id="email" type="email" placeholder="ajju40959@gmail.com" required onChange={(e) => setEmail(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">
+                  Password
+                </Label>
+              </div>
+              <div className="w-full relative">
+                <Input
+                  required
+                  value={password}
+                  type={isVisiblePassword ? "text" : "password"}
+                  id="password"
+                  placeholder="YourPassword123"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-md !border text-muted-foreground"
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                >
+                  {isVisiblePassword ? (
+                    <Eye className="hover:text-primary-foreground" />
+                  ) : (
+                    <EyeOff className="hover:text-primary-foreground" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/forgot-password"
+              className="flex w-full items-end justify-end text-sm underline"
+            >
+              Forgot your password?
+            </Link>
+            <Button
+              onClick={handleSignIn}
+              className="w-full bg-[#804DFE] text-white hover:bg-secondary"
+            >
+              Login
+            </Button>
+          </div>
+          <div className="mt-4 min-w-full space-x-1 text-center text-sm">
+            <span>Don't have an account?</span>
+            <Link
+              href="/register"
+              className="bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text font-bold text-transparent"
+            >
+              Register
+            </Link>
+          </div>
+        </div> */}
+        {/* <Tabs defaultValue="teacher" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="teacher">Teacher</TabsTrigger>
+            <TabsTrigger value="student">Student</TabsTrigger>
+          </TabsList>
+          <TabsContent value="teacher">
+            <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
+              <div className="grid min-w-full gap-2 text-center">
+                <h1 className="text-3xl font-bold">Welcome back Teacher!</h1>
+                <p className="text-balance text-muted-foreground">
+                  Please enter your details
+                </p>
+              </div>
+              <div className="grid gap-4 px-3">
+                <div className="grid w-full gap-2">
+                  <Label htmlFor="username">
+                    Username
+                  </Label>
+                  <Input value={username} id="username" type="text" placeholder="Emon" required onChange={(e) => setUsername(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+
+                </div>
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">
+                      Password
+                    </Label>
+                  </div>
+                  <div className="w-full relative">
+                    <Input
+                      required
+                      value={password}
+                      type={isVisiblePassword ? "text" : "password"}
+                      id="password"
+                      placeholder="YourPassword123"
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full rounded-md !border text-muted-foreground"
+                    />
+                    <div
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                    >
+                      {isVisiblePassword ? (
+                        <Eye className="hover:text-primary-foreground" />
+                      ) : (
+                        <EyeOff className="hover:text-primary-foreground" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <Link
+                  href="/forgot-password"
+                  className="flex w-full items-end justify-end text-sm underline"
+                >
+                  Forgot your password?
+                </Link>
+                <Button
+                  onClick={handleSignIn}
+                  className="w-full"
+                >
+                  Login
+                </Button>
+              </div>
+              <div className="mt-4 min-w-full space-x-1 text-center text-sm">
+                <span>Don't have an account?</span>
+                <Link
+                  href="/register"
+                  className="bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text font-bold text-transparent"
+                >
+                  Register
+                </Link>
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="student">
+            <Card>
+              <CardHeader>
+                <CardTitle>Hello Student</CardTitle>
+                <CardDescription>
+                  Enter Your Details Here. Click Login when you're done.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="username">Email</Label>
+                  <Input onChange={(e) => setStudentUsername(e.target.value)} id="username" placeholder="student" type="email" />
+                </div>
+                <div className="flex items-center">
+                  <Label htmlFor="password">
+                    Password
+                  </Label>
+                </div>
+                <div className="w-full relative">
+                  <Input
+                    required
+                    value={studentPassword}
+                    type={isVisiblePassword ? "text" : "password"}
+                    id="password"
+                    placeholder="YourPassword123"
+                    onChange={(e) => setStudentPassword(e.target.value)}
+                    className="w-full rounded-md !border text-muted-foreground"
+                  />
+                  <div
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                  >
+                    {isVisiblePassword ? (
+                      <Eye className="hover:text-primary-foreground" />
+                    ) : (
+                      <EyeOff className="hover:text-primary-foreground" />
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button onClick={handleStudentSignIn} className="w-full">Login</Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+        </Tabs> */}
+        <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5">
+          <div className="grid min-w-full gap-2 text-center">
+            <h1 className="text-3xl font-bold">Welcome back!</h1>
+            <p className="text-balance text-muted-foreground">
+              Please enter your details
+            </p>
+          </div>
+          <div className="grid gap-4 px-3">
+            <div className="grid w-full gap-2">
+              <Label htmlFor="username">
+                Username
+              </Label>
+              <Input value={username} id="username" type="text" placeholder="Emon" required onChange={(e) => setUsername(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">
+                  Password
+                </Label>
+              </div>
+              <div className="w-full relative">
+                <Input
+                  required
+                  value={password}
+                  type={isVisiblePassword ? "text" : "password"}
+                  id="password"
+                  placeholder="YourPassword123"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-md !border text-muted-foreground"
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                >
+                  {isVisiblePassword ? (
+                    <Eye className="hover:text-primary-foreground" />
+                  ) : (
+                    <EyeOff className="hover:text-primary-foreground" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/forgot-password"
+              className="flex w-full items-end justify-end text-sm underline"
+            >
+              Forgot your password?
+            </Link>
+            <Button
+              onClick={handleSignIn}
+              className="w-full"
             >
               Login
             </Button>

@@ -1,0 +1,4 @@
+.navbar,
+.footer {
+    display: none !important;
+}

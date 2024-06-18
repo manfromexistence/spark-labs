@@ -13,6 +13,48 @@ import {
 } from "@/registry/default/ui/toggle-group"
 import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe-button";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
+import React from "react";
+import { LinkPreview } from "@/components/ui/link-preview";
+
+export function LinkPreviewDemoSecond() {
+  return (
+    <div className="flex justify-center items-start h-[40rem] flex-col px-4">
+      <p className="text-neutral-500 dark:text-neutral-400 text-xl md:text-3xl max-w-3xl  text-left mb-10">
+        Visit{" "}
+        <LinkPreview
+          url="https://ui.aceternity.com"
+          className="font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-pink-500"
+        >
+          Aceternity UI
+        </LinkPreview>{" "}
+        and for amazing Tailwind and Framer Motion components.
+      </p>
+
+      <p className="text-neutral-500 dark:text-neutral-400 text-xl md:text-3xl max-w-3xl  text-left ">
+        I listen to{" "}
+        <LinkPreview
+          url="https://www.youtube.com/watch?v=S-z6vyR89Ig&list=RDMM&index=3"
+          imageSrc="/images/imraan-hashmi.jpeg"
+          isStatic
+          className="font-bold"
+        >
+          this guy
+        </LinkPreview>{" "}
+        and I watch{" "}
+        <LinkPreview
+          url="/templates"
+          imageSrc="/images/fight-club.jpeg"
+          isStatic
+          className="font-bold"
+        >
+          this movie
+        </LinkPreview>{" "}
+        twice a day
+      </p>
+    </div>
+  );
+}
+
 
 export function AnimatedSubscribeButtonDemo() {
   return (
@@ -40,8 +82,9 @@ export function SiteFooter() {
 
   return (
     <footer className="footer flex min-h-[300px] w-full items-center justify-center border-t py-16">
+      {/* <LinkPreviewDemoSecond /> */}
       <div className="w-auto px-3 sm:px-6 lg:px-8 ">
-        <div className="flex items-start justify-start lg:w-[1200px]">
+        <div className="flex items-start justify-start lg:w-[1200px] lg:flex-row flex-col pb-10 lg:pb-0 gap-10 lg:gap-0">
           <div className="w-[200px] space-y-3">
             <a className="font-semidark text-xl" href="#">
               Get all updates.
@@ -62,60 +105,76 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="flex-1 lg:px-5 flex items-start justify-evenly gap-3 flex-col lg:flex-row">
+          <div className="flex-1 footer-lists px-5">
             <div>
               <h3 className="text-lg font-medium">About us</h3>
               <ul className="mt-4 space-y-2">
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://www.microsoft.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Our technologies
+                    <LinkPreview
+                      url="https://www.microsoft.com"
+                    >
+                      Our technologies
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://www.amazon.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Recommendation
+                    <LinkPreview
+                      url="https://www.amazon.com"
+                    >
+                      Recommendation
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://www.reddit.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Discussions
+                    <LinkPreview
+                      url="https://www.reddit.com"
+                    >
+                      Discussions
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://www.hackerone.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Report & Vulnerebility
+                    <LinkPreview
+                      url="https://www.hackerone.com"
+                    >
+                      Report & Vulnerability
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://vercel.com/legal/terms"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Term & conditions
+                    <LinkPreview
+                      url="https://vercel.com/legal/terms"
+                    >
+                      Terms & conditions
+                    </LinkPreview>
                   </a>
                 </li>
+
               </ul>
             </div>
 
@@ -124,166 +183,216 @@ export function SiteFooter() {
               <ul className="mt-4 space-y-2">
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://api.github.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Api
+                    <LinkPreview
+                      url="https://api.github.com"
+                    >
+                      Api
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://www.githubstatus.com/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Status
+                    <LinkPreview
+                      url="https://www.githubstatus.com/"
+                    >
+                      Status
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://github.com/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Github
+                    <LinkPreview
+                      url="https://github.com/"
+                    >
+                      Github
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://docs.github.com/en"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Readme
+                    <LinkPreview
+                      url="https://docs.github.com/en"
+                    >
+                      Readme
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://en.wikipedia.org/wiki/Main_Page"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Wiki
+                    <LinkPreview
+                      url="https://en.wikipedia.org/wiki/Main_Page"
+                    >
+                      Wiki
+                    </LinkPreview>
                   </a>
                 </li>
               </ul>
             </div>
 
+
             <div>
-              <h3 className="text-lg font-medium">Company</h3>
+              <h3 className="text-lg font-medium">Resources</h3>
               <ul className="mt-4 space-y-2">
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://vercel.com/home"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Blog
+                    <LinkPreview
+                      url="https://vercel.com/home"
+                    >
+                      Experts
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://status.apache.org/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Careers
+                    <LinkPreview
+                      url="https://status.apache.org/"
+                    >
+                      Guide
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://github.com/apache/spark"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Customers
+                    <LinkPreview
+                      url="https://github.com/apache/spark"
+                    >
+                      Help
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://spark.apache.org/docs/latest/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Brand
+                    <LinkPreview
+                      url="https://spark.apache.org/docs/latest/"
+                    >
+                      Integration
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://en.wikipedia.org/wiki/Apache_Spark"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Croudfund
+                    <LinkPreview
+                      url="https://en.wikipedia.org/wiki/Apache_Spark"
+                    >
+                      Customers
+                    </LinkPreview>
                   </a>
                 </li>
               </ul>
             </div>
+
+
+
             <div>
               <h3 className="text-lg font-medium">More</h3>
               <ul className="mt-4 space-y-2">
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://community.github.com/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Community
+                    <LinkPreview
+                      url="https://community.github.com/"
+                    >
+                      Community
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://www.google.com/contact/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Contact
+                    <LinkPreview
+                      url="https://www.google.com/contact/"
+                    >
+                      Contact
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://ec.europa.eu/info/law/law-topic/data-protection_en"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Dpa
+                    <LinkPreview
+                      url="https://ec.europa.eu/info/law/law-topic/data-protection_en"
+                    >
+                      Dpa
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://policies.google.com/privacy"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Privacy Policy
+                    <LinkPreview
+                      url="https://policies.google.com/privacy"
+                    >
+                      Privacy Policy
+                    </LinkPreview>
                   </a>
                 </li>
                 <li>
                   <a
-                    href={siteConfig.links.github}
+                    href="https://policies.google.com/terms"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-[hsl(var(--muted-foreground))] underline-offset-4 hover:text-[hsl(var(--primary))] hover:underline"
                   >
-                    Terms of Service
+                    <LinkPreview
+                      url="https://policies.google.com/terms"
+                    >
+                      Terms of Service
+                    </LinkPreview>
                   </a>
                 </li>
               </ul>
+
             </div>
           </div>
 

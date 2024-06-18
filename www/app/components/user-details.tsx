@@ -167,25 +167,6 @@ function PointerC({ label }: { label: string }) {
   );
 }
 
-// function formatDate(date: Date) {
-//   return date.toLocaleDateString("en-US", {
-//     month: "short",
-//     day: "numeric",
-//     year: "numeric",
-//   });
-// }
-
-// function formatDateWithNumbers(date: Date): string {
-//   return date.toLocaleString("en-US", {
-//     month: "numeric",
-//     day: "numeric",
-//     year: "numeric",
-//     hour: "numeric",
-//     minute: "2-digit",
-//     second: "2-digit",
-//     hour12: true,
-//   });
-// }
 
 export function UserDetails() {
   const { toast } = useToast()
@@ -220,125 +201,131 @@ export function UserDetails() {
 
     <div>
       {docs && docs.map((user: any) => {
-        if (user.accountType === "student") {
-          return auth && auth.currentUser && auth.currentUser.uid === user.userId && 
-          <div key={user.uid} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
-            <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
-              <div className="flex flex-col items-center gap-2 mb-6">
-                <div className="w-full relative flex justify-center">
-                  <Avatar className="flex items-center justify-center h-32 w-32 rounded-full border">
-                    <AvatarImage src={user.avatar} alt="@shadcn" />
-                    <AvatarFallback>AVATAR</AvatarFallback>
-                  </Avatar>
+        if (user.role === "student") {
+          return auth && auth.currentUser && auth.currentUser.uid === user.userId &&
+            <div key={user.id} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
+              <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
+                <div className="flex flex-col items-center gap-2 mb-6">
+                  <div className="w-full relative flex justify-center">
+                    <Avatar className="flex items-center justify-center h-32 w-32 rounded-full border">
+                      <AvatarImage src={user.avatar} alt="@shadcn" />
+                      <AvatarFallback>AVATAR</AvatarFallback>
+                    </Avatar>
 
-                  <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
-                    <div className="relative">
-                      <div className="h-px bg-primary w-[6.5rem]" />
-                      <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
-                    </div>
-                    <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
-                      user.avatar
+                    <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
+                      <div className="relative">
+                        <div className="h-px bg-primary w-[6.5rem]" />
+                        <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
+                      </div>
+                      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
+                        user.avatar
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="px-2.5 bg-primary-foreground rounded-lg divide-y divide-border">
-                <Row desc="SurName" value={user.surname}>
-                  <PointerC label="user.surname" />
-                </Row>
-                <Row desc="UserName" value={user.userName}>
-                  <PointerC label="user.userName" />
-                </Row>
+                <div className="px-2.5 bg-primary-foreground rounded-lg divide-y divide-border">
+                  <Row desc="Id" value={user.userId}>
+                    <PointerC label="user.userId" />
+                  </Row>
+                  <Row desc="Surname" value={user.surname}>
+                    <PointerC label="user.surname" />
+                  </Row>
+                  <Row desc="Username" value={user.username}>
+                    <PointerC label="user.username" />
+                  </Row>
 
-                <Row desc="Account Type" value={user.accountType}>
-                  <PointerC label="user.accountType" />
-                </Row>
+                  <Row desc="Account Type" value={user.accountType}>
+                    <PointerC label="user.accountType" />
+                  </Row>
 
-                <Row desc="Region" value={user.region}>
-                  <PointerC label="user.region" />
-                </Row>
-                <Row desc="Email" value={user.email}>
-                  <PointerC label="user.email" />
-                </Row>
+                  <Row desc="Region" value={user.region}>
+                    <PointerC label="user.region" />
+                  </Row>
+                  <Row desc="Email" value={user.email}>
+                    <PointerC label="user.email" />
+                  </Row>
 
 
 
-                <Row desc="Youtube" value={user.youtube}>
-                  <PointerC label="user.youtube" />
-                </Row>
-                <Row desc="Twitter" value={user.twitter}>
-                  <PointerC label="user.twitter" />
-                </Row>
-                <Row desc="Instagam" value={user.instagam}>
-                  <PointerC label="user.instagam" />
-                </Row>
-                <Row desc="Facebook" value={user.facebook}>
-                  <PointerC label="user.facebook" />
-                </Row>
+                  <Row desc="Youtube" value={user.youtube}>
+                    <PointerC label="user.youtube" />
+                  </Row>
+                  <Row desc="Twitter" value={user.twitter}>
+                    <PointerC label="user.twitter" />
+                  </Row>
+                  <Row desc="Instagam" value={user.instagam}>
+                    <PointerC label="user.instagam" />
+                  </Row>
+                  <Row desc="Facebook" value={user.facebook}>
+                    <PointerC label="user.facebook" />
+                  </Row>
+                </div>
               </div>
             </div>
-          </div>
         }
-        if (user.accountType === "teacher") {
-          return auth && auth.currentUser && auth.currentUser.uid === user.userId && 
-          <div key={user.uid} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
-            <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
-              <div className="flex flex-col items-center gap-2 mb-6">
-                <div className="w-full relative flex justify-center">
-                  <Avatar className="flex items-center justify-center h-32 w-32 rounded-full border">
-                    <AvatarImage src={user.avatar} alt="@shadcn" />
-                    <AvatarFallback>AVATAR</AvatarFallback>
-                  </Avatar>
+        if (user.role === "teacher") {
+          return auth && auth.currentUser && auth.currentUser.uid === user.userId &&
+            <div key={user.id} className="lg:ml-64 rounded-lg relative w-[750px] flex items-center justify-start">
+              <div className="p-8 rounded-xl bg-background border max-w-[25rem]">
+                <div className="flex flex-col items-center gap-2 mb-6">
+                  <div className="w-full relative flex justify-center">
+                    <Avatar className="flex items-center justify-center h-32 w-32 rounded-full border">
+                      <AvatarImage src={user.avatar} alt="@shadcn" />
+                      <AvatarFallback>AVATAR</AvatarFallback>
+                    </Avatar>
 
-                  <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
-                    <div className="relative">
-                      <div className="h-px bg-primary w-[6.5rem]" />
-                      <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
-                    </div>
-                    <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
-                      user.avatar
+                    <div className="absolute w-fit flex items-center gap-5 top-1/2 -translate-x-2.5 -translate-y-1/2 left-full">
+                      <div className="relative">
+                        <div className="h-px bg-primary w-[6.5rem]" />
+                        <div className="size-1 bg-primary rotate-45 absolute right-0 top-1/2 -translate-y-1/2" />
+                      </div>
+                      <div className="font-mono text-xs bg-primary-foreground px-1.5 py-1 rounded-md text-foreground">
+                        user.avatar
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="px-2.5 bg-primary-foreground rounded-lg divide-y divide-border">
-                <Row desc="SurName" value={user.surname}>
-                  <PointerC label="user.surname" />
-                </Row>
-                <Row desc="UserName" value={user.userName}>
-                  <PointerC label="user.userName" />
-                </Row>
+                <div className="px-2.5 bg-primary-foreground rounded-lg divide-y divide-border">
+                  <Row desc="Id" value={user.userId}>
+                    <PointerC label="user.userId" />
+                  </Row>
+                  <Row desc="Surname" value={user.surname}>
+                    <PointerC label="user.surname" />
+                  </Row>
+                  <Row desc="Username" value={user.username}>
+                    <PointerC label="user.username" />
+                  </Row>
 
-                <Row desc="Account Type" value={user.accountType}>
-                  <PointerC label="user.accountType" />
-                </Row>
+                  <Row desc="Account Type" value={user.accountType}>
+                    <PointerC label="user.accountType" />
+                  </Row>
 
-                <Row desc="Region" value={user.region}>
-                  <PointerC label="user.region" />
-                </Row>
-                <Row desc="Email" value={user.email}>
-                  <PointerC label="user.email" />
-                </Row>
+                  <Row desc="Region" value={user.region}>
+                    <PointerC label="user.region" />
+                  </Row>
+                  <Row desc="Email" value={user.email}>
+                    <PointerC label="user.email" />
+                  </Row>
 
 
 
-                <Row desc="Youtube" value={user.youtube}>
-                  <PointerC label="user.youtube" />
-                </Row>
-                <Row desc="Twitter" value={user.twitter}>
-                  <PointerC label="user.twitter" />
-                </Row>
-                <Row desc="Instagam" value={user.instagam}>
-                  <PointerC label="user.instagam" />
-                </Row>
-                <Row desc="Facebook" value={user.facebook}>
-                  <PointerC label="user.facebook" />
-                </Row>
+                  <Row desc="Youtube" value={user.youtube}>
+                    <PointerC label="user.youtube" />
+                  </Row>
+                  <Row desc="Twitter" value={user.twitter}>
+                    <PointerC label="user.twitter" />
+                  </Row>
+                  <Row desc="Instagam" value={user.instagam}>
+                    <PointerC label="user.instagam" />
+                  </Row>
+                  <Row desc="Facebook" value={user.facebook}>
+                    <PointerC label="user.facebook" />
+                  </Row>
+                </div>
               </div>
             </div>
-          </div>
         }
       })}
 

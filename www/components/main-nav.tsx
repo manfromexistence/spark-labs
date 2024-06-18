@@ -58,30 +58,48 @@ export function MainNav() {
       <nav className="flex items-center text-sm lg:gap-6">
         {auth.currentUser ? (<>
           <Link
-            href="/home"
+            href="/dashboard"
             className={cn(
-              "transition-colors hover:text-foreground/80",
-              pathname === "/home" ? "text-foreground" : "text-foreground/60"
+              "transition-colors hover:text-primary",
+              pathname === "/dashboard" ? "text-foreground" : "text-foreground/60"
             )}
           >
-            Home
+            Dashboard
           </Link>
           <Link
             href="/profile"
             className={cn(
-              "transition-colors hover:text-foreground/80",
+              "transition-colors hover:text-primary",
               pathname === "/profile" ? "text-foreground" : "text-foreground/60"
             )}
           >
             Profile
           </Link>
+          <Link
+            href="/classrooms"
+            className={cn(
+              "transition-colors hover:text-primary",
+              pathname === "/classrooms" ? "text-foreground" : "text-foreground/60"
+            )}
+          >
+            Classrooms
+          </Link>
         </>) :
           <NavigationMenuDemo />}
 
         <Link
+          href="/sunmissions"
+          className={cn(
+            "transition-colors hover:text-primary",
+            pathname === "/sunmissions" ? "text-foreground" : "text-foreground/60"
+          )}
+        >
+          Submissions
+        </Link>
+        <Link
           href="/teachers"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary",
             pathname === "/teachers" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -90,25 +108,25 @@ export function MainNav() {
         <Link
           href="/students"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary",
             pathname === "/students" ? "text-foreground" : "text-foreground/60"
           )}
         >
           Students
         </Link>
-        <Link
-          href="/submissions"
+        {/* <Link
+          href="/students"
           className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname === "/submissions" ? "text-foreground" : "text-foreground/60"
+            "transition-colors hover:text-primary",
+            pathname === "/students" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Submissions
-        </Link>
+          Pro
+        </Link> */}
         {/* <Link
           href="/supports"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary/80",
             pathname === "/supports" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -117,7 +135,7 @@ export function MainNav() {
         {/* <Link
           href="/profile"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary/80",
             pathname === "/profile" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -126,7 +144,7 @@ export function MainNav() {
         {/* <Link
           href="/profile"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary/80",
             pathname === "/profile" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -135,7 +153,7 @@ export function MainNav() {
         {/* <Link
           href="/settings"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary/80",
             pathname === "/settings" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -144,7 +162,7 @@ export function MainNav() {
         {/* <Link
           href="/whiteboard"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary/80",
             pathname === "/whiteboard" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -153,7 +171,7 @@ export function MainNav() {
         <Link
           href="/planner"
           className={cn(
-            "transition-colors hover:text-foreground/80",
+            "transition-colors hover:text-primary/80",
             pathname === "/planner" ? "text-foreground" : "text-foreground/60"
           )}
         >
@@ -162,7 +180,7 @@ export function MainNav() {
         {/* <Link
           href={siteConfig.links.github}
           className={cn(
-            "hidden text-foreground/60 transition-colors hover:text-foreground/80 lg:block"
+            "hidden text-foreground/60 transition-colors hover:text-primary/80 lg:block"
           )}
         >
           GitHub

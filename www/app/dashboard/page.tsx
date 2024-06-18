@@ -1,56 +1,11 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable react/no-unescaped-entities */
-// "use client"
-// import React, { useState } from 'react';
-
-// type Student = {
-//   id: number;
-//   name: string;
-// };
-
-// const StudentList: React.FC = () => {
-//   const [students, setStudents] = useState<Student[]>([]);
-//   const [name, setName] = useState<string>('');
-
-//   const addStudent = () => {
-//     const newStudent: Student = { id: Date.now(), name };
-//     setStudents([...students, newStudent]);
-//     setName('');
-//   };
-
-//   const deleteStudent = (id: number) => {
-//     const updatedStudents = students.filter(student => student.id !== id);
-//     setStudents(updatedStudents);
-//   };
-
-//   return (
-//     <div>
-//       <input
-//         type="text"
-//         value={name}
-//         onChange={e => setName(e.target.value)}
-//         placeholder="Enter student name"
-//       />
-//       <button onClick={addStudent}>Add Student</button>
-//       <ul>
-//         {students.map(student => (
-//           <li key={student.id}>
-//             {student.name}
-//             <button onClick={() => deleteStudent(student.id)}>Delete</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default StudentList;
 "use client"
 
 import {
     ArrowUpCircle,
+    Check,
     CheckCircle2,
     Circle,
+    CircleOff,
     HelpCircle,
     LucideIcon,
     XCircle,
@@ -74,6 +29,29 @@ type Status = {
     label: string
     icon: LucideIcon
 }
+
+const frameworks = [
+    {
+        value: "next.js",
+        label: "Next.js",
+    },
+    {
+        value: "sveltekit",
+        label: "SvelteKit",
+    },
+    {
+        value: "nuxt.js",
+        label: "Nuxt.js",
+    },
+    {
+        value: "remix",
+        label: "Remix",
+    },
+    {
+        value: "astro",
+        label: "Astro",
+    },
+]
 
 const statuses: Status[] = [
     {
@@ -351,11 +329,11 @@ const invoices = [
 const Dashboard = () => {
     const [addStudentsMenu, setAddStudentsMenu] = useState(false);
     const [addClassroomMenu, setAddClassroomMenu] = useState(true);
-
     const [open, setOpen] = React.useState(false)
-    const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
+    const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
         null
     )
+    const [value, setValue] = React.useState("")
     const [position, setPosition] = React.useState("bottom")
     const [docs, setDocs] = useState<any[]>([]);
     const [submissions, setSubmissions] = useState<any[]>([]);
@@ -400,31 +378,7 @@ const Dashboard = () => {
     const [phoneNumberDetails, setPhoneNumberDetails] = React.useState(false);
     const { countryValue, stateValue, openStateDropdown, setOpenStateDropdown, setStateValue } = useDropdownStore();
     const [phone, setPhone] = React.useState("+1 (408) 996–1010");
-    const [inputedName, setInputedName] = React.useState("")
-    const [inputedEmail, setInputedEmail] = React.useState("")
-    const [inputedStatus, setInputedStatus] = React.useState("")
-    const [inputedFacebook, setInputedFacebook] = React.useState("")
-    const [inputedInstagam, setInputedInstagam] = React.useState("")
-    const [inputedCost, setInputedCost] = React.useState("")
-    const [inputedWebsite, setInputedWebsite] = React.useState("")
-    const [inputedCode, setInputedCode] = React.useState("")
-    const [inputedHostel, setInputedHostel] = React.useState("")
-    const [inputedMilitary, setInputedMilitary] = React.useState("")
-    const [inputedPhoneNumber, setInputedPhoneNumber] = React.useState(phone)
-    const [inputedLogo, setInputedLogo] = React.useState("")
-    const [inputedAddress, setInputedAddress] = React.useState(stateValue)
-    const [inputedRegion, setInputedRegion] = React.useState(countryValue)
-    const [inputedDescription, setInputedDescription] = React.useState("")
-    const [inputedImages, setInputedImages] = React.useState([])
-    const [inputedImage, setInputedImage] = React.useState("")
-    const { uploadImages, imagesUploadingProgress, uploadedImages, isImagesUploading } = useUploadImages(
-        "imageUploader",
-        { defaultUploadedFiles: [] }
-    )
-    const { uploadLogo, logoUploadprogresses, isLogoUploading, uploadedLogo } = useUploadLogo(
-        "imageUploader",
-        { defaultUploadedFiles: [] }
-    )
+
     const containerRef = useRef(null);
     const { images } = useUniversityImages();
     const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -456,65 +410,6 @@ const Dashboard = () => {
         });
         setSheetToggle(!sheetToggle);
     };
-
-    const handleOnChange = (e: any) => {
-        setPhone(e.target.value);
-    };
-    const phoneData = getPhoneData(phone);
-    function showPhoneNumberDetails() {
-        setPhoneNumberDetails(!phoneNumberDetails);
-    }
-    const handleNameChange = (event: any) => {
-        setInputedName(event.target.value);
-    }
-    const handleEmailChange = (event: any) => {
-        setInputedEmail(event.target.value);
-    }
-    const handleStatusChange = (event: any) => {
-        setInputedStatus(event);
-    }
-    const handleFacebookChange = (event: any) => {
-        setInputedFacebook(event.target.value);
-    }
-    const handleImageChange = (event: any) => {
-        setInputedImage(event.target.value);
-    }
-    const handleLogoChange = (event: any) => {
-        setInputedLogo(event.target.value);
-    }
-    const handleInstagramChange = (event: any) => {
-        setInputedInstagam(event.target.value);
-    }
-    const handleCostChange = (event: any) => {
-        setInputedCost(event.target.value);
-    }
-    const handleWebsiteChange = (event: any) => {
-        setInputedWebsite(event.target.value);
-    }
-    const handleCodeChange = (event: any) => {
-        setInputedCode(event.target.value);
-    }
-    const handleHostelChange = (event: any) => {
-        setInputedHostel(event);
-    }
-    const handleMilitaryChange = (event: any) => {
-        setInputedMilitary(event);
-    }
-    const handleDescriptionChange = (event: any) => {
-        setInputedDescription(event.target.value);
-    }
-    const syncImagesAndLogo = () => {
-        const newArray2: any = uploadedImages.map((file) => file.url);
-        setInputedImages(newArray2);
-        uploadedLogo.map((file: any) => {
-            setInputedLogo(file.url);
-            return null;
-        })
-        setCreateButtonDisabled(!createButtonDisabled);
-    }
-    const handleInputedValues = () => {
-        setInputedValues(!inputedValues);
-    }
 
     const plugin = React.useRef(
         Autoplay({ delay: 2000, stopOnInteraction: true })
@@ -585,10 +480,38 @@ const Dashboard = () => {
         fetchUsers();
     }, []);
 
-    const loadMore = async () => {
+    const loadMoreClassrooms = async () => {
         setLoading(true);
         const q = query(
             collection(db, "classrooms"),
+            startAfter(lastDoc),
+            limit(8)
+        );
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.docs.length === 0) {
+            toast({
+                title: 'There is no more data in the database.',
+                description: (
+                    <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                        <span>Please add more data to load more!</span>
+                    </div>
+                ),
+            });
+            setLoading(false);
+            return;
+        }
+        const newDocs = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+        setDocs([...docs, ...newDocs]);
+        setLastDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        setLoading(false);
+    };
+    const loadMoreSubmissions = async () => {
+        setLoading(true);
+        const q = query(
+            collection(db, "submissions"),
             startAfter(lastDoc),
             limit(8)
         );
@@ -701,7 +624,7 @@ const Dashboard = () => {
 
     const handleSignUp = async () => {
         const Create = await addDoc(collection(db, "users"), {
-            username: username, // Replace with your username input
+            username: username,
             password: password,
             email: generateRandomEmail(),
             userId: "",
@@ -715,57 +638,10 @@ const Dashboard = () => {
             // surname: "ManFromExistence",
             // avatar: "https://avater.com",
         });
-
-        // 4. Show success toast
         toast({
             title: "Success!",
             description: `Student created from username and password.`,
         });
-
-        // try {
-        //     // 1. Attempt to create the user with Firebase Authentication
-        //     // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        //     // return signOut(auth);
-
-        //     // // 2. If successful, get the user's UID
-        //     // const user = userCredential.user;
-        //     // const userId = user.uid;
-
-        //     // 3. Create the user document in Firestore
-        //     const Create = await addDoc(collection(db, "users"), {
-        //         username: username, // Replace with your username input
-        //         surname: "ManFromExistence",
-        //         avatar: "https://avater.com",
-        //         email: generateRandomEmail(),
-        //         region: "Bangladesh",
-        //         accountType: "student",
-        //         youtube: "https://youtube.com",
-        //         twitter: "https://twitter.com",
-        //         instagram: "https://instagram.com",
-        //         facebook: "https://facebook.com",
-        //         linkdin: "https://linkdin.com",
-        //         password: password, // Store the password securely (see note below)
-        //         userId: userId,
-        //     });
-
-        //     // 4. Show success toast
-        //     toast({
-        //         title: "Student Created Successfully!",
-        //         description: `All students are public.`,
-        //     });
-        // } catch (error: any) {
-        //     // 5. Handle errors from Firebase Authentication
-        //     console.error("Error creating user:", error);
-        //     toast({
-        //         title: "Uh oh! Something went wrong with your SignUp.",
-        //         description: (
-        //             <div className="flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1">
-        //                 <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-        //                 <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-        //             </div>
-        //         ),
-        //     });
-        // }
     };
 
     const EnhancedErrors = (input: any): string | null => {
@@ -936,9 +812,13 @@ const Dashboard = () => {
                                         </Card>
                                     </div>
                                 ))}
+
                             </div>
-                            <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
-                                Load More
+                            {submissions.length === 0 && <div className="flex-center w-full min-h-[70vh]">
+                                <CircleOff className="h-4 w-4 mr-2" />No Submissions Found!
+                            </div>}
+                            <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreSubmissions} disabled={loading}>
+                                Load More Submissions
                             </Button>
                         </main>) : null;
                     }
@@ -1076,6 +956,8 @@ const Dashboard = () => {
                                                                     ))}
                                                                 </SelectContent>
                                                             </Select> */}
+
+
                                                             {/* <div className="flex items-center space-x-4">
                                                                 <Popover open={open} onOpenChange={setOpen}>
                                                                     <PopoverTrigger asChild>
@@ -1086,41 +968,31 @@ const Dashboard = () => {
                                                                         >
                                                                             {selectedStatus ? (
                                                                                 <>
-                                                                                    <selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
-                                                                                    {selectedStatus.label}
+                                                                                    {selectedStatus.username}
                                                                                 </>
                                                                             ) : (
-                                                                                <>+ set student status</>
+                                                                                <>+ Add Student</>
                                                                             )}
                                                                         </Button>
                                                                     </PopoverTrigger>
                                                                     <PopoverContent className="p-0" side="right" align="start">
                                                                         <Command>
-                                                                            <CommandInput placeholder="Change status..." />
+                                                                            <CommandInput placeholder="Search students..." />
                                                                             <CommandList>
                                                                                 <CommandEmpty>No results found.</CommandEmpty>
                                                                                 <CommandGroup>
-                                                                                    {statuses.map((status) => (
-                                                                                        <CommandItem
-                                                                                            key={status.value}
-                                                                                            value={status.value}
+                                                                                    {users.map((user:any) => (
+                                                                                        user.role === "student" && <CommandItem
+                                                                                            key={user.userId}
+                                                                                            value={user.userId}
                                                                                             onSelect={(value) => {
                                                                                                 setSelectedStatus(
-                                                                                                    statuses.find((priority) => priority.value === value) ||
+                                                                                                    users.find((user:any) => user.userId === value) ||
                                                                                                     null
                                                                                                 )
-                                                                                                setOpen(false)
                                                                                             }}
                                                                                         >
-                                                                                            <status.icon
-                                                                                                className={cn(
-                                                                                                    "mr-2 h-4 w-4",
-                                                                                                    status.value === selectedStatus?.value
-                                                                                                        ? "opacity-100"
-                                                                                                        : "opacity-40"
-                                                                                                )}
-                                                                                            />
-                                                                                            <span>{status.label}</span>
+                                                                                            <span>{user.username}</span>
                                                                                         </CommandItem>
                                                                                     ))}
                                                                                 </CommandGroup>
@@ -1129,7 +1001,49 @@ const Dashboard = () => {
                                                                     </PopoverContent>
                                                                 </Popover>
                                                             </div> */}
-
+                                                            <Popover open={open} onOpenChange={setOpen}>
+                                                                <PopoverTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        role="combobox"
+                                                                        aria-expanded={open}
+                                                                        className="w-full justify-between"
+                                                                    >
+                                                                        {value
+                                                                            ? value
+                                                                            : "Add student..."}
+                                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                                    </Button>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-[342px] p-0">
+                                                                    <Command>
+                                                                        <CommandInput placeholder="Search students..." />
+                                                                        <CommandList>
+                                                                            <CommandEmpty>No student found.</CommandEmpty>
+                                                                            <CommandGroup>
+                                                                                {users.map((user: any) => (
+                                                                                    user.role === "student" && <CommandItem
+                                                                                        key={user.userId}
+                                                                                        value={user.userId}
+                                                                                        onSelect={(currentValue) => {
+                                                                                            setValue(currentValue === value ? "" : currentValue)
+                                                                                            // setOpen(false)
+                                                                                        }}
+                                                                                    >
+                                                                                        <Check
+                                                                                            className={cn(
+                                                                                                "mr-2 h-4 w-4",
+                                                                                                value === user.userId ? "opacity-100" : "opacity-0"
+                                                                                            )}
+                                                                                        />
+                                                                                        {user.username}
+                                                                                    </CommandItem>
+                                                                                ))}
+                                                                            </CommandGroup>
+                                                                        </CommandList>
+                                                                    </Command>
+                                                                </PopoverContent>
+                                                            </Popover>
                                                             <div className="w-full flex gap-1.5">
                                                                 <Button className="w-full" onClick={removeAllStudents} variant="outline">
                                                                     Remove All Students
@@ -1172,7 +1086,7 @@ const Dashboard = () => {
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
-                                                    students: students.map((student) => student.id),
+                                                    students: students.map((student) => student.userId),
                                                     time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                                 })
                                                 toast({
@@ -1185,7 +1099,7 @@ const Dashboard = () => {
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
-                                                    students: students.map((student) => student.id),
+                                                    students: students.map((student) => student.userId),
                                                     time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                                 }]);
                                             }} className="w-full">Create Classroom</Button>
@@ -1195,7 +1109,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="admin-panel-lists">
-                                {docs.map((items: any) => auth && auth.currentUser && auth.currentUser.uid  && (
+                                {docs.map((items: any) => (
                                     <div key={items.id}>
                                         <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
                                             <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
@@ -1312,16 +1226,14 @@ const Dashboard = () => {
                                                                             <span>Username</span>
                                                                             <span>Actions</span>
                                                                         </div>
-                                                                        {/* {
+                                                                        {
                                                                             items.students.map((student: any) => {
                                                                                 return users.map((user: any) => {
-                                                                                    if (user.id === student) {
+                                                                                    if (user.userId === student) {
                                                                                         return (
                                                                                             <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                                 <span>{user.username}</span>
                                                                                                 <Trash2 onClick={() => {
-                                                                                                    // const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                                                    // setStudents(updatedStudents);
                                                                                                     toast({
                                                                                                         title: "Still In devlopment.",
                                                                                                         description: `We will soon add this functionality.`,
@@ -1334,8 +1246,8 @@ const Dashboard = () => {
                                                                                     }
                                                                                 });
                                                                             })
-                                                                        } */}
-                                                                        {
+                                                                        }
+                                                                        {/* {
                                                                             items.students.map((student: any) => (
                                                                                 <div key={student} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                     <span>{student.username}</span>
@@ -1349,7 +1261,7 @@ const Dashboard = () => {
                                                                                     }} className="h-4 w-4" />
                                                                                 </div>
                                                                             ))
-                                                                        }
+                                                                        } */}
                                                                     </div>
                                                                 </div>
                                                             </ ScrollArea>
@@ -1367,10 +1279,15 @@ const Dashboard = () => {
                                         </Card>
                                     </div>
                                 ))}
+
                             </div>
-                            <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
-                                Load More
+                            {docs.length === 0 && <div className="flex-center w-full min-h-[70vh]">
+                                <CircleOff className="h-4 w-4 mr-2" />No Classroom Found!
+                            </div>}
+                            <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreClassrooms} disabled={loading}>
+                                Load More Classrooms
                             </Button>
+
                         </main>) : null;
                     }
                 })
@@ -1892,7 +1809,7 @@ const Dashboard = () => {
             })} */}
 
 
-            {auth.currentUser ? null : <div className="min-h-[500px] w-full flex items-center justify-center flex-col gap-5 dark:bg-yellow-500 rounded-md">
+            {auth.currentUser ? null : <div className="min-h-[100vh] w-full flex items-center justify-center flex-col gap-5 dark:bg-yellow-500 rounded-md">
                 <span className="rainbow-text font-bold text-center">Please Login to see your dashboard details!</span>
                 <Link href="/login" className="">
                     <Button>Login</Button>

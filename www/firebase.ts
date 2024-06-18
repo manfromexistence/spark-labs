@@ -75,3 +75,4 @@ lines.forEach(async (line, index) => {
   processedCount++;
   console.log(`Processed ${processedCount} out of ${totalLines} documents`);
 });
+

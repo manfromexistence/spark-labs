@@ -6,6 +6,8 @@ import {
     CheckCircle2,
     Circle,
     CircleOff,
+    Eye,
+    EyeOff,
     HelpCircle,
     LucideIcon,
     XCircle,
@@ -83,7 +85,7 @@ const statuses: Status[] = [
 
 import date from 'date-and-time';
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, getDoc, startAfter } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, getDoc, startAfter, writeBatch } from "firebase/firestore";
 import { useEffect, useRef } from "react";
 import { limit, query, onSnapshot } from "firebase/firestore";
 import { Chrome, CircleDollarSign, Code, Earth, Facebook, Flame, Hotel, Instagram, Mail, MapPinned, MessageCircleDashed, Phone, PocketKnife, Trash2, University } from "lucide-react"
@@ -327,9 +329,12 @@ const invoices = [
 ]
 
 const Dashboard = () => {
+    const [csvData, setCsvData] = useState<any>("");
+    const [isVisiblePassword, setIsVisiblePassword] = useState(true);
+    const togglePasswordVisibility = () => setIsVisiblePassword(!isVisiblePassword);
     const [addStudentsMenu, setAddStudentsMenu] = useState(false);
     const [addClassroomMenu, setAddClassroomMenu] = useState(true);
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false)
     const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
         null
     )
@@ -627,6 +632,7 @@ const Dashboard = () => {
             username: username,
             password: password,
             email: generateRandomEmail(),
+            role: "student",
             userId: "",
             // region: "Bangladesh",
             // accountType: "student",
@@ -673,15 +679,15 @@ const Dashboard = () => {
             default: return "Try again later or contact support.";
         }
     };
-    return (
 
+    return (
         <>
             {
                 users && users.map((user: any) => {
                     if (user.role === "student") {
                         return auth && auth.currentUser && auth.currentUser.uid === user.userId ? (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Student Workshop!</span>
+                                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">{user.username.toUpperCase()}'s Workshop!</span>
                                 <div className="flex-1 flex items-end justify-end gap-3">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
@@ -825,17 +831,17 @@ const Dashboard = () => {
                     if (user.role === "teacher") {
                         return auth && auth.currentUser && auth.currentUser.uid === user.userId ? (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Teacher Workshop!</span>
+                                <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">{user.username.toUpperCase()}'s Workshop!</span>
                                 <div className="flex-1 flex items-end justify-end gap-3">
                                     <Dialog open={addStudentsMenu} onOpenChange={setAddStudentsMenu}>
                                         <DialogTrigger asChild>
                                             <Button variant="outline">Add New Student</Button>
                                         </DialogTrigger>
                                         <DialogContent className="flex-center sm:max-w-[450px]">
-                                            <Tabs defaultValue="manually" className="w-[400px]">
+                                            <Tabs defaultValue="automatically" className="w-[400px]">
                                                 <TabsList className="grid w-full grid-cols-2">
                                                     <TabsTrigger value="manually">Manually</TabsTrigger>
-                                                    <TabsTrigger value="automatic">Automatic</TabsTrigger>
+                                                    <TabsTrigger value="automatically">Automatically</TabsTrigger>
                                                 </TabsList>
                                                 <TabsContent value="manually">
                                                     <Card>
@@ -850,7 +856,27 @@ const Dashboard = () => {
                                                             </div>
                                                             <div className="space-y-2">
                                                                 <Label htmlFor="password">Password</Label>
-                                                                <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
+                                                                <div className="w-full relative">
+                                                                    <Input
+                                                                        required
+                                                                        type={isVisiblePassword ? "text" : "password"}
+                                                                        id="password"
+                                                                        placeholder="Enter password"
+                                                                        onChange={(e) => setPassword(e.target.value)}
+                                                                        className="w-full rounded-md border text-muted-foreground"
+                                                                    />
+                                                                    <div
+                                                                        onClick={togglePasswordVisibility}
+                                                                        className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                                                                    >
+                                                                        {isVisiblePassword ? (
+                                                                            <Eye className="text-muted-foreground hover:text-primary" />
+                                                                        ) : (
+                                                                            <EyeOff className="text-muted-foreground hover:text-primary" />
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                                {/* <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" /> */}
                                                             </div>
                                                         </CardContent>
                                                         <CardFooter>
@@ -870,7 +896,7 @@ const Dashboard = () => {
                                                         </CardFooter>
                                                     </Card>
                                                 </TabsContent>
-                                                <TabsContent value="automatic">
+                                                <TabsContent value="automatically">
                                                     <Card>
                                                         <CardHeader>
                                                             <CardTitle>Create Students From CSV File</CardTitle>
@@ -888,19 +914,104 @@ const Dashboard = () => {
                                                                     const reader = new FileReader();
 
                                                                     reader.onloadend = (e) => {
-                                                                        const result = e.target?.result;
+                                                                        const result: any = e.target?.result;
                                                                         if (!result) return;
 
-                                                                        // Replace this with your function
-                                                                        alert(result);
+                                                                        setCsvData(result);
+
+                                                                        // const lines = result.split('\n');
+                                                                        // lines.shift(); // Remove the header line
+
+                                                                        // let processedCount = 0;
+                                                                        // const totalLines = lines.length;
+
+                                                                        // const usersCollection = collection(db, 'dummy'); // Reference to the 'users' collection
+
+                                                                        // lines.forEach(async (line: { split: (arg0: string) => [any, any] }, index: any) => {
+                                                                        //     const [username, password] = line.split(',');
+
+                                                                        //     // Create a new batch for each iteration
+                                                                        //     const batch = writeBatch(db);
+
+                                                                        //     // Use await to get the DocumentReference
+                                                                        //     const docRef = await addDoc(usersCollection, {
+                                                                        //         username: username,
+                                                                        //         password: password,
+                                                                        //         role: "student",
+                                                                        //         userId: "",
+                                                                        //         email: generateRandomEmail()
+                                                                        //     });
+
+                                                                        //     // Now you have the DocumentReference
+                                                                        //     batch.set(docRef, {
+                                                                        //         username: username,
+                                                                        //         password: password,
+                                                                        //         role: "student",
+                                                                        //         userId: "",
+                                                                        //         email: generateRandomEmail()
+                                                                        //     });
+
+                                                                        //     // Commit the batch immediately
+                                                                        //     await batch.commit();
+
+                                                                        //     // Update progress indicator
+                                                                        //     processedCount++;
+                                                                        //     console.log(`Processed ${processedCount} out of ${totalLines} documents`);
+                                                                        // });
                                                                     };
                                                                     reader.readAsText(file);
+
+                                                                    // setAddStudentsMenu(!addStudentsMenu);
+                                                                    // toast({
+                                                                    //     title: "Success!",
+                                                                    //     description: `Students created from csv file.`,
+                                                                    // });
+
                                                                 }} id="load" placeholder="Choose A File" />
                                                             </div>
 
                                                         </CardContent>
                                                         <CardFooter>
                                                             <Button className='w-full' onClick={() => {
+                                                                const lines = csvData.split('\n');
+                                                                lines.shift(); // Remove the header line
+
+                                                                let processedCount = 0;
+                                                                const totalLines = lines.length;
+
+                                                                const usersCollection = collection(db, 'dumbmer'); // Reference to the 'users' collection
+
+                                                                lines.forEach(async (line: { split: (arg0: string) => [any, any] }, index: any) => {
+                                                                    const [username, password] = line.split(',');
+
+                                                                    // Create a new batch for each iteration
+                                                                    const batch = writeBatch(db);
+
+                                                                    // Use await to get the DocumentReference
+                                                                    const docRef = await addDoc(usersCollection, {
+                                                                        username: username,
+                                                                        password: password,
+                                                                        role: "student",
+                                                                        userId: "",
+                                                                        email: generateRandomEmail()
+                                                                    });
+
+                                                                    // Now you have the DocumentReference
+                                                                    batch.set(docRef, {
+                                                                        username: username,
+                                                                        password: password,
+                                                                        role: "student",
+                                                                        userId: "",
+                                                                        email: generateRandomEmail()
+                                                                    });
+
+                                                                    // Commit the batch immediately
+                                                                    await batch.commit();
+
+                                                                    // Update progress indicator
+                                                                    processedCount++;
+                                                                    console.log(`Processed ${processedCount} out of ${totalLines} documents`);
+                                                                });
                                                                 setAddStudentsMenu(!addStudentsMenu);
                                                                 toast({
                                                                     title: "Success!",
@@ -926,7 +1037,7 @@ const Dashboard = () => {
                                                         <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
                                                     </CardHeader>
                                                     <CardContent className="space-y-4">
-                                                        <div className="space-y-2">
+                                                        {/* <div className="space-y-2">
                                                             <Label htmlFor="title">Title</Label>
                                                             <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
                                                         </div>
@@ -937,7 +1048,7 @@ const Dashboard = () => {
                                                         <div className="space-y-2">
                                                             <Label htmlFor="description">Description</Label>
                                                             <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
-                                                        </div>
+                                                        </div> */}
                                                         <div className="w-full space-y-2">
                                                             <Label htmlFor="students">Students</Label>
 
@@ -1282,7 +1393,7 @@ const Dashboard = () => {
 
                             </div>
                             {docs.length === 0 && <div className="flex-center w-full min-h-[70vh]">
-                                <CircleOff className="h-4 w-4 mr-2" />No Classroom Found!
+                                <CircleOff className="h-4 w-4 mr-2" />No Classrooms Found!
                             </div>}
                             <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreClassrooms} disabled={loading}>
                                 Load More Classrooms
@@ -1292,523 +1403,6 @@ const Dashboard = () => {
                     }
                 })
             }
-
-            {/* {users && users.map((user: any) => {
-                auth && auth.currentUser && auth.currentUser.uid === user.userId ? (<div>Yes</div>) : (<div>No</div>);
-
-                if (user.accountType === "student") {
-                    return (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
-                        <div className="flex items-center justify-between mb-6">
-                            <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Student Workshop!</span>
-                            <div className="flex-1 flex items-end justify-end gap-3">
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline">Add New Student</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
-                                        <Card className="w-full max-w-md border-0">
-                                            <CardHeader>
-                                                <CardTitle>Create New Student</CardTitle>
-                                                <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
-                                            </CardHeader>
-                                            <CardContent className="space-y-4">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="username">Username</Label>
-                                                    <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="password">Password</Label>
-                                                    <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
-                                                </div>
-                                            </CardContent>
-                                            <CardFooter>
-                                                <Button onClick={async () => {
-                                                    const Create = await addDoc(collection(db, "users"), {
-                                                        username: username,
-                                                        surname: "ManFromExistence",
-                                                        avatar: "https://avater.com",
-                                                        email: "ajju40959@gmail.com",
-                                                        region: "Bangladesh",
-                                                        accountType: "student",
-                                                        youtube: "https://youtube.com",
-                                                        twitter: "https://twitter.com",
-                                                        instagram: "https://instagram.com",
-                                                        facebook: "https://facebook.com",
-                                                        linkdin: "https://linkdin.com",
-                                                        password: password,
-                                                    })
-                                                    toast({
-                                                        title: "Student Created Successfully!",
-                                                        description: `All students are public.`,
-                                                    });
-                                                }} className="w-full">Create Student</Button>
-                                            </CardFooter>
-                                        </Card>
-                                    </DialogContent>
-                                </Dialog>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline">Add New Classroom</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
-                                        <ScrollArea className="h-[450px] w-full rounded-md border p-1">
-                                            <Card className="w-full max-w-md border-0">
-                                                <CardHeader>
-                                                    <CardTitle>Create New Classroom</CardTitle>
-                                                    <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
-                                                </CardHeader>
-                                                <CardContent className="space-y-4">
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="title">Title</Label>
-                                                        <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="thumbnail">Thumbnail</Label>
-                                                        <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="description">Description</Label>
-                                                        <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
-                                                    </div>
-                                                    <div className="w-full flex justify-between">
-                                                        <Button onClick={removeAllStudents} variant="outline">
-                                                            Remove All Students
-                                                        </Button>
-                                                        <Button onClick={addAllStudents} variant="outline">
-                                                            Add All Students
-                                                        </Button>
-                                                    </div>
-                                                    <div className="w-full h-auto rounded-md border p-3">
-                                                        <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                            <span>Username</span>
-                                                            <span>Actions</span>
-                                                        </div>
-                                                        {
-                                                            students.map((student: any) => (
-                                                                <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                    <span>{student.username}</span>
-                                                                    <Trash2 onClick={() => {
-                                                                        const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                        setStudents(updatedStudents);
-                                                                    }} className="h-4 w-4" />
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </ScrollArea>
-                                        <Button onClick={async () => {
-                                            const Create = await addDoc(collection(db, "classrooms"), {
-                                                title: title,
-                                                thumbnail: thumbnail,
-                                                description: description,
-                                                students: students.map((student) => student.id),
-                                                time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
-                                            })
-                                            toast({
-                                                title: "Classroom Created Successfully!",
-                                                description: `All classrooms are public.`,
-                                            });
-                                        }} className="w-full">Create Classroom</Button>
-
-                                    </DialogContent>
-                                </Dialog>
-                            </div>
-                        </div>
-                        <div className="admin-panel-lists place-content-center">
-                            {docs.map((items: any) => (
-                                <div key={items.id}>
-                                    <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
-                                        <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
-                                            <Carousel
-                                                plugins={[plugin.current]}
-                                                setApi={setApi}
-                                                className="w-full !min-h-min"
-                                                onMouseEnter={plugin.current.stop}
-                                                onMouseLeave={plugin.current.reset}
-                                            >
-                                                <CarouselContent>
-                                                    {items.images && items.images.length > 0 ? items.images.map((index: any) => (
-                                                        <CarouselItem key={index} className="h-[250px] border-b">
-                                                            <div className="h-full">
-                                                                <Card>
-                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
-                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
-                                                                            <Image
-                                                                                src={index || "/placeholder.svg"}
-                                                                                alt="Images"
-                                                                                fill
-                                                                                sizes="(min-width: 250px) 300px, 100vw"
-                                                                                loading="lazy"
-                                                                                className="rounded-md object-cover"
-                                                                            />
-                                                                        </AspectRatio>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </div>
-                                                        </CarouselItem>
-                                                    )) : items.thumbnail ? Array.from({ length: 5 }).map((_, index) => (
-                                                        <CarouselItem key={index} className="h-[250px] border-b">
-                                                            <div className="h-full">
-                                                                <Card>
-                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
-                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
-                                                                            <Image
-                                                                                src={items.thumbnail || "/placeholder.svg"}
-                                                                                alt="Image"
-                                                                                fill
-                                                                                sizes="(min-width: 250px) 300px, 100vw"
-                                                                                loading="lazy"
-                                                                                className="rounded-md object-cover"
-                                                                            />
-                                                                        </AspectRatio>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </div>
-                                                        </CarouselItem>
-                                                    )) : ""}
-                                                </CarouselContent>
-                                            </Carousel>
-                                        </div>
-                                        <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
-                                            <div>
-                                                <h2 className="text-2xl font-bold w-full truncate">{items.title || "No Name Provided for this university."}</h2>
-                                            </div>
-                                            {typeof items.universityDescription === "object" ? JSON.parse(items.universityDescription).map((item: any) => (
-                                                <div key={item.id}>
-                                                    {item.children.map((child: any) => (
-                                                        <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground" key={child.text}>{child.text}</p>
-                                                    ))}
-                                                </div>
-                                            )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
-                                            <div className="flex flex-col flex-1 h-auto gap-3">
-                                                <Dialog>
-                                                    <DialogTrigger asChild>
-                                                        <Button className="w-full" variant="outline">View</Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent className="lg:min-w-[650px]">
-                                                        <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
-                                                            <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Title: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Description: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Thumbnail: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Time: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="w-full h-auto rounded-md border p-3">
-                                                                    <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                        <span>Students</span>
-                                                                    </div>
-                                                                    {
-                                                                        items.students.map((student: any) => {
-                                                                            return users.map((user: any) => {
-                                                                                if (user.id === student) {
-                                                                                    return (
-                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
-                                                                                            <span>{user.username}</span>
-                                                                                        </div>
-                                                                                    );
-                                                                                }
-                                                                            });
-                                                                        })
-                                                                    }
-
-                                                                </div>
-                                                            </div>
-                                                        </ ScrollArea>
-                                                    </DialogContent>
-                                                </Dialog>
-                                                <Button onClick={async () => {
-                                                    await deleteDoc(doc(db, "classrooms", items.id));
-                                                    const newDocs = docs.filter((item) => item.id !== items.id);
-                                                    setDocs(newDocs);
-                                                }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            ))}
-                        </div>
-                        <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
-                            Load More
-                        </Button>
-                    </main>)
-                }
-                if (user.accountType === "teacher") {
-                    return (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
-                        <div className="flex items-center justify-between mb-6">
-                            <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Teacher Workshop!</span>
-                            <div className="flex-1 flex items-end justify-end gap-3">
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline">Add New Student</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
-                                        <Card className="w-full max-w-md border-0">
-                                            <CardHeader>
-                                                <CardTitle>Create New Student</CardTitle>
-                                                <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
-                                            </CardHeader>
-                                            <CardContent className="space-y-4">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="username">Username</Label>
-                                                    <Input onChange={(e: any) => setUsername(e.target.value)} id="username" placeholder="Enter username" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="password">Password</Label>
-                                                    <Input onChange={(e: any) => setPassword(e.target.value)} id="password" type="password" placeholder="Enter password" />
-                                                </div>
-                                            </CardContent>
-                                            <CardFooter>
-                                                <Button onClick={async () => {
-                                                    const Create = await addDoc(collection(db, "users"), {
-                                                        username: username,
-                                                        surname: "ManFromExistence",
-                                                        avatar: "https://avater.com",
-                                                        email: "ajju40959@gmail.com",
-                                                        region: "Bangladesh",
-                                                        accountType: "student",
-                                                        youtube: "https://youtube.com",
-                                                        twitter: "https://twitter.com",
-                                                        instagram: "https://instagram.com",
-                                                        facebook: "https://facebook.com",
-                                                        linkdin: "https://linkdin.com",
-                                                        password: password,
-                                                    })
-                                                    toast({
-                                                        title: "Student Created Successfully!",
-                                                        description: `All students are public.`,
-                                                    });
-                                                }} className="w-full">Create Student</Button>
-                                            </CardFooter>
-                                        </Card>
-                                    </DialogContent>
-                                </Dialog>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline">Add New Classroom</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
-                                        <ScrollArea className="h-[450px] w-full rounded-md border p-1">
-                                            <Card className="w-full max-w-md border-0">
-                                                <CardHeader>
-                                                    <CardTitle>Create New Classroom</CardTitle>
-                                                    <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
-                                                </CardHeader>
-                                                <CardContent className="space-y-4">
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="title">Title</Label>
-                                                        <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="thumbnail">Thumbnail</Label>
-                                                        <Input onChange={(e: any) => setThumbnail(e.target.value)} id="thumbnail" placeholder="Enter Thumbnail Link" />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="description">Description</Label>
-                                                        <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
-                                                    </div>
-                                                    <div className="w-full flex justify-between">
-                                                        <Button onClick={removeAllStudents} variant="outline">
-                                                            Remove All Students
-                                                        </Button>
-                                                        <Button onClick={addAllStudents} variant="outline">
-                                                            Add All Students
-                                                        </Button>
-                                                    </div>
-                                                    <div className="w-full h-auto rounded-md border p-3">
-                                                        <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                            <span>Username</span>
-                                                            <span>Actions</span>
-                                                        </div>
-                                                        {
-                                                            students.map((student: any) => (
-                                                                <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                    <span>{student.username}</span>
-                                                                    <Trash2 onClick={() => {
-                                                                        const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                        setStudents(updatedStudents);
-                                                                    }} className="h-4 w-4" />
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </ScrollArea>
-                                        <Button onClick={async () => {
-                                            const Create = await addDoc(collection(db, "classrooms"), {
-                                                title: title,
-                                                thumbnail: thumbnail,
-                                                description: description,
-                                                students: students.map((student) => student.id),
-                                                time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
-                                            })
-                                            toast({
-                                                title: "Classroom Created Successfully!",
-                                                description: `All classrooms are public.`,
-                                            });
-                                        }} className="w-full">Create Classroom</Button>
-
-                                    </DialogContent>
-                                </Dialog>
-                            </div>
-                        </div>
-                        <div className="admin-panel-lists place-content-center">
-                            {docs.map((items: any) => (
-                                <div key={items.id}>
-                                    <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
-                                        <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
-                                            <Carousel
-                                                plugins={[plugin.current]}
-                                                setApi={setApi}
-                                                className="w-full !min-h-min"
-                                                onMouseEnter={plugin.current.stop}
-                                                onMouseLeave={plugin.current.reset}
-                                            >
-                                                <CarouselContent>
-                                                    {items.images && items.images.length > 0 ? items.images.map((index: any) => (
-                                                        <CarouselItem key={index} className="h-[250px] border-b">
-                                                            <div className="h-full">
-                                                                <Card>
-                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
-                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
-                                                                            <Image
-                                                                                src={index || "/placeholder.svg"}
-                                                                                alt="Images"
-                                                                                fill
-                                                                                sizes="(min-width: 250px) 300px, 100vw"
-                                                                                loading="lazy"
-                                                                                className="rounded-md object-cover"
-                                                                            />
-                                                                        </AspectRatio>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </div>
-                                                        </CarouselItem>
-                                                    )) : items.thumbnail ? Array.from({ length: 5 }).map((_, index) => (
-                                                        <CarouselItem key={index} className="h-[250px] border-b">
-                                                            <div className="h-full">
-                                                                <Card>
-                                                                    <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
-                                                                        <AspectRatio ratio={16 / 9} className="h-[300px] ">
-                                                                            <Image
-                                                                                src={items.thumbnail || "/placeholder.svg"}
-                                                                                alt="Image"
-                                                                                fill
-                                                                                sizes="(min-width: 250px) 300px, 100vw"
-                                                                                loading="lazy"
-                                                                                className="rounded-md object-cover"
-                                                                            />
-                                                                        </AspectRatio>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </div>
-                                                        </CarouselItem>
-                                                    )) : ""}
-                                                </CarouselContent>
-                                            </Carousel>
-                                        </div>
-                                        <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
-                                            <div>
-                                                <h2 className="text-2xl font-bold w-full truncate">{items.title || "No Name Provided for this university."}</h2>
-                                            </div>
-                                            {typeof items.universityDescription === "object" ? JSON.parse(items.universityDescription).map((item: any) => (
-                                                <div key={item.id}>
-                                                    {item.children.map((child: any) => (
-                                                        <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground" key={child.text}>{child.text}</p>
-                                                    ))}
-                                                </div>
-                                            )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
-                                            <div className="flex flex-col flex-1 h-auto gap-3">
-                                                <Dialog>
-                                                    <DialogTrigger asChild>
-                                                        <Button className="w-full" variant="outline">View</Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent className="lg:min-w-[650px]">
-                                                        <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
-                                                            <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Title: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Description: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Thumbnail: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="flex items-center justify-start gap-2">
-                                                                    <p className="flex flex-row text-center">Time: </p>
-                                                                    <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
-                                                                </div>
-                                                                <Separator />
-                                                                <div className="w-full h-auto rounded-md border p-3">
-                                                                    <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                        <span>Students</span>
-                                                                    </div>
-                                                                    {
-                                                                        items.students.map((student: any) => {
-                                                                            return users.map((user: any) => {
-                                                                                if (user.id === student) {
-                                                                                    return (
-                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
-                                                                                            <span>{user.username}</span>
-                                                                                        </div>
-                                                                                    );
-                                                                                }
-                                                                            });
-                                                                        })
-                                                                    }
-
-                                                                </div>
-                                                            </div>
-                                                        </ ScrollArea>
-                                                    </DialogContent>
-                                                </Dialog>
-                                                <Button onClick={async () => {
-                                                    await deleteDoc(doc(db, "classrooms", items.id));
-                                                    const newDocs = docs.filter((item) => item.id !== items.id);
-                                                    setDocs(newDocs);
-                                                }} className="w-full bg-red-500 text-white hover:bg-red-600" variant="destructive">
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            ))}
-                        </div>
-                        <Button variant={'outline'} className="w-full mt-5" onClick={loadMore} disabled={loading}>
-                            Load More
-                        </Button>
-                    </main>)
-                }
-            })} */}
-
-
             {auth.currentUser ? null : <div className="min-h-[100vh] w-full flex items-center justify-center flex-col gap-5 dark:bg-yellow-500 rounded-md">
                 <span className="rainbow-text font-bold text-center">Please Login to see your dashboard details!</span>
                 <Link href="/login" className="">

@@ -323,17 +323,24 @@ const Login: NextPage = () => {
   const handleSignIn = async (e: any) => {
     e.preventDefault();
     const USER_DETAILS = docs.filter((user: any) => user.username === username);
-    if (USER_DETAILS.length > 0) {
+    if (USER_DETAILS) {
+
+
       toast({
-          title: "Thanks for signing in!",
-          description: `${USER_DETAILS}`,
+        title: "Thanks for signing in!",
+        description: `${JSON.stringify(USER_DETAILS)}`,
       });
-  } else {
+
+
+
+
+
+    } else {
       toast({
         title: "There is no user with this Username!",
         description: `${username} is not available. Choose a different Username`,
-    });
-  }
+      });
+    }
 
 
     // signInWithEmailAndPassword(auth, email, password)
@@ -627,7 +634,7 @@ const Login: NextPage = () => {
             </Link>
           </div>
         </div> */}
-        <Tabs defaultValue="teacher" className="w-full">
+        {/* <Tabs defaultValue="teacher" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="teacher">Teacher</TabsTrigger>
             <TabsTrigger value="student">Student</TabsTrigger>
@@ -746,7 +753,74 @@ const Login: NextPage = () => {
               </CardFooter>
             </Card>
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
+        <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
+          <div className="grid min-w-full gap-2 text-center">
+            <h1 className="text-3xl font-bold">Welcome back!</h1>
+            <p className="text-balance text-muted-foreground">
+              Please enter your details
+            </p>
+          </div>
+          <div className="grid gap-4 px-3">
+            <div className="grid w-full gap-2">
+              <Label htmlFor="username">
+                Username
+              </Label>
+              <Input value={username} id="username" type="text" placeholder="Emon" required onChange={(e) => setUsername(e.target.value)} className="w-full rounded-md !border text-muted-foreground" />
+
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">
+                  Password
+                </Label>
+              </div>
+              <div className="w-full relative">
+                <Input
+                  required
+                  value={password}
+                  type={isVisiblePassword ? "text" : "password"}
+                  id="password"
+                  placeholder="YourPassword123"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-md !border text-muted-foreground"
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3.5 top-1/2 translate-y-[-50%]"
+                >
+                  {isVisiblePassword ? (
+                    <Eye className="hover:text-[#804DFE]" />
+                  ) : (
+                    <EyeOff className="hover:text-[#804DFE]" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/forgot-password"
+              className="flex w-full items-end justify-end text-sm underline"
+            >
+              Forgot your password?
+            </Link>
+            <Button
+              onClick={handleSignIn}
+              className="w-full"
+            >
+              Login
+            </Button>
+          </div>
+          <div className="mt-4 min-w-full space-x-1 text-center text-sm">
+            <span>Don't have an account?</span>
+            <Link
+              href="/register"
+              className="bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text font-bold text-transparent"
+            >
+              Register
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

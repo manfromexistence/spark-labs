@@ -47,6 +47,62 @@
 // export default StudentList;
 "use client"
 
+import {
+    ArrowUpCircle,
+    CheckCircle2,
+    Circle,
+    HelpCircle,
+    LucideIcon,
+    XCircle,
+} from "lucide-react"
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
+type Status = {
+    value: string
+    label: string
+    icon: LucideIcon
+}
+
+const statuses: Status[] = [
+    {
+        value: "backlog",
+        label: "Backlog",
+        icon: HelpCircle,
+    },
+    {
+        value: "todo",
+        label: "Todo",
+        icon: Circle,
+    },
+    {
+        value: "in progress",
+        label: "In Progress",
+        icon: ArrowUpCircle,
+    },
+    {
+        value: "done",
+        label: "Done",
+        icon: CheckCircle2,
+    },
+    {
+        value: "canceled",
+        label: "Canceled",
+        icon: XCircle,
+    },
+]
+
 import date from 'date-and-time';
 import { initializeApp } from "firebase/app";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, getFirestore, doc, getDoc, startAfter } from "firebase/firestore";
@@ -294,15 +350,20 @@ const invoices = [
 
 const Dashboard = () => {
     const [addStudentsMenu, setAddStudentsMenu] = useState(false);
-    const [addClassroomMenu, setAddClassroomMenu] = useState(false);
+    const [addClassroomMenu, setAddClassroomMenu] = useState(true);
 
+    const [open, setOpen] = React.useState(false)
+    const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
+        null
+    )
     const [position, setPosition] = React.useState("bottom")
     const [docs, setDocs] = useState<any[]>([]);
     const [submissions, setSubmissions] = useState<any[]>([]);
     const [users, setUsers] = useState<any>([]);
     const [classrooms, setClassrooms] = useState<any>([]);
     const [students, setStudents] = useState<any[]>([]);
-    const studentUsers = users.filter((user: any) => user.accountType === "student");
+    const [addOneStudent, setAddOneStudent] = useState<any[]>([]);
+    const studentUsers = users.filter((user: any) => user.role === "student");
 
     const addAllStudents = () => {
         setStudents(studentUsers);
@@ -509,6 +570,7 @@ const Dashboard = () => {
                 ...doc.data(),
             }));
             setUsers(newDocs);
+            setAddOneStudent(newDocs.filter((user: any) => user.role === "student"));
         };
         const fetchClassroom = async () => {
             const q = query(collection(db, "classrooms"));
@@ -526,7 +588,7 @@ const Dashboard = () => {
     const loadMore = async () => {
         setLoading(true);
         const q = query(
-            collection(db, "universities"),
+            collection(db, "classrooms"),
             startAfter(lastDoc),
             limit(8)
         );
@@ -796,7 +858,7 @@ const Dashboard = () => {
                                                                         <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
                                                                             <AspectRatio ratio={16 / 9} className="h-[300px] ">
                                                                                 <Image
-                                                                                    src={items.thumbnail || "/placeholder.svg"}
+                                                                                    src={items.thumbnail}
                                                                                     alt="Image"
                                                                                     fill
                                                                                     sizes="(min-width: 250px) 300px, 100vw"
@@ -811,6 +873,8 @@ const Dashboard = () => {
                                                         )) : ""}
                                                     </CarouselContent>
                                                 </Carousel>
+                                                {items.thumbnail === "" && <div className="flex-center h-[250px] w-full border rounded-md">No Thumbnail found.</div>}
+
                                             </div>
                                             <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
                                                 <div>
@@ -883,18 +947,18 @@ const Dashboard = () => {
                             <div className="flex items-center justify-between mb-6">
                                 <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Teacher Workshop!</span>
                                 <div className="flex-1 flex items-end justify-end gap-3">
-                                    <Dialog open={addStudentsMenu}>
+                                    <Dialog open={addStudentsMenu} onOpenChange={setAddStudentsMenu}>
                                         <DialogTrigger asChild>
                                             <Button variant="outline">Add New Student</Button>
                                         </DialogTrigger>
-                                        <DialogContent className="min-w-[450px] max-w-[90%] lg:w-[650px]">
+                                        <DialogContent className="flex-center sm:max-w-[450px]">
                                             <Tabs defaultValue="manually" className="w-[400px]">
                                                 <TabsList className="grid w-full grid-cols-2">
                                                     <TabsTrigger value="manually">Manually</TabsTrigger>
                                                     <TabsTrigger value="automatic">Automatic</TabsTrigger>
                                                 </TabsList>
                                                 <TabsContent value="manually">
-                                                    <Card className="w-full max-w-md border-0">
+                                                    <Card>
                                                         <CardHeader>
                                                             <CardTitle>Create New Student</CardTitle>
                                                             <CardDescription>Enter the student's username and password to add them to the system.</CardDescription>
@@ -929,19 +993,34 @@ const Dashboard = () => {
                                                 <TabsContent value="automatic">
                                                     <Card>
                                                         <CardHeader>
-                                                            <CardTitle>From CSV File</CardTitle>
+                                                            <CardTitle>Create Students From CSV File</CardTitle>
                                                             <CardDescription>
-                                                                automatically create many students from a csv file(username and password).
+                                                                Automatically create many students from a csv file(username and password).
                                                             </CardDescription>
                                                         </CardHeader>
                                                         <CardContent className="space-y-2">
-                                                            <div className="space-y-1">
-                                                                <Label htmlFor="current">Choose</Label>
-                                                                <Input id="csv" type="file" accept='csv' />
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor="load">Choose Your File</Label>
+                                                                <Input accept=".csv" type="file" onChange={(event: any) => {
+                                                                    const file = event.target.files?.[0];
+                                                                    if (!file) return;
+
+                                                                    const reader = new FileReader();
+
+                                                                    reader.onloadend = (e) => {
+                                                                        const result = e.target?.result;
+                                                                        if (!result) return;
+
+                                                                        // Replace this with your function
+                                                                        alert(result);
+                                                                    };
+                                                                    reader.readAsText(file);
+                                                                }} id="load" placeholder="Choose A File" />
                                                             </div>
+
                                                         </CardContent>
                                                         <CardFooter>
-                                                            <Button onClick={() => {
+                                                            <Button className='w-full' onClick={() => {
                                                                 setAddStudentsMenu(!addStudentsMenu);
                                                                 toast({
                                                                     title: "Success!",
@@ -955,11 +1034,11 @@ const Dashboard = () => {
 
                                         </DialogContent>
                                     </Dialog>
-                                    <Dialog open={addClassroomMenu}>
+                                    <Dialog open={addClassroomMenu} onOpenChange={setAddClassroomMenu}>
                                         <DialogTrigger asChild>
                                             <Button variant="outline">Add New Classroom</Button>
                                         </DialogTrigger>
-                                        <DialogContent className="min-w-[450px] max-w-[90%] lg:w-[650px]">
+                                        <DialogContent className="sm:max-w-[450px]">
                                             <ScrollArea className="h-[450px] w-full rounded-md border p-1">
                                                 <Card className="w-full max-w-md border-0">
                                                     <CardHeader>
@@ -979,36 +1058,117 @@ const Dashboard = () => {
                                                             <Label htmlFor="description">Description</Label>
                                                             <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
                                                         </div>
-                                                        <div className="w-full flex justify-between">
-                                                            <Button onClick={removeAllStudents} variant="outline">
-                                                                Remove All Students
-                                                            </Button>
-                                                            <Button onClick={addAllStudents} variant="outline">
-                                                                Add All Students
-                                                            </Button>
-                                                        </div>
-                                                        <div className="w-full h-auto rounded-md border p-3">
-                                                            <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                <span>Username</span>
-                                                                <span>Actions</span>
+                                                        <div className="w-full space-y-2">
+                                                            <Label htmlFor="students">Students</Label>
+
+                                                            {/* <Select onValueChange={(value) => {
+                                                                toast({
+                                                                    title: `${value}`,
+                                                                    description: `success.`,
+                                                                });
+                                                            }}>
+                                                                <SelectTrigger className="w-full">
+                                                                    <SelectValue placeholder="Select a student" />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    {addOneStudent.map((student: any) => (
+                                                                        <SelectItem className='hover:bg-primary-foreground hover:text-primary' key={student.id} value={student.id}>{student.username}</SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select> */}
+                                                            {/* <div className="flex items-center space-x-4">
+                                                                <Popover open={open} onOpenChange={setOpen}>
+                                                                    <PopoverTrigger asChild>
+                                                                        <Button
+                                                                            variant="outline"
+                                                                            size="sm"
+                                                                            className="w-full justify-start"
+                                                                        >
+                                                                            {selectedStatus ? (
+                                                                                <>
+                                                                                    <selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
+                                                                                    {selectedStatus.label}
+                                                                                </>
+                                                                            ) : (
+                                                                                <>+ set student status</>
+                                                                            )}
+                                                                        </Button>
+                                                                    </PopoverTrigger>
+                                                                    <PopoverContent className="p-0" side="right" align="start">
+                                                                        <Command>
+                                                                            <CommandInput placeholder="Change status..." />
+                                                                            <CommandList>
+                                                                                <CommandEmpty>No results found.</CommandEmpty>
+                                                                                <CommandGroup>
+                                                                                    {statuses.map((status) => (
+                                                                                        <CommandItem
+                                                                                            key={status.value}
+                                                                                            value={status.value}
+                                                                                            onSelect={(value) => {
+                                                                                                setSelectedStatus(
+                                                                                                    statuses.find((priority) => priority.value === value) ||
+                                                                                                    null
+                                                                                                )
+                                                                                                setOpen(false)
+                                                                                            }}
+                                                                                        >
+                                                                                            <status.icon
+                                                                                                className={cn(
+                                                                                                    "mr-2 h-4 w-4",
+                                                                                                    status.value === selectedStatus?.value
+                                                                                                        ? "opacity-100"
+                                                                                                        : "opacity-40"
+                                                                                                )}
+                                                                                            />
+                                                                                            <span>{status.label}</span>
+                                                                                        </CommandItem>
+                                                                                    ))}
+                                                                                </CommandGroup>
+                                                                            </CommandList>
+                                                                        </Command>
+                                                                    </PopoverContent>
+                                                                </Popover>
+                                                            </div> */}
+
+                                                            <div className="w-full flex gap-1.5">
+                                                                <Button className="w-full" onClick={removeAllStudents} variant="outline">
+                                                                    Remove All Students
+                                                                </Button>
+                                                                <Button className="w-full" onClick={addAllStudents} variant="outline">
+                                                                    Add All Students
+                                                                </Button>
                                                             </div>
-                                                            {
-                                                                students.map((student: any) => (
-                                                                    <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                        <span>{student.username}</span>
-                                                                        <Trash2 onClick={() => {
-                                                                            const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                            setStudents(updatedStudents);
-                                                                        }} className="h-4 w-4" />
-                                                                    </div>
-                                                                ))
-                                                            }
+
+                                                            <div className="w-full h-auto rounded-md border p-3">
+                                                                <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                                    <span>Username</span>
+                                                                    <span>Actions</span>
+                                                                </div>
+                                                                {
+                                                                    students.length > 0 ? students.map((student: any) => (
+                                                                        <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                            <span>{student.username}</span>
+                                                                            <Trash2 onClick={() => {
+                                                                                const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                                setStudents(updatedStudents);
+                                                                            }} className="h-4 w-4" />
+                                                                        </div>
+                                                                    )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
+                                                                        No Students.
+                                                                    </div>)
+                                                                }
+                                                            </div>
+
                                                         </div>
+
+
+
                                                     </CardContent>
                                                 </Card>
                                             </ScrollArea>
                                             <Button onClick={async () => {
                                                 await addDoc(collection(db, "classrooms"), {
+                                                    userId: auth.currentUser && auth.currentUser.uid,
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
@@ -1017,10 +1177,11 @@ const Dashboard = () => {
                                                 })
                                                 toast({
                                                     title: "Classroom Created Successfully!",
-                                                    description: `All classrooms are public.`,
+                                                    description: `Students can now submit project in this classroom.`,
                                                 });
                                                 setAddClassroomMenu(!addClassroomMenu);
                                                 setDocs(prevDocs => [...prevDocs, {
+                                                    userId: auth.currentUser && auth.currentUser.uid,
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
@@ -1034,7 +1195,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="admin-panel-lists">
-                                {docs.map((items: any) => (
+                                {docs.map((items: any) => auth && auth.currentUser && auth.currentUser.uid  && (
                                     <div key={items.id}>
                                         <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
                                             <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
@@ -1072,7 +1233,7 @@ const Dashboard = () => {
                                                                         <CardContent className="flex items-center justify-center h-full w-full text-center !p-0">
                                                                             <AspectRatio ratio={16 / 9} className="h-[300px] ">
                                                                                 <Image
-                                                                                    src={items.thumbnail || "/placeholder.svg"}
+                                                                                    src={items.thumbnail}
                                                                                     alt="Image"
                                                                                     fill
                                                                                     sizes="(min-width: 250px) 300px, 100vw"
@@ -1087,6 +1248,7 @@ const Dashboard = () => {
                                                         )) : ""}
                                                     </CarouselContent>
                                                 </Carousel>
+                                                {items.thumbnail === "" && <div className="flex-center h-[250px] w-full border rounded-md">No Thumbnail found.</div>}
                                             </div>
                                             <CardContent className="px-6 space-y-4 min-h-[200px] py-5 overflow-x-hidden overflow-y-auto">
                                                 <div>
@@ -1150,13 +1312,40 @@ const Dashboard = () => {
                                                                             <span>Username</span>
                                                                             <span>Actions</span>
                                                                         </div>
+                                                                        {/* {
+                                                                            items.students.map((student: any) => {
+                                                                                return users.map((user: any) => {
+                                                                                    if (user.id === student) {
+                                                                                        return (
+                                                                                            <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                                <span>{user.username}</span>
+                                                                                                <Trash2 onClick={() => {
+                                                                                                    // const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                                                    // setStudents(updatedStudents);
+                                                                                                    toast({
+                                                                                                        title: "Still In devlopment.",
+                                                                                                        description: `We will soon add this functionality.`,
+                                                                                                    });
+
+                                                                                                }} className="h-4 w-4" />
+
+                                                                                            </div>
+                                                                                        );
+                                                                                    }
+                                                                                });
+                                                                            })
+                                                                        } */}
                                                                         {
                                                                             items.students.map((student: any) => (
                                                                                 <div key={student} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                                    <span>{student}</span>
+                                                                                    <span>{student.username}</span>
                                                                                     <Trash2 onClick={() => {
-                                                                                        const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                                        setStudents(updatedStudents);
+                                                                                        // const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                                        // setStudents(updatedStudents);
+                                                                                        toast({
+                                                                                            title: "Still In devlopment.",
+                                                                                            description: `We will soon add this functionality.`,
+                                                                                        });
                                                                                     }} className="h-4 w-4" />
                                                                                 </div>
                                                                             ))

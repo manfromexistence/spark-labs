@@ -216,7 +216,7 @@ const Login: NextPage = () => {
   const [userDocId, setUserDocId] = useState<any>("");
   const [surname, setSurname] = useState("");
   const [untScore, setUntScore] = useState<any>(0);
-  const [docs, setDocs] = useState<any>([]);
+  const [users, setUsers] = useState<any>([]);
   const [region, setRegion] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -229,7 +229,7 @@ const Login: NextPage = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      setDocs(newDocs);
+      setUsers(newDocs);
     };
     fetchDocs();
   }, []);
@@ -322,25 +322,73 @@ const Login: NextPage = () => {
 
   const handleSignIn = async (e: any) => {
     e.preventDefault();
-    const USER_DETAILS = docs.filter((user: any) => user.username === username);
+    const USER_DETAILS = users.find((user: any) => user.username === username);
     if (USER_DETAILS) {
-
-
-      toast({
-        title: "Thanks for signing in!",
-        description: `${JSON.stringify(USER_DETAILS)}`,
-      });
-
-
-
-
-
+      if (USER_DETAILS.userId === "") {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, USER_DETAILS.email, password);
+          const user = userCredential.user;
+          const updateRef = doc(db, "users", USER_DETAILS.id);
+          await updateDoc(updateRef,{
+            userId: user.uid,
+          });
+          toast({
+              title: "User logged in successfully!",
+              description: `Continue Using Spark Labs ${username}`,
+          });
+          router.push('/dashboard');
+      } catch (error: any) {
+          toast({
+              title: "Uh oh! Something went wrong with your SignIn (Student).",
+              description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+                  <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+                  <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+              </div>),
+          })
+      }
+      }else{
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, USER_DETAILS.email, password);
+          toast({
+            title: "Teacher logged in successfully!",
+            description: `Continue Using Spark Labs ${username}`,
+          });
+          router.push('/dashboard');
+        } catch (error: any) {
+          toast({
+            title: "Uh oh! Something went wrong with your SignIn (Teacher).",
+            description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
+              <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
+              <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
+            </div>),
+          })
+        }
+      }
     } else {
       toast({
         title: "There is no user with this Username!",
         description: `${username} is not available. Choose a different Username`,
       });
     }
+    // const USER_DETAILS = docs.filter((user: any) => user.username === username);
+    // if (USER_DETAILS) {
+
+
+    //   toast({
+    //     title: "Thanks for signing in!",
+    //     description: `${JSON.stringify(USER_DETAILS)}`,
+    //   });
+
+
+
+
+
+    // } else {
+    //   toast({
+    //     title: "There is no user with this Username!",
+    //     description: `${username} is not available. Choose a different Username`,
+    //   });
+    // }
 
 
     // signInWithEmailAndPassword(auth, email, password)
@@ -534,9 +582,9 @@ const Login: NextPage = () => {
                   className="absolute right-3.5 top-1/2 translate-y-[-50%]"
                 >
                   {isVisiblePassword ? (
-                    <Eye className="hover:text-[#804DFE]" />
+                    <Eye className="hover:text-primary-foreground" />
                   ) : (
-                    <EyeOff className="hover:text-[#804DFE]" />
+                    <EyeOff className="hover:text-primary-foreground" />
                   )}
                 </div>
               </div>
@@ -603,9 +651,9 @@ const Login: NextPage = () => {
                   className="absolute right-3.5 top-1/2 translate-y-[-50%]"
                 >
                   {isVisiblePassword ? (
-                    <Eye className="hover:text-[#804DFE]" />
+                    <Eye className="hover:text-primary-foreground" />
                   ) : (
-                    <EyeOff className="hover:text-[#804DFE]" />
+                    <EyeOff className="hover:text-primary-foreground" />
                   )}
                 </div>
               </div>
@@ -676,9 +724,9 @@ const Login: NextPage = () => {
                       className="absolute right-3.5 top-1/2 translate-y-[-50%]"
                     >
                       {isVisiblePassword ? (
-                        <Eye className="hover:text-[#804DFE]" />
+                        <Eye className="hover:text-primary-foreground" />
                       ) : (
-                        <EyeOff className="hover:text-[#804DFE]" />
+                        <EyeOff className="hover:text-primary-foreground" />
                       )}
                     </div>
                   </div>
@@ -741,9 +789,9 @@ const Login: NextPage = () => {
                     className="absolute right-3.5 top-1/2 translate-y-[-50%]"
                   >
                     {isVisiblePassword ? (
-                      <Eye className="hover:text-[#804DFE]" />
+                      <Eye className="hover:text-primary-foreground" />
                     ) : (
-                      <EyeOff className="hover:text-[#804DFE]" />
+                      <EyeOff className="hover:text-primary-foreground" />
                     )}
                   </div>
                 </div>
@@ -754,7 +802,7 @@ const Login: NextPage = () => {
             </Card>
           </TabsContent>
         </Tabs> */}
-        <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5 mt-5">
+        <div className="mx-auto grid w-full min-w-[300px] max-w-[550px] gap-5">
           <div className="grid min-w-full gap-2 text-center">
             <h1 className="text-3xl font-bold">Welcome back!</h1>
             <p className="text-balance text-muted-foreground">
@@ -790,9 +838,9 @@ const Login: NextPage = () => {
                   className="absolute right-3.5 top-1/2 translate-y-[-50%]"
                 >
                   {isVisiblePassword ? (
-                    <Eye className="hover:text-[#804DFE]" />
+                    <Eye className="hover:text-primary-foreground" />
                   ) : (
-                    <EyeOff className="hover:text-[#804DFE]" />
+                    <EyeOff className="hover:text-primary-foreground" />
                   )}
                 </div>
               </div>

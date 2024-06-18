@@ -216,7 +216,7 @@ export function SiteHeader() {
               <nav className="flex items-center">
                 <div className="flex items-center gap-2">
                   {docs && docs.map((user: any) => {
-                    if (user.accountType === "student") {
+                    if (user.role === "student") {
                       return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div key={user.id} className="w-full h-auto flex items-center justify-end">
                         <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                           <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">
@@ -227,7 +227,7 @@ export function SiteHeader() {
                       </div>
 
                     }
-                    if (user.accountType === "teacher") {
+                    if (user.role === "teacher") {
                       return auth && auth.currentUser && auth.currentUser.uid === user.userId && <div key={user.id}  className="w-full h-auto flex items-center justify-end">
                         <div className="auth-button-container bg-gradient-to-r from-[#ec008c] to-[#fc6767] p-[3px] rounded-md">
                           <div className="auth-button relative bg-background py-2 px-5 w-fit rounded-md text-center leading-tight flex flex-row items-center justify-center gap-1 text-sm">

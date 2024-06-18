@@ -242,119 +242,19 @@ const Register: NextPage = () => {
         }
     };
     const handleSignUp = async (event: { preventDefault: () => void }) => {
-        // event.preventDefault();
-        // const USER_DETAILS = users.filter((user: any) => user.username === username);
-        // USER_DETAILS ? toast({
-        //     title: "There is already a user with this Username!",
-        //     description: `${username} is not a available. Choose a different Username`,
-        // }) : confirmPassword === password && ?
-        //     createUserWithEmailAndPassword(auth, email, password)
-        //         .then((userCredential: { user: any }) => {
-        //             // Signed up 
-        //             const user = userCredential.user;
-        //             setUserid(user)
-        //             console.log("Register");
-        //             setUserDetailsDialog(true);
-        //         })
-        //         .catch((error: { code: any }) => {
-        //             setUserid("Error");
-        //             console.log("Error");
-
-        //             toast({
-        //                 title: "Uh oh! Something went wrong with your SignUp.",
-        //                 description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-        //                     <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-        //                     <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-        //                 </div>),
-        //             })
-        //         })
-        //     : toast({
-        //         title: "Password and Confirm Password donot match!",
-        //         description: `Please match them Password${password} & Confirm Passwrod:${confirmPassword}`,
-        //     })
-        // event.preventDefault();
-        // const USER_DETAILS = users.filter((user: any) => user.username === username);
-        // if (!USER_DETAILS && confirmPassword === password) {
-        //     createUserWithEmailAndPassword(auth, email, password)
-        //     .then((userCredential: { user: any }) => {
-        //         const user = userCredential.user;
-        //         setUserid(user)
-        //         setUserDetailsDialog(true);
-        //     })
-        //     .catch((error: { code: any }) => {
-        //         setUserid("Error");
-        //         toast({
-        //             title: "Uh oh! Something went wrong with your SignUp.",
-        //             description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-        //                 <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-        //                 <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-        //             </div>),
-        //         })
-        //     });
-        // } else if (USER_DETAILS) {
-        //     setUserDetailsDialog(false);
-        //     toast({
-        //         title: "There is already a user with this Username!",
-        //         description: `${username} is not available. Choose a different Username`,
-        //     });
-        // } else if(confirmPassword !== password) {
-        //     toast({
-        //         title: "Password and Confirm Password donot match!",
-        //         description: `Password:${password} is not same as Confirm Password:${confirmPassword}`,
-        //     });
-        // }
         event.preventDefault();
-        const USER_DETAILS = users.filter((user: any) => user.username === username);
-        if (USER_DETAILS.length === 0 && confirmPassword === password) {
-            // createUserWithEmailAndPassword(auth, email, password)
-            //     .then((userCredential: { user: any }) => {
-            //         const user = userCredential.user;
-            //         setUserid(user);
-            //         setUserDetailsDialog(true);
-            //     })
-            //     .catch((error: { code: any }) => {
-            //         setUserid("Error");
-            //         toast({
-            //             title: "Uh oh! Something went wrong with your SignUp.",
-            //             description: (<div className='flex items-start justify-start bg-primary-foreground rounded-md text-xs flex-col space-y-1.5 p-3 mt-1'>
-            //                 <span className="text-muted-foreground">{`Error: ${EnhancedErrors(error.code)}`}</span>
-            //                 <span className="text-muted-foreground">{`Possible Solution: ${SuggestSolutions(error.code)}`}</span>
-            //             </div>),
-            //         })
-            //     });
-
-            //     const Create = await addDoc(collection(db, "users"), {
-            //         role: accountType,
-            //         username: username,
-            //         email: email,
-            //         password: password,
-            //         userId: userId.uid,
-            //         // surname: surname,
-            //         // avatar: avatar,
-            //         // region: region,
-            //         // accountType: accountType,
-            //         // youtube: youtube,
-            //         // twitter: twitter,
-            //         // instagam: instagam,
-            //         // facebook: facebook,
-            //         // linkdin: linkdin,
-            //     })
-            //     toast({
-            //         title: "Teacher registered successfully!",
-            //         description: `Continue Using Spark Labs ${username}`,
-            //     });
-            //     router.push('/login')
+        const USER_DETAILS = users.find((user: any) => user.username === username);
+        if (!USER_DETAILS && confirmPassword === password) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Create a document in Firestore
                 await addDoc(collection(db, "users"), {
                     role: accountType,
                     username: username,
                     email: email,
                     password: password,
-                    userId: user.uid, // Use the user's UID from Firebase Authentication
+                    userId: user.uid,
                     // surname: surname,
                     // avatar: avatar,
                     // region: region,
@@ -369,7 +269,7 @@ const Register: NextPage = () => {
                     title: "Teacher registered successfully!",
                     description: `Continue Using Spark Labs ${username}`,
                 });
-                // router.push('/login');
+                router.push('/dashboard');
             } catch (error: any) {
                 toast({
                     title: "Uh oh! Something went wrong with your SignUp.",
@@ -379,9 +279,7 @@ const Register: NextPage = () => {
                     </div>),
                 })
             }
-
-        } else if (USER_DETAILS.length > 0) {
-            setUserDetailsDialog(false);
+        } else if (USER_DETAILS) {
             toast({
                 title: "There is already a user with this Username!",
                 description: `${username} is not available. Choose a different Username`,
@@ -392,8 +290,8 @@ const Register: NextPage = () => {
                 description: `Password:${password} is not same as Confirm Password:${confirmPassword}`,
             });
         }
-
     };
+
     // const userDetails = async (event: { preventDefault: () => void }) => {
     //     event.preventDefault();
     //     if (userDetailsDialog) {

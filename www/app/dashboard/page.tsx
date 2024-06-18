@@ -737,7 +737,7 @@ const Dashboard = () => {
         <>
             {
                 users && users.map((user: any) => {
-                    if (user.accountType === "student") {
+                    if (user.role === "student") {
                         return auth && auth.currentUser && auth.currentUser.uid === user.userId ? (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
                             <div className="flex items-center justify-between mb-6">
                                 <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Student Workshop!</span>
@@ -875,7 +875,7 @@ const Dashboard = () => {
                             </Button>
                         </main>) : null;
                     }
-                    if (user.accountType === "teacher") {
+                    if (user.role === "teacher") {
                         return auth && auth.currentUser && auth.currentUser.uid === user.userId ? (<main key={user.id} className="w-full py-5 px-[5%] h-auto mb-10 min-h-[90vh]">
                             <div className="flex items-center justify-between mb-6">
                                 <span className="text-center font-display text-lg font-bold tracking-[-0.02em] drop-shadow-sm md:text-3xl md:leading-[5rem]">Teacher Workshop!</span>

@@ -573,7 +573,7 @@ const Login: NextPage = () => {
                   value={password}
                   type={isVisiblePassword ? "text" : "password"}
                   id="password"
-                  placeholder="YourPassword123"
+                  placeholder="Enter password"
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-md !border text-muted-foreground"
                 />
@@ -642,7 +642,7 @@ const Login: NextPage = () => {
                   value={password}
                   type={isVisiblePassword ? "text" : "password"}
                   id="password"
-                  placeholder="YourPassword123"
+                  placeholder="Enter password"
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-md !border text-muted-foreground"
                 />
@@ -715,7 +715,7 @@ const Login: NextPage = () => {
                       value={password}
                       type={isVisiblePassword ? "text" : "password"}
                       id="password"
-                      placeholder="YourPassword123"
+                      placeholder="Enter password"
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full rounded-md !border text-muted-foreground"
                     />
@@ -780,7 +780,7 @@ const Login: NextPage = () => {
                     value={studentPassword}
                     type={isVisiblePassword ? "text" : "password"}
                     id="password"
-                    placeholder="YourPassword123"
+                    placeholder="Enter password"
                     onChange={(e) => setStudentPassword(e.target.value)}
                     className="w-full rounded-md !border text-muted-foreground"
                   />
@@ -829,7 +829,7 @@ const Login: NextPage = () => {
                   value={password}
                   type={isVisiblePassword ? "text" : "password"}
                   id="password"
-                  placeholder="YourPassword123"
+                  placeholder="Enter password"
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-md !border text-muted-foreground"
                 />

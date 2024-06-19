@@ -1,8 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { collection, addDoc } from "firebase/firestore"; 
-
-
+import { collection, addDoc, writeBatch } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBbh73d_g_CVG0PZPlljzC6d8U-r0DRTFk",
@@ -14,22 +12,67 @@ const firebaseConfig = {
   measurementId: "G-JVEZGJHL8H"
 };
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
+const studentData = `Student Username,Password
+std1,pw1
+std2,pw2
+std3,pw3
+std4,pw4
+std5,pw5
+std6,pw6
+std7,pw7
+std8,pw8
+std9,pw9
+std10,pw10
+std11,pw11
+std12,pw12
+std13,pw13
+std14,pw14
+std15,pw15
+std16,pw16`;
 
-try {
-  const docRef = await addDoc(collection(db, "users"), {
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
+const lines = studentData.split('\n');
+lines.shift(); // Remove the header line
+
+let processedCount = 0;
+const totalLines = lines.length;
+
+const usersCollection = collection(db, 'dummy'); // Reference to the 'users' collection
+
+lines.forEach(async (line, index) => {
+  const [username, password] = line.split(',');
+
+  // Create a new batch for each iteration
+  const batch = writeBatch(db);
+
+  // Use await to get the DocumentReference
+  const docRef = await addDoc(usersCollection, {
+    username: username,
+    password: password,
+    role: "student",
+    userId: "",
+    email: "ajju40959@gmail.com"
   });
-  console.log("Document written with ID: ", docRef.id);
-} catch (e) {
-  console.error("Error adding document: ", e);
-}
+
+  // Now you have the DocumentReference
+  batch.set(docRef, {
+    username: username,
+    password: password,
+    role: "student",
+    userId: "",
+    email: "ajju40959@gmail.com"
+  });
+
+  // Commit the batch immediately
+  await batch.commit();
+
+  // Update progress indicator
+  processedCount++;
+  console.log(`Processed ${processedCount} out of ${totalLines} documents`);
+});
+

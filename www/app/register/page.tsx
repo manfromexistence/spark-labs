@@ -188,9 +188,9 @@ const Register: NextPage = () => {
     const [surname, setSurname] = useState("");
     const [untScore, setUntScore] = useState<any>(0);
     const [region, setRegion] = useState("");
+
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
     const [isVisiblePassword, setIsVisiblePassword] = React.useState(true)
     const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
         React.useState(true)
@@ -357,7 +357,7 @@ const Register: NextPage = () => {
                                     value={password}
                                     type={isVisiblePassword ? "text" : "password"}
                                     id="password"
-                                    placeholder="YourPassword123"
+                                    placeholder="Enter password"
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full rounded-md !border text-muted-foreground"
                                 />
@@ -385,7 +385,7 @@ const Register: NextPage = () => {
                                     value={confirmPassword}
                                     type={isVisibleConfirmPassword ? "text" : "password"}
                                     id="password"
-                                    placeholder="YourPassword123"
+                                    placeholder="Enter password"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     className={cn("w-full rounded-md !border text-muted-foreground",
                                         confirmPassword === password ? "text-green-400" : "text-pink-500"

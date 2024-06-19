@@ -53,7 +53,7 @@ export function MainNav() {
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <img className="h-20 w-auto" src="./logo.png" alt="logo" />
+        <img className="h-20 w-auto" src="/logo.png" alt="logo" />
       </Link>
       <nav className="flex items-center text-sm lg:gap-6">
         {auth.currentUser ? (<>

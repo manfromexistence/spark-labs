@@ -26,98 +26,9 @@
         <script src="../src/api.js"></script>
         <script src="../src/sha512.js"></script>
         <script src="../src/FileSaver.min.js"></script>
-        <script>
-            var world;
-            window.onload = function () {
-                var ide = new IDE_Morph({
-                        path: '../',
-                        load: 'transpile.xml',
-                        // onload: () => /* runs when "transpile.xml" is loaded */,
-                        design: "flat",
-                        border: 1,
-                        hideControls: true,
-                        hideCategories: true,
-                        noDefaultCat: false,
-                        noSprites: true,
-                        noImports: true,
-                        noOwnBlocks: true,
-                        noRingify: true,
-                        noUserSettings: true,
-                        noDevWarning: true
-                    }),
-                    code = document.getElementById('code'),
-                    save = document.getElementById('save'),
-                    load = document.getElementById('load'),
-                    radio = document.querySelectorAll('input[name="pl"]'),
-                    loop = () => {
-                        requestAnimationFrame(loop);
-                        world.doOneCycle();
-                    };
-                world = new WorldMorph(document.getElementById('world'), false);
-                ide.openIn(world);
-                ide.addMessageListener('update', txt => code.value = txt);
-                save.addEventListener('click', () => ide.saveXMLAs(
-                    ide.getSpriteScriptsXML(), 'snap-scripts'));
-                clear.addEventListener('click', () =>
-                    ide.loadSpriteScriptsXML('<>'));
-                load.addEventListener("change", () => {
-                    var frd = new FileReader();
-                    if (!load.files[0]) {return; }
-                    frd.onloadend = (e) =>
-                        ide.loadSpriteScriptsXML(e.target.result);
-                    frd.readAsText(load.files[0]);
-                });
-                radio.forEach(bt => bt.addEventListener('click', () =>
-                    ide.broadcast(bt.value)));
-                code.onmouseup = function () {
-                    var ln = n => this.value.substr(0, n).split('\n').length;
-                    ide.unflashSpriteScripts();
-                    if (this.selectionStart < this.selectionEnd) {
-                        ide.flashSpriteScripts(
-                            ln(this.selectionStart),
-                            ln(this.selectionEnd),
-                            null, // optional sprite name
-                            null // '200,100,130' // optional rgb(a) color csv
-                        );
+        <script src="../src/FileSaver.min.js"></script>
+        <script src="./main.js"></script>
 
-                        /*
-                        // alternatively: highlight the block at the
-                        // selection start idx
-                        ide.flashSpriteScriptAt(
-                            this.selectionStart,
-                            null, // optional sprite name
-                            null // '200,100,130' // optional rgb(a) color csv
-                        );
-                        */
-
-                        /*
-                        // highlight the outline of block at the
-                        // selection start idx
-                        ide.flashSpriteScriptOutlineAt(
-                            this.selectionStart,
-                            null, // optional sprite name
-                            '200,100,130', // optional rgb(a) color csv
-                            3 // border
-                        );
-                        */
-
-                        /*
-                        // apop-up a balloon at the block at the
-                        // selection start idx
-                        ide.showScriptBalloonAt(
-                            'selection:\n' +
-                                this.selectionStart +
-                                ' - ' +
-                                this.selectionEnd,
-                            this.selectionStart,
-                            null, // optional sprite name
-                        );
-                        */
-                    }
-                };
-                requestAnimationFrame(loop);
-            };
-        </script>
     </head>
     <body>
         <h1>Using Snap! On Your Page</h1>
@@ -131,7 +42,7 @@
         any sprites or media assets for exercises and Parsons problems
         inside a larger narrative, such as an hour-of-code.</p>
 
-        <canvas id="world" tabindex="1" width="500" height="300"></canvas>
+        <canvas id="world" tabindex="1" width="1500" height="1000"></canvas>
         <textarea id="code" rows="19" cols="50" readonly style="resize: none;"></textarea>
         <br>
         <input type="radio" id="py" name="pl" value="Python" checked>

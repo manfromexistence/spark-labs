@@ -339,6 +339,7 @@ const Dashboard = () => {
         null
     )
     const [value, setValue] = React.useState("")
+    const [updateValue, setUpdateValue] = React.useState("")
     const [position, setPosition] = React.useState("bottom")
     const [docs, setDocs] = useState<any[]>([]);
     const [submissions, setSubmissions] = useState<any[]>([]);
@@ -350,10 +351,12 @@ const Dashboard = () => {
 
     const addAllStudents = () => {
         setStudents(studentUsers);
+        setAddOneStudent([]);
     };
 
     const removeAllStudents = () => {
         setStudents([]);
+        setAddOneStudent(studentUsers);
     };
 
     const deleteUser = (id: number) => {
@@ -1037,7 +1040,7 @@ const Dashboard = () => {
                                                         <CardDescription>Enter the classroom details to add them to the system.</CardDescription>
                                                     </CardHeader>
                                                     <CardContent className="space-y-4">
-                                                        {/* <div className="space-y-2">
+                                                        <div className="space-y-2">
                                                             <Label htmlFor="title">Title</Label>
                                                             <Input onChange={(e: any) => setTitle(e.target.value)} id="title" placeholder="Enter Title" />
                                                         </div>
@@ -1048,70 +1051,9 @@ const Dashboard = () => {
                                                         <div className="space-y-2">
                                                             <Label htmlFor="description">Description</Label>
                                                             <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter Description" />
-                                                        </div> */}
+                                                        </div>
                                                         <div className="w-full space-y-2">
                                                             <Label htmlFor="students">Students</Label>
-
-                                                            {/* <Select onValueChange={(value) => {
-                                                                toast({
-                                                                    title: `${value}`,
-                                                                    description: `success.`,
-                                                                });
-                                                            }}>
-                                                                <SelectTrigger className="w-full">
-                                                                    <SelectValue placeholder="Select a student" />
-                                                                </SelectTrigger>
-                                                                <SelectContent>
-                                                                    {addOneStudent.map((student: any) => (
-                                                                        <SelectItem className='hover:bg-primary-foreground hover:text-primary' key={student.id} value={student.id}>{student.username}</SelectItem>
-                                                                    ))}
-                                                                </SelectContent>
-                                                            </Select> */}
-
-
-                                                            {/* <div className="flex items-center space-x-4">
-                                                                <Popover open={open} onOpenChange={setOpen}>
-                                                                    <PopoverTrigger asChild>
-                                                                        <Button
-                                                                            variant="outline"
-                                                                            size="sm"
-                                                                            className="w-full justify-start"
-                                                                        >
-                                                                            {selectedStatus ? (
-                                                                                <>
-                                                                                    {selectedStatus.username}
-                                                                                </>
-                                                                            ) : (
-                                                                                <>+ Add Student</>
-                                                                            )}
-                                                                        </Button>
-                                                                    </PopoverTrigger>
-                                                                    <PopoverContent className="p-0" side="right" align="start">
-                                                                        <Command>
-                                                                            <CommandInput placeholder="Search students..." />
-                                                                            <CommandList>
-                                                                                <CommandEmpty>No results found.</CommandEmpty>
-                                                                                <CommandGroup>
-                                                                                    {users.map((user:any) => (
-                                                                                        user.role === "student" && <CommandItem
-                                                                                            key={user.userId}
-                                                                                            value={user.userId}
-                                                                                            onSelect={(value) => {
-                                                                                                setSelectedStatus(
-                                                                                                    users.find((user:any) => user.userId === value) ||
-                                                                                                    null
-                                                                                                )
-                                                                                            }}
-                                                                                        >
-                                                                                            <span>{user.username}</span>
-                                                                                        </CommandItem>
-                                                                                    ))}
-                                                                                </CommandGroup>
-                                                                            </CommandList>
-                                                                        </Command>
-                                                                    </PopoverContent>
-                                                                </Popover>
-                                                            </div> */}
                                                             <Popover open={open} onOpenChange={setOpen}>
                                                                 <PopoverTrigger asChild>
                                                                     <Button
@@ -1121,7 +1063,7 @@ const Dashboard = () => {
                                                                         className="w-full justify-between"
                                                                     >
                                                                         {value
-                                                                            ? value
+                                                                            ? `Added (${value.toUpperCase()})`
                                                                             : "Add student..."}
                                                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                                     </Button>
@@ -1132,24 +1074,32 @@ const Dashboard = () => {
                                                                         <CommandList>
                                                                             <CommandEmpty>No student found.</CommandEmpty>
                                                                             <CommandGroup>
-                                                                                {users.map((user: any) => (
-                                                                                    user.role === "student" && <CommandItem
-                                                                                        key={user.userId}
-                                                                                        value={user.userId}
+                                                                                {addOneStudent.length > 0 ? addOneStudent.map((user: any) => (
+                                                                                    <CommandItem
+                                                                                        key={user.id}
+                                                                                        value={user.username}
                                                                                         onSelect={(currentValue) => {
-                                                                                            setValue(currentValue === value ? "" : currentValue)
-                                                                                            // setOpen(false)
+                                                                                            setValue(currentValue);
+                                                                                            const updatedStudents = addOneStudent.filter((item) => item.id !== user.id);
+                                                                                            setAddOneStudent(updatedStudents);
+                                                                                            setStudents(prevDocs => [...prevDocs, {
+                                                                                                id: user.id,
+                                                                                                username: user.username,
+                                                                                            }]);
+                                                                                            setOpen(false);
                                                                                         }}
                                                                                     >
                                                                                         <Check
                                                                                             className={cn(
                                                                                                 "mr-2 h-4 w-4",
-                                                                                                value === user.userId ? "opacity-100" : "opacity-0"
+                                                                                                value === user.username ? "opacity-100" : "opacity-0"
                                                                                             )}
                                                                                         />
                                                                                         {user.username}
                                                                                     </CommandItem>
-                                                                                ))}
+                                                                                )) : (<div className="flex-center rounded-md h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
+                                                                                    No Students.
+                                                                                </div>)}
                                                                             </CommandGroup>
                                                                         </CommandList>
                                                                     </Command>
@@ -1176,6 +1126,10 @@ const Dashboard = () => {
                                                                             <Trash2 onClick={() => {
                                                                                 const updatedStudents = students.filter((user: any) => user.id !== student.id);
                                                                                 setStudents(updatedStudents);
+                                                                                setAddOneStudent(prevDocs => [...prevDocs, {
+                                                                                    id: student.id,
+                                                                                    username: student.username,
+                                                                                }]);
                                                                             }} className="h-4 w-4" />
                                                                         </div>
                                                                     )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
@@ -1183,11 +1137,7 @@ const Dashboard = () => {
                                                                     </div>)
                                                                 }
                                                             </div>
-
                                                         </div>
-
-
-
                                                     </CardContent>
                                                 </Card>
                                             </ScrollArea>
@@ -1197,7 +1147,7 @@ const Dashboard = () => {
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
-                                                    students: students.map((student) => student.userId),
+                                                    students: students.map((student) => student.id),
                                                     time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                                 })
                                                 toast({
@@ -1210,7 +1160,7 @@ const Dashboard = () => {
                                                     title: title,
                                                     thumbnail: thumbnail,
                                                     description: description,
-                                                    students: students.map((student) => student.userId),
+                                                    students: students.map((student) => student.id),
                                                     time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                                 }]);
                                             }} className="w-full">Create Classroom</Button>
@@ -1287,97 +1237,297 @@ const Dashboard = () => {
                                                     </div>
                                                 )) : <p className="text-overflow-clamp text-sm leading-relaxed text-muted-foreground">{items.description || "No Description Provided for this university."}</p>}
                                                 <div className="flex flex-col flex-1 h-auto gap-3">
-                                                    <Dialog>
-                                                        <DialogTrigger asChild>
-                                                            <Button className="w-full" variant="outline">View</Button>
-                                                        </DialogTrigger>
-                                                        <DialogContent className="lg:min-w-[650px]">
-                                                            <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
-                                                                <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
-                                                                    <div className="flex items-center justify-start gap-2">
-                                                                        <p className="flex flex-row text-center">Title: </p>
-                                                                        <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
-                                                                    </div>
-                                                                    <Separator />
-                                                                    <div className="flex items-center justify-start gap-2">
-                                                                        <p className="flex flex-row text-center">Description: </p>
-                                                                        <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
-                                                                    </div>
-                                                                    <Separator />
-                                                                    <div className="flex items-center justify-start gap-2">
-                                                                        <p className="flex flex-row text-center">Thumbnail: </p>
-                                                                        <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
-                                                                    </div>
-                                                                    <Separator />
-                                                                    <div className="flex items-center justify-start gap-2">
-                                                                        <p className="flex flex-row text-center">Time: </p>
-                                                                        <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
-                                                                    </div>
-                                                                    <Separator />
-                                                                    {/* <div className="w-full h-auto rounded-md border p-3">
-                                                                        <div className="w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                            <span>Students</span>
-                                                                        </div>
-                                                                        {
-                                                                            items.students.map((student: any) => {
-                                                                                return users.map((user: any) => {
-                                                                                    if (user.id === student) {
-                                                                                        return (
-                                                                                            <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-center items-center text-sm font-mono p-3">
-                                                                                                <span>{user.username}</span>
-                                                                                            </div>
-                                                                                        );
-                                                                                    }
-                                                                                });
-                                                                            })
-                                                                        }
-                                                                    </div> */}
-                                                                    <div className="w-full h-auto rounded-md border p-3">
-                                                                        <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
-                                                                            <span>Username</span>
-                                                                            <span>Actions</span>
-                                                                        </div>
-                                                                        {
-                                                                            items.students.map((student: any) => {
-                                                                                return users.map((user: any) => {
-                                                                                    if (user.userId === student) {
-                                                                                        return (
-                                                                                            <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                                                <span>{user.username}</span>
-                                                                                                <Trash2 onClick={() => {
-                                                                                                    toast({
-                                                                                                        title: "Still In devlopment.",
-                                                                                                        description: `We will soon add this functionality.`,
-                                                                                                    });
 
-                                                                                                }} className="h-4 w-4" />
 
-                                                                                            </div>
-                                                                                        );
-                                                                                    }
-                                                                                });
-                                                                            })
-                                                                        }
-                                                                        {/* {
-                                                                            items.students.map((student: any) => (
-                                                                                <div key={student} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                                    <span>{student.username}</span>
-                                                                                    <Trash2 onClick={() => {
-                                                                                        // const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                                        // setStudents(updatedStudents);
-                                                                                        toast({
-                                                                                            title: "Still In devlopment.",
-                                                                                            description: `We will soon add this functionality.`,
-                                                                                        });
-                                                                                    }} className="h-4 w-4" />
+                                                    <div className="w-full flex flex-row gap-3">
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <Button className="w-1/2" variant="outline">View</Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent className="lg:min-w-[650px]">
+                                                                <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
+                                                                    <div className="flex w-full flex-col gap-2 rounded-lg p-3 text-sm font-mono h-auto min-h-max">
+                                                                        <div className="flex items-center justify-start gap-2">
+                                                                            <p className="flex flex-row text-center">Title: </p>
+                                                                            <span className="w-auto select-all text-start font-semibold">{items.title || "No Title is Provided."}</span>
+                                                                        </div>
+                                                                        <Separator />
+                                                                        <div className="flex items-center justify-start gap-2">
+                                                                            <p className="flex flex-row text-center">Description: </p>
+                                                                            <span className="w-auto select-all text-start font-semibold">{items.description || "No Title is Provided."}</span>
+                                                                        </div>
+                                                                        <Separator />
+                                                                        <div className="flex items-center justify-start gap-2">
+                                                                            <p className="flex flex-row text-center">Thumbnail: </p>
+                                                                            <span className="w-auto select-all text-start font-semibold">{items.thumbnail || "No Title is Provided."}</span>
+                                                                        </div>
+                                                                        <Separator />
+                                                                        <div className="flex items-center justify-start gap-2">
+                                                                            <p className="flex flex-row text-center">Time: </p>
+                                                                            <span className="w-auto select-all text-start font-semibold">{items.time || "No Title is Provided."}</span>
+                                                                        </div>
+                                                                        <Separator />
+                                                                        <div className="w-full h-auto rounded-md border p-3">
+                                                                            <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                                                <span>Username</span>
+                                                                                <span>Actions</span>
+                                                                            </div>
+                                                                            {
+                                                                                items.students.map((student: any) => {
+                                                                                    return users.map((user: any) => {
+                                                                                        if (user.id === student) {
+                                                                                            return (
+                                                                                                <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                                    <span>{user.username}</span>
+                                                                                                    <Trash2 onClick={() => {
+                                                                                                        toast({
+                                                                                                            title: "Still In devlopment.",
+                                                                                                            description: `We will soon add this functionality.`,
+                                                                                                        });
+
+                                                                                                    }} className="h-4 w-4" />
+
+                                                                                                </div>
+                                                                                            );
+                                                                                        }
+                                                                                    });
+                                                                                })
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </ ScrollArea>
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <Button className="w-1/2" variant="secondary">Manage Students</Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent className="sm:max-w-[450px]">
+                                                                <ScrollArea className="h-auto w-full rounded-md border p-1">
+                                                                    <Card className="w-full max-w-md border-0">
+                                                                        <CardHeader>
+                                                                            <CardTitle>Update Students In ({items.title.toUpperCase()})</CardTitle>
+                                                                            <CardDescription>Need to add or remove students.No worry.Just add or remove them here!</CardDescription>
+                                                                        </CardHeader>
+                                                                        <CardContent className="space-y-4">
+                                                                            <div className="w-full space-y-2">
+                                                                                <Label htmlFor="students">Students</Label>
+                                                                                <Popover open={open} onOpenChange={setOpen}>
+                                                                                    <PopoverTrigger asChild>
+                                                                                        <Button
+                                                                                            variant="outline"
+                                                                                            role="combobox"
+                                                                                            aria-expanded={open}
+                                                                                            className="w-full justify-between"
+                                                                                        >
+                                                                                            {/* {updateValue
+                                                                                                ? `Added (${updateValue.toUpperCase()})`
+                                                                                                : "Add student..."} */}
+                                                                                            {value
+                                                                                                ? `Added (${value.toUpperCase()})`
+                                                                                                : "Add student..."}
+                                                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                                                        </Button>
+                                                                                    </PopoverTrigger>
+                                                                                    <PopoverContent className="w-[342px] p-0">
+                                                                                        <Command>
+                                                                                            <CommandInput placeholder="Search students..." />
+                                                                                            <CommandList>
+                                                                                                <CommandEmpty>No student found.</CommandEmpty>
+                                                                                                <CommandGroup>
+
+                                                                                                    {addOneStudent.length > 0 ? addOneStudent.map((user: any) => (
+                                                                                                        <CommandItem
+                                                                                                            key={user.id}
+                                                                                                            value={user.username}
+                                                                                                            onSelect={(currentValue) => {
+                                                                                                                setValue(currentValue);
+                                                                                                                const updatedStudents = addOneStudent.filter((item) => item.id !== user.id);
+                                                                                                                setAddOneStudent(updatedStudents);
+                                                                                                                setStudents(prevDocs => [...prevDocs, {
+                                                                                                                    id: user.id,
+                                                                                                                    username: user.username,
+                                                                                                                }]);
+                                                                                                                setOpen(false);
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <Check
+                                                                                                                className={cn(
+                                                                                                                    "mr-2 h-4 w-4",
+                                                                                                                    value === user.username ? "opacity-100" : "opacity-0"
+                                                                                                                )}
+                                                                                                            />
+                                                                                                            {user.username}
+                                                                                                        </CommandItem>
+                                                                                                    )) : (<div className="flex-center rounded-md h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
+                                                                                                        No Students.
+                                                                                                    </div>)}
+                                                                                                    {/* 
+                                                                                                    {
+                                                                                                        users.map((user: any) => {
+                                                                                                            items.students.map((student: any) => student !== user.id)
+                                                                                                        })
+                                                                                                    } */}
+
+
+
+                                                                                                    {/* 
+                                                                                                    
+                                                                                                    There are two array's.
+                                                                                                    1. docs array = [
+                                                                                                    {
+                                                                                                    id,
+                                                                                                    title,
+                                                                                                    description,
+                                                                                                    time,
+                                                                                                    userId
+                                                                                                    },...
+                                                                                                    ]
+                                                                                                    2. user array = 
+                                                                                                    {items.students.length > 0 && items.students.map((studentId: any) => {
+                                                                                                        users.map((user: any) => user.id === studentId ? (
+                                                                                                            <CommandItem
+                                                                                                                key={user.id}
+                                                                                                                value={user.username}
+                                                                                                                onSelect={(currentValue) => {
+                                                                                                                    setUpdateValue(currentValue);
+                                                                                                                    const updatedStudents = docs.map((item) => item.id === items.id ? {
+                                                                                                                        userId: auth.currentUser && auth.currentUser.uid,
+                                                                                                                        title: items.title,
+                                                                                                                        thumbnail: items.thumbnail,
+                                                                                                                        description: items.description,
+                                                                                                                        students: items.students.map((student: any) => student === updateValue ? ),
+                                                                                                                        time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true)
+                                                                                                                    } : item);
+                                                                                                                    setAddOneStudent(updatedStudents);
+                                                                                                                    setStudents(prevDocs => [...prevDocs, {
+                                                                                                                        id: user.id,
+                                                                                                                        username: user.username,
+                                                                                                                    }]);
+                                                                                                                    setOpen(false);
+                                                                                                                }}
+                                                                                                            >
+                                                                                                                <Check
+                                                                                                                    className={cn(
+                                                                                                                        "mr-2 h-4 w-4",
+                                                                                                                        value === user.username ? "opacity-100" : "opacity-0"
+                                                                                                                    )}
+                                                                                                                />
+                                                                                                                {user.username}
+                                                                                                            </CommandItem>
+                                                                                                        ) : (<div className="flex-center rounded-md h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
+                                                                                                            No Students.
+                                                                                                        </div>))
+                                                                                                    })} */}
+                                                                                                </CommandGroup>
+                                                                                            </CommandList>
+                                                                                        </Command>
+                                                                                    </PopoverContent>
+                                                                                </Popover>
+                                                                                <div className="w-full flex gap-1.5">
+                                                                                    <Button className="w-full" onClick={removeAllStudents} variant="outline">
+                                                                                        Remove All Students
+                                                                                    </Button>
+                                                                                    <Button className="w-full" onClick={addAllStudents} variant="outline">
+                                                                                        Add All Students
+                                                                                    </Button>
                                                                                 </div>
-                                                                            ))
-                                                                        } */}
-                                                                    </div>
-                                                                </div>
-                                                            </ ScrollArea>
-                                                        </DialogContent>
-                                                    </Dialog>
+
+                                                                                <div className="w-full h-auto rounded-md border p-3">
+                                                                                    <div className="w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono py-5 px-3 pt-3 border-b">
+                                                                                        <span>Username</span>
+                                                                                        <span>Actions</span>
+                                                                                    </div>
+                                                                                    {
+                                                                                        students.length > 0 ? students.map((student: any) => (
+                                                                                            <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                                <span>{student.username}</span>
+                                                                                                <Trash2 onClick={() => {
+                                                                                                    const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                                                    setStudents(updatedStudents);
+                                                                                                    setAddOneStudent(prevDocs => [...prevDocs, {
+                                                                                                        id: student.id,
+                                                                                                        username: student.username,
+                                                                                                    }]);
+                                                                                                }} className="h-4 w-4" />
+                                                                                            </div>
+                                                                                        )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
+                                                                                            No Students.
+                                                                                        </div>)
+                                                                                    }
+                                                                                    {/* {
+                                                                                        items.students.map((student: any) => {
+                                                                                            return users.map((user: any) => {
+                                                                                                if (user.id === student) {
+                                                                                                    return (
+                                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                                            <span>{user.username}</span>
+                                                                                                            <Trash2 onClick={() => {
+                                                                                                                toast({
+                                                                                                                    title: "Still In devlopment.",
+                                                                                                                    description: `We will soon add this functionality.`,
+                                                                                                                });
+
+                                                                                                            }} className="h-4 w-4" />
+                                                                                                        </div>
+                                                                                                    );
+                                                                                                }
+                                                                                            });
+                                                                                        })
+                                                                                    } */}
+                                                                                    {/* {
+                                                                                        items.students.length > 0 ? items.students.map((student: any) =>
+                                                                                        (
+                                                                                            <div key={student} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                                <span>{student.username}</span>
+                                                                                                <Trash2 onClick={() => {
+                                                                                                    const updatedStudents = students.filter((user: any) => user.id !== student.id);
+                                                                                                    setStudents(updatedStudents);
+                                                                                                    setAddOneStudent(prevDocs => [...prevDocs, {
+                                                                                                        id: student.id,
+                                                                                                        username: student.username,
+                                                                                                    }]);
+                                                                                                }} className="h-4 w-4" />
+                                                                                            </div>
+                                                                                        )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
+                                                                                            No Students.
+                                                                                        </div>)
+                                                                                    } */}
+                                                                                </div>
+                                                                            </div>
+                                                                        </CardContent>
+                                                                    </Card>
+                                                                </ScrollArea>
+                                                                <Button onClick={async () => {
+                                                                    await addDoc(collection(db, "classrooms"), {
+                                                                        userId: auth.currentUser && auth.currentUser.uid,
+                                                                        title: title,
+                                                                        thumbnail: thumbnail,
+                                                                        description: description,
+                                                                        students: students.map((student) => student.id),
+                                                                        time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
+                                                                    })
+                                                                    toast({
+                                                                        title: "Classroom Created Successfully!",
+                                                                        description: `Students can now submit project in this classroom.`,
+                                                                    });
+                                                                    setAddClassroomMenu(!addClassroomMenu);
+                                                                    setDocs(prevDocs => [...prevDocs, {
+                                                                        userId: auth.currentUser && auth.currentUser.uid,
+                                                                        title: title,
+                                                                        thumbnail: thumbnail,
+                                                                        description: description,
+                                                                        students: students.map((student) => student.id),
+                                                                        time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
+                                                                    }]);
+                                                                }} className="w-full">Update Students In This Classroom</Button>
+
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                    </div>
+
+
+
                                                     <Button onClick={async () => {
                                                         await deleteDoc(doc(db, "classrooms", items.id));
                                                         const newDocs = docs.filter((item) => item.id !== items.id);

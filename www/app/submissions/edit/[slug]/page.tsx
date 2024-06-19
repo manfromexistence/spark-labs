@@ -280,7 +280,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             },
         })
         const Create = await addDoc(collection(db, "submissions"), {
-            xml: xml,
+            xml: ide.getProjectXML() || "What is wrong?",
             title: title,
             description: description,
             thumbnail: thumbnail,
@@ -293,17 +293,16 @@ export default function Page({ params }: { params: { slug: string } }) {
             title: "Submissions has been added!",
             description: (
                 <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                    <span>You Can now update,view and delete this specialties!</span>
-                    <pre className="max-h-[500px] overflow-auto bg-background">
+                    <span>Thanks for your submission!</span>
+                    {/* <pre className="max-h-[500px] overflow-auto bg-background">
                         <code className="bg-secondary text-muted-foreground">
                             {JSON.stringify(Create.id, null, 2)}
                         </code>
-                    </pre>
+                    </pre> */}
                 </div>
             ),
         });
-        // router.push("/dashboard");
-        window.location.replace("/dashboard");
+        // window.location.replace("/dashboard");
         setProjectStatus(true);
         setProjectId(Create.id);
     }
@@ -426,6 +425,34 @@ export default function Page({ params }: { params: { slug: string } }) {
 
     // ide.loadProjectXML(`<project name="fdssdf" app="Snap! 9.0, https://snap.berkeley.edu" version="2"><notes></notes><thumbnail>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAB4CAYAAAB1ovlvAAAAAXNSR0IArs4c6QAAAthJREFUeF7t1z1OomEYhtHXHdCbmNjJDowNjRtwJzSuy5KGykVgqKjYAx0TJmEyMsxM45er8NBB8dzhygk/N8fj8TguHrvdbtzf31++7LkCX17g5hrA5+fnsV6vv3zMQQUuC1wF+PLyMl5fX8fT05NiCkxa4CfA+Xw+ZrPZeHx8HHd3d+P9/X1st9ux2WwmHXdcgV+fgCeEDw8Pn4q8vb0ppMCkBT59BV8iBHDS9o6PMf74Dfg7wsViMZbLpVAKTFbg6p+QM8LD4TBWq9Vk4w4rcBXgKcsZoa9hSKYs8FeAZ4QfHx9T7rv9zQv8E+CpzX6/H7e3t988k7c/VYH/Apxq2F0FTgUA5CAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL9xABlICwCY5jcOIANpAQDT/MYBZCAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL9xABlICwCY5jcOIANpAQDT/MYBZCAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL9xABlICwCY5jcOIANpAQDT/MYBZCAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL9xABlICwCY5jcOIANpAQDT/MYBZCAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL9xABlICwCY5jcOIANpAQDT/MYBZCAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL9xABlICwCY5jcOIANpAQDT/MYBZCAtAGCa3ziADKQFAEzzGweQgbQAgGl+4wAykBYAMM1vHEAG0gIApvmNA8hAWgDANL/xH6+QCLcs6tSGAAAAAElFTkSuQmCC</thumbnail><scenes select="1"><scene name="fdssdf"><notes></notes><hidden></hidden><headers></headers><code></code><blocks></blocks><stage name="Stage" width="480" height="360" costume="0" color="255,255,255,1" tempo="60" threadsafe="false" penlog="false" volume="100" pan="0" lines="round" ternary="false" hyperops="true" codify="false" inheritance="true" sublistIDs="false" id="5"><pentrails>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs4c6QAADoVJREFUeF7t1cEJAAAIxDDdf2m3sJ+4wEEQuuMIECBAgACBd4F9XzRIgAABAgQIjAB7AgIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECAiwHyBAgAABAoGAAAfoJgkQIECAgAD7AQIECBAgEAgIcIBukgABAgQICLAfIECAAAECgYAAB+gmCRAgQICAAPsBAgQIECAQCAhwgG6SAAECBAgIsB8gQIAAAQKBgAAH6CYJECBAgIAA+wECBAgQIBAICHCAbpIAAQIECByxcQFpoRMBzwAAAABJRU5ErkJggg==</pentrails><costumes><list struct="atomic" id="6"></list></costumes><sounds><list struct="atomic" id="7"></list></sounds><variables></variables><blocks></blocks><scripts></scripts><sprites select="1"><sprite name="Sprite" idx="1" x="-215" y="149" heading="150" scale="1" volume="100" pan="0" rotation="1" draggable="true" costume="0" color="80,80,80,1" pen="tip" id="12"><costumes><list struct="atomic" id="13"></list></costumes><sounds><list struct="atomic" id="14"></list></sounds><blocks></blocks><variables></variables><scripts><script x="89" y="56.33333333333334"><block s="forward"><l>10</l></block></script><script x="75" y="112.33333333333334"><block s="turn"><l>15</l></block></script></scripts></sprite></sprites></stage><variables></variables></scene></scenes></project>`);
 
+    const fetchXml = async () => {
+        try {
+            // const xmlData = ide.getProjectXML();
+            // setXml(xmlData);
+            // alert(xml);
+
+            // Rest of your logic
+            classrooms.map((classroom: any) => {
+                if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
+                    submitProject();
+                } else {
+                    toast({
+                        title: "Processing request!",
+                        description: (
+                            <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                                <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
+                            </div>
+                        ),
+                    });
+                }
+            });
+        } catch (error) {
+            console.error('Error fetching XML:', error);
+        }
+    };
+
+    // Call fetchXml() when needed
+
 
     return (
         <>
@@ -465,31 +492,26 @@ export default function Page({ params }: { params: { slug: string } }) {
                                 </SelectContent>
                             </Select>
                         </div> */}
-                        <Button ref={buttonRef} onClick={() => {
-                            setXml(`${ide.getProjectXML()}`);
-                            // classroom === "" ? toast({
-                            //     title: "PLZ select a classroom to submit project!",
-                            //     description: (
-                            //         <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                            //             <span>Classroom is REQUIRED!</span>
-                            //         </div>
-                            //     ),
-                            // }) : submitProject();
-                            classrooms.map((classroom: any) => {
-                                if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
-                                    submitProject();
-                                } else {
-                                    toast({
-                                        title: "You Are Not Joined In This Class!",
-                                        description: (
-                                            <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                                                <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
-                                            </div>
-                                        ),
-                                    });
-                                }
-                            });
-                        }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
+                        <Button ref={buttonRef} onClick={
+                            fetchXml
+                            //     () => {
+                            //     setXml(ide.getProjectXML());
+                            //     classrooms.map((classroom: any) => {
+                            //         if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
+                            //             submitProject();
+                            //         } else {
+                            //             toast({
+                            //                 title: "You Are Not Joined In This Class!",
+                            //                 description: (
+                            //                     <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                            //                         <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
+                            //                     </div>
+                            //                 ),
+                            //             });
+                            //         }
+                            //     });
+                            // }
+                        } type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
                             <Send className="h-4 w-4 mr-2" />
                             Submit Project
                         </Button>

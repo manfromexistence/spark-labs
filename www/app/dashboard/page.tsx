@@ -390,33 +390,33 @@ const Dashboard = () => {
     //         }
     //     })
     // }
-    // const setupForUpdatedStudents = (id: string) => {
-    //     const updatedStudents1 = users.filter((user: any) => {
-    //         const matchingItem = docs.find((item: any) => item.id === id);
-    //         if (matchingItem) {
-    //             return matchingItem.students.some((student: any) => student === user.id);
-    //         }
-    //         return false;
-    //     });
-    //     // const updatedStudents2 = users.map((user: any) => {
-    //     //     updatedStudents.map((student) => student.id === user.id && student)
-    //     // });
-    //     // const updatedStudents2 = users.map((user: any) => {
-    //     //     const updatedStudent = updatedStudents.find((student) => student.id === user.id);
-    //     //     return student.id !== user.id ? updatedStudent : [];
-    //     // });
-    //     // const updatedStudents2 = users.map((user: any) => {
-    //     //     return updatedStudents.map((student: any) => student.id !== user.id ? student : [])
-    //     // });
-    //     const updatedStudents2 = updatedStudents.map((student: any) => {
-    //         const matchingUser = users.find((user: any) => user.id === student.id);
-    //         return matchingUser || [];
-    //     });
+    const setupForUpdatedStudents = (id: string) => {
+        const updatedStudents1 = users.filter((user: any) => {
+            const matchingItem = docs.find((item: any) => item.id === id);
+            if (matchingItem) {
+                return matchingItem.students.some((student: any) => student === user.id);
+            }
+            return false;
+        });
+        // const updatedStudents2 = users.map((user: any) => {
+        //     updatedStudents.map((student) => student.id === user.id && student)
+        // });
+        // const updatedStudents2 = users.map((user: any) => {
+        //     const updatedStudent = updatedStudents.find((student) => student.id === user.id);
+        //     return student.id !== user.id ? updatedStudent : [];
+        // });
+        // const updatedStudents2 = users.map((user: any) => {
+        //     return updatedStudents.map((student: any) => student.id !== user.id ? student : [])
+        // });
+        const updatedStudents2 = updatedStudents.map((student: any) => {
+            const matchingUser = users.map((user: any) => user.id !== student.id);
+            return matchingUser || [];
+        });
 
 
-    //     setUpdatedStudents(updatedStudents1);
-    //     setAddOneUpdatedStudent(updatedStudents2);
-    // };
+        setUpdatedStudents(updatedStudents1);
+        setAddOneUpdatedStudent(updatedStudents2);
+    };
 
 
     const deleteUser = (id: number) => {
@@ -1342,14 +1342,6 @@ const Dashboard = () => {
                                                                                                     <Link href={`submissioins/${student}`}>
                                                                                                         <CircleArrowOutUpRight className="h-4 w-4" />
                                                                                                     </Link>
-                                                                                                    {/* <Trash2 onClick={() => {
-                                                                                                        toast({
-                                                                                                            title: "Still In devlopment.",
-                                                                                                            description: `We will soon add this functionality.`,
-                                                                                                        });
-
-                                                                                                    }} className="h-4 w-4" /> */}
-
                                                                                                 </div>
                                                                                             );
                                                                                         }
@@ -1368,7 +1360,7 @@ const Dashboard = () => {
                                                                     //     items.students.map((student: any) => student === user.id && user)
                                                                     // });
 
-                                                                    
+
                                                                     // setUpdatedStudents(updatedStudents1);
 
                                                                     // const matchingItem = docs.find((item: any) => item.id === items.id);
@@ -1382,6 +1374,9 @@ const Dashboard = () => {
                                                                     //     return matchingUser || [];
                                                                     // });
                                                                     // setAddOneUpdatedStudent(updatedStudents2);
+
+
+                                                                    setupForUpdatedStudents(items.id);
                                                                 }} className="w-1/2" variant="outline">Manage Students</Button>
                                                             </DialogTrigger>
                                                             <DialogContent className="sm:max-w-[450px]">
@@ -1394,7 +1389,7 @@ const Dashboard = () => {
                                                                         <CardContent className="space-y-4">
                                                                             <div className="w-full space-y-2">
                                                                                 <Label htmlFor="students">Students</Label>
-                                                                                {/* <Popover open={updateStudentMenuOpen} onOpenChange={setUpdateStudentMenuOpen}>
+                                                                                <Popover open={updateStudentMenuOpen} onOpenChange={setUpdateStudentMenuOpen}>
                                                                                     <PopoverTrigger asChild>
                                                                                         <Button
                                                                                             variant="outline"
@@ -1443,7 +1438,7 @@ const Dashboard = () => {
                                                                                             </CommandList>
                                                                                         </Command>
                                                                                     </PopoverContent>
-                                                                                </Popover> */}
+                                                                                </Popover>
                                                                                 <div className="w-full flex gap-1.5">
                                                                                     <Button className="w-full" onClick={removeAllUpdatedStudents} variant="outline">
                                                                                         Remove All Students
@@ -1487,26 +1482,26 @@ const Dashboard = () => {
                                                                         // title: items.title,
                                                                         // thumbnail: items.thumbnail,
                                                                         // description: items.description,
-                                                                        // students: updatedStudents.map((student) => student.id),
+                                                                        students: updatedStudents.map((student) => student.id),
                                                                         time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                                                     })
 
-                                                                    setDocs((prevDocs) => {
-                                                                        const index = prevDocs.findIndex((doc) => doc.id === items.id);
+                                                                    // setDocs((prevDocs) => {
+                                                                    //     const index = prevDocs.findIndex((doc) => doc.id === items.id);
 
-                                                                        if (index !== -1) {
-                                                                            const updatedDocs = [...prevDocs];
-                                                                            updatedDocs[index] = {
-                                                                                ...updatedDocs[index],
-                                                                                students: updatedStudents.map((student) => student.id),
-                                                                                time: date.format(new Date(), "YYYY/MM/DD HH:mm:ss [GMT]Z", true),
-                                                                            };
-                                                                            return updatedDocs;
-                                                                        }
+                                                                    //     if (index !== -1) {
+                                                                    //         const updatedDocs = [...prevDocs];
+                                                                    //         updatedDocs[index] = {
+                                                                    //             ...updatedDocs[index],
+                                                                    //             students: updatedStudents.map((student) => student.id),
+                                                                    //             time: date.format(new Date(), "YYYY/MM/DD HH:mm:ss [GMT]Z", true),
+                                                                    //         };
+                                                                    //         return updatedDocs;
+                                                                    //     }
 
-                                                                        // If no matching document found, return the original state
-                                                                        return prevDocs;
-                                                                    });
+                                                                    //     // If no matching document found, return the original state
+                                                                    //     return prevDocs;
+                                                                    // });
 
 
                                                                     toast({

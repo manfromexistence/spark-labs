@@ -206,7 +206,7 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="h-[4.5rem] flex items-center justify-center z-10 sticky top-0 w-full bg-background/80 backdrop-blur-2xl border-b">
+    <header className="navbar h-[4.5rem] flex items-center justify-center z-10 sticky top-0 w-full bg-background/80 backdrop-blur-2xl border-b">
       <div className="w-full flex h-14 items-center justify-center px-5">
         <MainNav />
         <MobileNav />

@@ -794,8 +794,6 @@ const Dashboard = ({ params }: { params: { slug: string } }) => {
           Load More Submissions
         </Button>
       </main>
-
-
     </>
   );
 };

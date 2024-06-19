@@ -222,6 +222,16 @@ declare var IDE_Morph: any;
 // }
 
 export default function Page({ params }: { params: { slug: string } }) {
+    function regexClassroomId(input: string, regex: RegExp): string | null {
+        const match = input.match(regex);
+        return match ? match[0] : null;
+    }
+    function regexStudentId(input: string, regex: RegExp, n: number): string | null {
+        const matches = input.match(regex);
+        return matches && matches.length >= n ? matches[n - 1] : null;
+    }
+    const regex = /[^%]+/;
+
     const worldRef = useRef<HTMLCanvasElement | null>(null);
     let lastTime = 0;
     const [ide, setIde] = useState<any>("");
@@ -274,7 +284,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             title: title,
             description: description,
             thumbnail: thumbnail,
-            classroomId: classroom,
+            classroomId: regexClassroomId(params.slug, regex),
             userId: auth.currentUser && auth.currentUser.uid,
             time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
         })
@@ -292,7 +302,8 @@ export default function Page({ params }: { params: { slug: string } }) {
                 </div>
             ),
         });
-        // router.push("/specialties");
+        // router.push("/dashboard");
+        window.location.replace("/dashboard");
         setProjectStatus(true);
         setProjectId(Create.id);
     }
@@ -423,7 +434,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             ))}
 
             {/* <div>My Post: {params.slug}</div> */}
-            <canvas className="h-full w-full" id="world" tabIndex={1} ref={worldRef}></canvas>
+            <canvas className="h-full w-full absolute" id="world" tabIndex={1} ref={worldRef}></canvas>
             <div className={cn("min-h-max w-[345px] rounded-md fixed bottom-12 left-[calc(50%-172.5px)] transform items-end bg-background hidden ", submitBar ? "scale-in-ver-bottom" : "slide-out-blurred-top")}>
                 <Card className="w-full pb-5">
                     <CardHeader className="flex-center">
@@ -443,7 +454,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                             <Label htmlFor="description">Description</Label>
                             <Textarea onChange={(e: any) => setDescription(e.target.value)} id="description" placeholder="Enter project description" />
                         </div>
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                             <Label htmlFor="class">Classroom</Label>
                             <Select required onValueChange={(value: string) => setClassroom(value)}>
                                 <SelectTrigger>
@@ -453,17 +464,31 @@ export default function Page({ params }: { params: { slug: string } }) {
                                     {classrooms.map((classroom: any) => <SelectItem key={classroom} value={classroom.id}>{classroom.title}</SelectItem>)}
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </div> */}
                         <Button ref={buttonRef} onClick={() => {
                             setXml(`${ide.getProjectXML()}`);
-                            classroom === "" ? toast({
-                                title: "PLZ select a classroom to submit project!",
-                                description: (
-                                    <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-                                        <span>Classroom is REQUIRED!</span>
-                                    </div>
-                                ),
-                            }) : submitProject();
+                            // classroom === "" ? toast({
+                            //     title: "PLZ select a classroom to submit project!",
+                            //     description: (
+                            //         <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                            //             <span>Classroom is REQUIRED!</span>
+                            //         </div>
+                            //     ),
+                            // }) : submitProject();
+                            classrooms.map((classroom: any) => {
+                                if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
+                                    submitProject();
+                                } else {
+                                    toast({
+                                        title: "You Are Not Joined In This Class!",
+                                        description: (
+                                            <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+                                                <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
+                                            </div>
+                                        ),
+                                    });
+                                }
+                            });
                         }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
                             <Send className="h-4 w-4 mr-2" />
                             Submit Project
@@ -1366,20 +1391,20 @@ const LinkedIn = (props: SVGProps<SVGSVGElement>) => <svg width="1em" height="1e
 //             </Button> */}
 //                         {/* <Button ref={buttonRef} onClick={() => {
 //               setXml(ide.getSpriteScriptsXML());
-//               classrooms.map((classroom: any) => {
-//                 if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
-//                   submitProject();
-//                 } else {
-//                   toast({
-//                     title: "You Are Not Joined In This Class!",
-//                     description: (
-//                       <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
-//                         <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
-//                       </div>
-//                     ),
-//                   });
-//                 }
-//               });
+//   classrooms.map((classroom: any) => {
+//     if (classroom.id === regexClassroomId(params.slug, regex) && classroom.students.map((student: any) => student === regexStudentId(params.slug, regex, 2))) {
+//       submitProject();
+//     } else {
+//       toast({
+//         title: "You Are Not Joined In This Class!",
+//         description: (
+//           <div className="mt-2 w-[340px] rounded-md bg-primary-foreground p-4">
+//             <span>Our Teachers Will Personally Add Students. Till You Are Joined Stay Tuned.</span>
+//           </div>
+//         ),
+//       });
+//     }
+//   });
 //             }} type="submit" className="relative w-full hover:bg-primary-foreground hover:text-primary">
 //               <Send className="h-4 w-4 mr-2" />
 //               Submit Project

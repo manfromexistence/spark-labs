@@ -759,7 +759,7 @@ const Dashboard = () => {
                                         <DropdownMenuContent className="w-56">
                                             <DropdownMenuLabel>Available Classrooms</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
-                                            {docs.map((classroom: any) => classroom.students.some((student: any) => student === user.userId) && <Link href={`submissions/edit/${classroom.id}+${user.userId}`} key={classroom.id}><DropdownMenuItem>{classroom.title}</DropdownMenuItem></Link>)}
+                                            {docs.map((classroom: any) => classroom.students.some((student: any) => student === user.id) && <Link href={`submissions/edit/${classroom.id}+${user.userId}`} key={classroom.id}><DropdownMenuItem>{classroom.title}</DropdownMenuItem></Link>)}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </div>
@@ -1302,7 +1302,7 @@ const Dashboard = () => {
                                                     <div className="w-full flex flex-row gap-3">
                                                         <Dialog>
                                                             <DialogTrigger asChild>
-                                                                <Button className="w-1/2" variant="outline">View</Button>
+                                                                <Button className="w-full" variant="outline">View</Button>
                                                             </DialogTrigger>
                                                             <DialogContent className="lg:min-w-[650px]">
                                                                 <ScrollArea className="w-full rounded-md border !max-h-[70vh] !p-0">
@@ -1339,7 +1339,7 @@ const Dashboard = () => {
                                                                                             return (
                                                                                                 <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                                     <span>{user.username}</span>
-                                                                                                    <Link href={`submissioins/${student}`}>
+                                                                                                    <Link href={`submissions/${student}`}>
                                                                                                         <CircleArrowOutUpRight className="h-4 w-4" />
                                                                                                     </Link>
                                                                                                 </div>
@@ -1353,7 +1353,7 @@ const Dashboard = () => {
                                                                 </ ScrollArea>
                                                             </DialogContent>
                                                         </Dialog>
-                                                        <Dialog open={updateStudentMenu} onOpenChange={setUpdateStudentMenu}>
+                                                        {/* <Dialog open={updateStudentMenu} onOpenChange={setUpdateStudentMenu}>
                                                             <DialogTrigger asChild>
                                                                 <Button onClick={() => {
                                                                     // const updatedStudents1 = users.filter((user: any) => {
@@ -1513,7 +1513,7 @@ const Dashboard = () => {
                                                                 }} className="w-full">Update Students In This Classroom</Button>
 
                                                             </DialogContent>
-                                                        </Dialog>
+                                                        </Dialog> */}
                                                     </div>
 
 

@@ -302,7 +302,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 </div>
             ),
         });
-        // window.location.replace("/dashboard");
+        window.location.replace("/dashboard");
         setProjectStatus(true);
         setProjectId(Create.id);
     }

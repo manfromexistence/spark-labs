@@ -1173,7 +1173,7 @@
     safe to call directly. For an example how to make retina support
     user-specifiable refer to
 
-        Spark Labs Workspace>> guis.js >> toggleRetina()
+        Spark Labs Workspace!>> guis.js >> toggleRetina()
 
     Even when in retina mode it often makes sense to use normal-resolution
     canvasses for simple shapes in order to save system resources and

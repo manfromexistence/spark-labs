@@ -1458,7 +1458,7 @@ IDE_Morph.prototype.createControlBar = function () {
                 ' (' + myself.scene.name + ')' : '';
         name = (myself.getProjectName() || localize('untitled'));
         if (!myself.config.preserveTitle) {
-            document.title = "Spark Labs Workspace" +
+            document.title = "Spark Labs Workspace!" +
                 (myself.getProjectName() ? name : SnapVersion);
         }
         txt = new StringMorph(
@@ -5220,7 +5220,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
         world = this.world();
 
-    aboutTxt = 'Spark Labs Workspace' + SnapVersion + '\nBuild Your Own Blocks\n\n'
+    aboutTxt = 'Spark Labs Workspace!' + SnapVersion + '\nBuild Your Own Blocks\n\n'
         + 'Copyright \u24B8 2008-2024 Jens M\u00F6nig and '
         + 'Brian Harvey\n'
         + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'

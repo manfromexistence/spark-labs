@@ -5352,7 +5352,7 @@ Process.prototype.alert = function (data) {
     if (this.homeContext.receiver) {
         world = this.homeContext.receiver.world();
         if (world.isDevMode) {
-            alert('Spark Labs Workspace' + data.itemsArray());
+            alert('Spark Labs Workspace!' + data.itemsArray());
         }
     }
 };
@@ -5363,7 +5363,7 @@ Process.prototype.log = function (data) {
     if (this.homeContext.receiver) {
         world = this.homeContext.receiver.world();
         if (world.isDevMode) {
-            console.log('Spark Labs Workspace' + data.itemsArray());
+            console.log('Spark Labs Workspace!' + data.itemsArray());
         }
     }
 };

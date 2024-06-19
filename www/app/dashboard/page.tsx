@@ -5,6 +5,7 @@ import {
     Check,
     CheckCircle2,
     Circle,
+    CircleArrowOutUpRight,
     CircleOff,
     Eye,
     EyeOff,
@@ -333,7 +334,7 @@ const Dashboard = () => {
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
     const togglePasswordVisibility = () => setIsVisiblePassword(!isVisiblePassword);
     const [addStudentsMenu, setAddStudentsMenu] = useState(false);
-    const [addClassroomMenu, setAddClassroomMenu] = useState(true);
+    const [addClassroomMenu, setAddClassroomMenu] = useState(false);
     const [open, setOpen] = useState(false)
     const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
         null
@@ -706,7 +707,7 @@ const Dashboard = () => {
                             </div>
                             <div className="admin-panel-lists">
                                 {submissions.map((items: any) => (
-                                    <div key={items.id}>
+                                    <div key={items.id} className="max-w-[450px]">
                                         <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
                                             <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
                                                 <Carousel
@@ -826,9 +827,10 @@ const Dashboard = () => {
                             {submissions.length === 0 && <div className="flex-center w-full min-h-[70vh]">
                                 <CircleOff className="h-4 w-4 mr-2" />No Submissions Found!
                             </div>}
-                            <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreSubmissions} disabled={loading}>
+
+                            {docs.length >= 8 && <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreSubmissions} disabled={loading}>
                                 Load More Submissions
-                            </Button>
+                            </Button>}
                         </main>) : null;
                     }
                     if (user.role === "teacher") {
@@ -1171,7 +1173,7 @@ const Dashboard = () => {
                             </div>
                             <div className="admin-panel-lists">
                                 {docs.map((items: any) => (
-                                    <div key={items.id}>
+                                    <div key={items.id} className="max-w-[450px]">
                                         <Card className="hover-glow-border w-full relative hover:bg-primary-foreground h-full flex flex-col">
                                             <div className="w-full flex flex-col items-center justify-center relative min-h-auto">
                                                 <Carousel
@@ -1279,13 +1281,16 @@ const Dashboard = () => {
                                                                                             return (
                                                                                                 <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                                     <span>{user.username}</span>
-                                                                                                    <Trash2 onClick={() => {
+                                                                                                    <Link href={`submissioins/${student}`}>
+                                                                                                        <CircleArrowOutUpRight className="h-4 w-4" />
+                                                                                                    </Link>
+                                                                                                    {/* <Trash2 onClick={() => {
                                                                                                         toast({
                                                                                                             title: "Still In devlopment.",
                                                                                                             description: `We will soon add this functionality.`,
                                                                                                         });
 
-                                                                                                    }} className="h-4 w-4" />
+                                                                                                    }} className="h-4 w-4" /> */}
 
                                                                                                 </div>
                                                                                             );
@@ -1438,7 +1443,32 @@ const Dashboard = () => {
                                                                                         <span>Username</span>
                                                                                         <span>Actions</span>
                                                                                     </div>
+
                                                                                     {
+                                                                                        items.students.map((student: any) => {
+                                                                                            return users.map((user: any) => {
+                                                                                                if (user.id === student) {
+                                                                                                    return (
+                                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
+                                                                                                            <span>{user.username}</span>
+                                                                                                            {/* <Link href={`submissioins/${student}`}>
+                                                                                                    <CircleArrowOutUpRight className="h-4 w-4" />
+                                                                                                    </Link> */}
+                                                                                                            <Trash2 onClick={() => {
+                                                                                                                toast({
+                                                                                                                    title: "Still In devlopment.",
+                                                                                                                    description: `We will soon add this functionality.`,
+                                                                                                                });
+
+                                                                                                            }} className="h-4 w-4" />
+
+                                                                                                        </div>
+                                                                                                    );
+                                                                                                }
+                                                                                            });
+                                                                                        })
+                                                                                    }
+                                                                                    {/* {
                                                                                         students.length > 0 ? students.map((student: any) => (
                                                                                             <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                                 <span>{student.username}</span>
@@ -1454,7 +1484,7 @@ const Dashboard = () => {
                                                                                         )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
                                                                                             No Students.
                                                                                         </div>)
-                                                                                    }
+                                                                                    } */}
                                                                                     {/* {
                                                                                         items.students.map((student: any) => {
                                                                                             return users.map((user: any) => {
@@ -1545,9 +1575,10 @@ const Dashboard = () => {
                             {docs.length === 0 && <div className="flex-center w-full min-h-[70vh]">
                                 <CircleOff className="h-4 w-4 mr-2" />No Classrooms Found!
                             </div>}
-                            <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreClassrooms} disabled={loading}>
+                            {docs.length >= 8 && <Button variant={'outline'} className="w-full mt-5" onClick={loadMoreClassrooms} disabled={loading}>
                                 Load More Classrooms
-                            </Button>
+                            </Button>}
+
 
                         </main>) : null;
                     }

@@ -179,16 +179,10 @@
   margin: 0 auto !important;
 }
 
-/* .excalidraw footer {
-  position: absolute !important;
-  bottom: 75px !important;
-  left: 0 !important;
-} */
-
 .admin-panel-lists {
   display: grid;
   grid-gap: 2em;
-  grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 450px));
 }
 
 .footer-lists {

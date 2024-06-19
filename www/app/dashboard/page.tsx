@@ -335,7 +335,9 @@ const Dashboard = () => {
     const togglePasswordVisibility = () => setIsVisiblePassword(!isVisiblePassword);
     const [addStudentsMenu, setAddStudentsMenu] = useState(false);
     const [addClassroomMenu, setAddClassroomMenu] = useState(false);
-    const [open, setOpen] = useState(false)
+    const [updateStudentMenu, setUpdateStudentMenu] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [updateStudentMenuOpen, setUpdateStudentMenuOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
         null
     )
@@ -348,6 +350,10 @@ const Dashboard = () => {
     const [classrooms, setClassrooms] = useState<any>([]);
     const [students, setStudents] = useState<any[]>([]);
     const [addOneStudent, setAddOneStudent] = useState<any[]>([]);
+
+    const [updatedStudents, setUpdatedStudents] = useState<any[]>([]);
+    const [addOneUpdatedStudent, setAddOneUpdatedStudent] = useState<any[]>([]);
+
     const studentUsers = users.filter((user: any) => user.role === "student");
 
     const addAllStudents = () => {
@@ -359,6 +365,59 @@ const Dashboard = () => {
         setStudents([]);
         setAddOneStudent(studentUsers);
     };
+
+
+
+
+
+
+
+
+    const addAllUpdatedStudents = () => {
+        setUpdatedStudents(studentUsers);
+        setAddOneUpdatedStudent([]);
+    };
+
+    const removeAllUpdatedStudents = () => {
+        setUpdatedStudents([]);
+        setAddOneUpdatedStudent(studentUsers);
+    };
+
+    // const setupForUpdatedStudents = (id: string) => {
+    //     docs.map((item: any) => {
+    //         if (item.id === id) {
+    //             setUpdatedStudents(users.filter((user: any) => item.student.map((student: any) => student === user.id)));
+    //         }
+    //     })
+    // }
+    // const setupForUpdatedStudents = (id: string) => {
+    //     const updatedStudents1 = users.filter((user: any) => {
+    //         const matchingItem = docs.find((item: any) => item.id === id);
+    //         if (matchingItem) {
+    //             return matchingItem.students.some((student: any) => student === user.id);
+    //         }
+    //         return false;
+    //     });
+    //     // const updatedStudents2 = users.map((user: any) => {
+    //     //     updatedStudents.map((student) => student.id === user.id && student)
+    //     // });
+    //     // const updatedStudents2 = users.map((user: any) => {
+    //     //     const updatedStudent = updatedStudents.find((student) => student.id === user.id);
+    //     //     return student.id !== user.id ? updatedStudent : [];
+    //     // });
+    //     // const updatedStudents2 = users.map((user: any) => {
+    //     //     return updatedStudents.map((student: any) => student.id !== user.id ? student : [])
+    //     // });
+    //     const updatedStudents2 = updatedStudents.map((student: any) => {
+    //         const matchingUser = users.find((user: any) => user.id === student.id);
+    //         return matchingUser || [];
+    //     });
+
+
+    //     setUpdatedStudents(updatedStudents1);
+    //     setAddOneUpdatedStudent(updatedStudents2);
+    // };
+
 
     const deleteUser = (id: number) => {
         const updatedStudents = users.filter((user: any) => user.id !== id);
@@ -1074,7 +1133,6 @@ const Dashboard = () => {
                                                                     <Command>
                                                                         <CommandInput placeholder="Search students..." />
                                                                         <CommandList>
-                                                                            <CommandEmpty>No student found.</CommandEmpty>
                                                                             <CommandGroup>
                                                                                 {addOneStudent.length > 0 ? addOneStudent.map((user: any) => (
                                                                                     <CommandItem
@@ -1082,8 +1140,8 @@ const Dashboard = () => {
                                                                                         value={user.username}
                                                                                         onSelect={(currentValue) => {
                                                                                             setValue(currentValue);
-                                                                                            const updatedStudents = addOneStudent.filter((item) => item.id !== user.id);
-                                                                                            setAddOneStudent(updatedStudents);
+                                                                                            const updatedStudentsPP = addOneStudent.filter((item) => item.id !== user.id);
+                                                                                            setAddOneStudent(updatedStudentsPP);
                                                                                             setStudents(prevDocs => [...prevDocs, {
                                                                                                 id: user.id,
                                                                                                 username: user.username,
@@ -1126,8 +1184,8 @@ const Dashboard = () => {
                                                                         <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                             <span>{student.username}</span>
                                                                             <Trash2 onClick={() => {
-                                                                                const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                                setStudents(updatedStudents);
+                                                                                const updatedStudentsTT = students.filter((user: any) => user.id !== student.id);
+                                                                                setStudents(updatedStudentsTT);
                                                                                 setAddOneStudent(prevDocs => [...prevDocs, {
                                                                                     id: student.id,
                                                                                     username: student.username,
@@ -1303,9 +1361,28 @@ const Dashboard = () => {
                                                                 </ ScrollArea>
                                                             </DialogContent>
                                                         </Dialog>
-                                                        <Dialog>
+                                                        <Dialog open={updateStudentMenu} onOpenChange={setUpdateStudentMenu}>
                                                             <DialogTrigger asChild>
-                                                                <Button className="w-1/2" variant="secondary">Manage Students</Button>
+                                                                <Button onClick={() => {
+                                                                    // const updatedStudents1 = users.filter((user: any) => {
+                                                                    //     items.students.map((student: any) => student === user.id && user)
+                                                                    // });
+
+                                                                    
+                                                                    // setUpdatedStudents(updatedStudents1);
+
+                                                                    // const matchingItem = docs.find((item: any) => item.id === items.id);
+                                                                    // if (matchingItem) {
+                                                                    //     return matchingItem.students.some((student: any) => student === user.id);
+                                                                    // }
+                                                                    // return false;
+
+                                                                    // const updatedStudents2 = updatedStudents.map((student: any) => {
+                                                                    //     const matchingUser = users.map((user: any) => user.id !== student.id && user);
+                                                                    //     return matchingUser || [];
+                                                                    // });
+                                                                    // setAddOneUpdatedStudent(updatedStudents2);
+                                                                }} className="w-1/2" variant="outline">Manage Students</Button>
                                                             </DialogTrigger>
                                                             <DialogContent className="sm:max-w-[450px]">
                                                                 <ScrollArea className="h-auto w-full rounded-md border p-1">
@@ -1317,19 +1394,16 @@ const Dashboard = () => {
                                                                         <CardContent className="space-y-4">
                                                                             <div className="w-full space-y-2">
                                                                                 <Label htmlFor="students">Students</Label>
-                                                                                <Popover open={open} onOpenChange={setOpen}>
+                                                                                {/* <Popover open={updateStudentMenuOpen} onOpenChange={setUpdateStudentMenuOpen}>
                                                                                     <PopoverTrigger asChild>
                                                                                         <Button
                                                                                             variant="outline"
                                                                                             role="combobox"
-                                                                                            aria-expanded={open}
+                                                                                            aria-expanded={updateStudentMenuOpen}
                                                                                             className="w-full justify-between"
                                                                                         >
-                                                                                            {/* {updateValue
+                                                                                            {updateValue
                                                                                                 ? `Added (${updateValue.toUpperCase()})`
-                                                                                                : "Add student..."} */}
-                                                                                            {value
-                                                                                                ? `Added (${value.toUpperCase()})`
                                                                                                 : "Add student..."}
                                                                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                                                         </Button>
@@ -1338,22 +1412,20 @@ const Dashboard = () => {
                                                                                         <Command>
                                                                                             <CommandInput placeholder="Search students..." />
                                                                                             <CommandList>
-                                                                                                <CommandEmpty>No student found.</CommandEmpty>
                                                                                                 <CommandGroup>
-
-                                                                                                    {addOneStudent.length > 0 ? addOneStudent.map((user: any) => (
+                                                                                                    {addOneUpdatedStudent.length > 0 ? addOneUpdatedStudent.map((user: any) => (
                                                                                                         <CommandItem
                                                                                                             key={user.id}
                                                                                                             value={user.username}
                                                                                                             onSelect={(currentValue) => {
-                                                                                                                setValue(currentValue);
-                                                                                                                const updatedStudents = addOneStudent.filter((item) => item.id !== user.id);
-                                                                                                                setAddOneStudent(updatedStudents);
-                                                                                                                setStudents(prevDocs => [...prevDocs, {
+                                                                                                                setUpdateValue(currentValue);
+                                                                                                                const updatedStudentsLatest = addOneUpdatedStudent.filter((item) => item.id !== user.id);
+                                                                                                                setAddOneUpdatedStudent(updatedStudentsLatest);
+                                                                                                                setUpdatedStudents(prevDocs => [...prevDocs, {
                                                                                                                     id: user.id,
                                                                                                                     username: user.username,
                                                                                                                 }]);
-                                                                                                                setOpen(false);
+                                                                                                                setUpdateStudentMenuOpen(false);
                                                                                                             }}
                                                                                                         >
                                                                                                             <Check
@@ -1367,73 +1439,16 @@ const Dashboard = () => {
                                                                                                     )) : (<div className="flex-center rounded-md h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
                                                                                                         No Students.
                                                                                                     </div>)}
-                                                                                                    {/* 
-                                                                                                    {
-                                                                                                        users.map((user: any) => {
-                                                                                                            items.students.map((student: any) => student !== user.id)
-                                                                                                        })
-                                                                                                    } */}
-
-
-
-                                                                                                    {/* 
-                                                                                                    
-                                                                                                    There are two array's.
-                                                                                                    1. docs array = [
-                                                                                                    {
-                                                                                                    id,
-                                                                                                    title,
-                                                                                                    description,
-                                                                                                    time,
-                                                                                                    userId
-                                                                                                    },...
-                                                                                                    ]
-                                                                                                    2. user array = 
-                                                                                                    {items.students.length > 0 && items.students.map((studentId: any) => {
-                                                                                                        users.map((user: any) => user.id === studentId ? (
-                                                                                                            <CommandItem
-                                                                                                                key={user.id}
-                                                                                                                value={user.username}
-                                                                                                                onSelect={(currentValue) => {
-                                                                                                                    setUpdateValue(currentValue);
-                                                                                                                    const updatedStudents = docs.map((item) => item.id === items.id ? {
-                                                                                                                        userId: auth.currentUser && auth.currentUser.uid,
-                                                                                                                        title: items.title,
-                                                                                                                        thumbnail: items.thumbnail,
-                                                                                                                        description: items.description,
-                                                                                                                        students: items.students.map((student: any) => student === updateValue ? ),
-                                                                                                                        time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true)
-                                                                                                                    } : item);
-                                                                                                                    setAddOneStudent(updatedStudents);
-                                                                                                                    setStudents(prevDocs => [...prevDocs, {
-                                                                                                                        id: user.id,
-                                                                                                                        username: user.username,
-                                                                                                                    }]);
-                                                                                                                    setOpen(false);
-                                                                                                                }}
-                                                                                                            >
-                                                                                                                <Check
-                                                                                                                    className={cn(
-                                                                                                                        "mr-2 h-4 w-4",
-                                                                                                                        value === user.username ? "opacity-100" : "opacity-0"
-                                                                                                                    )}
-                                                                                                                />
-                                                                                                                {user.username}
-                                                                                                            </CommandItem>
-                                                                                                        ) : (<div className="flex-center rounded-md h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
-                                                                                                            No Students.
-                                                                                                        </div>))
-                                                                                                    })} */}
                                                                                                 </CommandGroup>
                                                                                             </CommandList>
                                                                                         </Command>
                                                                                     </PopoverContent>
-                                                                                </Popover>
+                                                                                </Popover> */}
                                                                                 <div className="w-full flex gap-1.5">
-                                                                                    <Button className="w-full" onClick={removeAllStudents} variant="outline">
+                                                                                    <Button className="w-full" onClick={removeAllUpdatedStudents} variant="outline">
                                                                                         Remove All Students
                                                                                     </Button>
-                                                                                    <Button className="w-full" onClick={addAllStudents} variant="outline">
+                                                                                    <Button className="w-full" onClick={addAllUpdatedStudents} variant="outline">
                                                                                         Add All Students
                                                                                     </Button>
                                                                                 </div>
@@ -1443,39 +1458,14 @@ const Dashboard = () => {
                                                                                         <span>Username</span>
                                                                                         <span>Actions</span>
                                                                                     </div>
-
                                                                                     {
-                                                                                        items.students.map((student: any) => {
-                                                                                            return users.map((user: any) => {
-                                                                                                if (user.id === student) {
-                                                                                                    return (
-                                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                                                            <span>{user.username}</span>
-                                                                                                            {/* <Link href={`submissioins/${student}`}>
-                                                                                                    <CircleArrowOutUpRight className="h-4 w-4" />
-                                                                                                    </Link> */}
-                                                                                                            <Trash2 onClick={() => {
-                                                                                                                toast({
-                                                                                                                    title: "Still In devlopment.",
-                                                                                                                    description: `We will soon add this functionality.`,
-                                                                                                                });
-
-                                                                                                            }} className="h-4 w-4" />
-
-                                                                                                        </div>
-                                                                                                    );
-                                                                                                }
-                                                                                            });
-                                                                                        })
-                                                                                    }
-                                                                                    {/* {
-                                                                                        students.length > 0 ? students.map((student: any) => (
+                                                                                        updatedStudents.length > 0 ? updatedStudents.map((student: any) => (
                                                                                             <div key={student.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                                 <span>{student.username}</span>
                                                                                                 <Trash2 onClick={() => {
-                                                                                                    const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                                                    setStudents(updatedStudents);
-                                                                                                    setAddOneStudent(prevDocs => [...prevDocs, {
+                                                                                                    const updatedStudentsNew = updatedStudents.filter((user: any) => user.id !== student.id);
+                                                                                                    setUpdatedStudents(updatedStudentsNew);
+                                                                                                    setAddOneUpdatedStudent(prevDocs => [...prevDocs, {
                                                                                                         id: student.id,
                                                                                                         username: student.username,
                                                                                                     }]);
@@ -1484,72 +1474,47 @@ const Dashboard = () => {
                                                                                         )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
                                                                                             No Students.
                                                                                         </div>)
-                                                                                    } */}
-                                                                                    {/* {
-                                                                                        items.students.map((student: any) => {
-                                                                                            return users.map((user: any) => {
-                                                                                                if (user.id === student) {
-                                                                                                    return (
-                                                                                                        <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                                                            <span>{user.username}</span>
-                                                                                                            <Trash2 onClick={() => {
-                                                                                                                toast({
-                                                                                                                    title: "Still In devlopment.",
-                                                                                                                    description: `We will soon add this functionality.`,
-                                                                                                                });
-
-                                                                                                            }} className="h-4 w-4" />
-                                                                                                        </div>
-                                                                                                    );
-                                                                                                }
-                                                                                            });
-                                                                                        })
-                                                                                    } */}
-                                                                                    {/* {
-                                                                                        items.students.length > 0 ? items.students.map((student: any) =>
-                                                                                        (
-                                                                                            <div key={student} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
-                                                                                                <span>{student.username}</span>
-                                                                                                <Trash2 onClick={() => {
-                                                                                                    const updatedStudents = students.filter((user: any) => user.id !== student.id);
-                                                                                                    setStudents(updatedStudents);
-                                                                                                    setAddOneStudent(prevDocs => [...prevDocs, {
-                                                                                                        id: student.id,
-                                                                                                        username: student.username,
-                                                                                                    }]);
-                                                                                                }} className="h-4 w-4" />
-                                                                                            </div>
-                                                                                        )) : (<div className="flex-center h-32 hover:bg-primary-foreground hover:text-primary w-full text-sm font-mono p-3">
-                                                                                            No Students.
-                                                                                        </div>)
-                                                                                    } */}
+                                                                                    }
                                                                                 </div>
                                                                             </div>
                                                                         </CardContent>
                                                                     </Card>
                                                                 </ScrollArea>
                                                                 <Button onClick={async () => {
-                                                                    await addDoc(collection(db, "classrooms"), {
-                                                                        userId: auth.currentUser && auth.currentUser.uid,
-                                                                        title: title,
-                                                                        thumbnail: thumbnail,
-                                                                        description: description,
-                                                                        students: students.map((student) => student.id),
+                                                                    const updateRef = doc(db, "classrooms", items.id);
+                                                                    const UPDATE = await updateDoc(updateRef, {
+                                                                        // userId: items.userId,
+                                                                        // title: items.title,
+                                                                        // thumbnail: items.thumbnail,
+                                                                        // description: items.description,
+                                                                        // students: updatedStudents.map((student) => student.id),
                                                                         time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
                                                                     })
-                                                                    toast({
-                                                                        title: "Classroom Created Successfully!",
-                                                                        description: `Students can now submit project in this classroom.`,
+
+                                                                    setDocs((prevDocs) => {
+                                                                        const index = prevDocs.findIndex((doc) => doc.id === items.id);
+
+                                                                        if (index !== -1) {
+                                                                            const updatedDocs = [...prevDocs];
+                                                                            updatedDocs[index] = {
+                                                                                ...updatedDocs[index],
+                                                                                students: updatedStudents.map((student) => student.id),
+                                                                                time: date.format(new Date(), "YYYY/MM/DD HH:mm:ss [GMT]Z", true),
+                                                                            };
+                                                                            return updatedDocs;
+                                                                        }
+
+                                                                        // If no matching document found, return the original state
+                                                                        return prevDocs;
                                                                     });
-                                                                    setAddClassroomMenu(!addClassroomMenu);
-                                                                    setDocs(prevDocs => [...prevDocs, {
-                                                                        userId: auth.currentUser && auth.currentUser.uid,
-                                                                        title: title,
-                                                                        thumbnail: thumbnail,
-                                                                        description: description,
-                                                                        students: students.map((student) => student.id),
-                                                                        time: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss [GMT]Z', true),
-                                                                    }]);
+
+
+                                                                    toast({
+                                                                        title: "Classroom Updated Successfully!",
+                                                                        description: `Students are updated in this class.`,
+                                                                    });
+                                                                    setUpdateStudentMenu(false);
+
                                                                 }} className="w-full">Update Students In This Classroom</Button>
 
                                                             </DialogContent>

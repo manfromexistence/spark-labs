@@ -350,7 +350,7 @@ const Login: NextPage = () => {
         try {
           const userCredential = await signInWithEmailAndPassword(auth, USER_DETAILS.email, password);
           toast({
-            title: "Teacher logged in successfully!",
+            title: "User logged in successfully!",
             description: `Continue Using Spark Labs ${username}`,
           });
           router.push('/dashboard');

@@ -266,9 +266,9 @@ export default function Page({ params }: { params: { slug: string } }) {
     };
     fetchSubmissions();
 
-    submissions.find((submission: any) => {
-      submission.id === params.slug && ide.loadProjectXML(submission.xml);
-    })
+    // submissions.find((submission: any) => {
+    //   submission.id === params.slug && ide.loadProjectXML(submission.xml);
+    // })
     // fetchDocs();
   }, []);
   // Snap Editor

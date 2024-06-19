@@ -9,11 +9,11 @@ window.onload = function () {
         path: '../',
         load: 'transpile.xml',
         // onload: () => /* runs when "transpile.xml" is loaded */,
-        // design: "flat",
-        // border: 1,
-        // hideControls: true,
-        // hideCategories: true,
-        // noDevWarning: true
+        design: "flat",
+        border: 1,
+        hideControls: true,
+        hideCategories: true,
+        noDevWarning: true
     }),
         code = document.getElementById('code'),
         save = document.getElementById('save'),

@@ -16,7 +16,7 @@ export default function Error({
     }, [error])
 
     return (
-        <div className='flex-center h-full w-full'>
+        <div className='flex-center min-h-screen w-full'>
             <h2>Use our highly customizable visual scratch Ide!</h2>
             <Button
                 onClick={

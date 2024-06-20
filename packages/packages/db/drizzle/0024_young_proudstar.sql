@@ -1,1 +1,0 @@
-ALTER TABLE monitor ADD `deleted_at` integer;

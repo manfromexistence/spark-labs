@@ -243,8 +243,8 @@ IDE_Morph.prototype.getProjectXML = function () {
 IDE_Morph.prototype.loadProjectXML = function (projectXML) {
     // load the project encoded as xml-String, no questions asked
     // terminate animations and scheduled ops
-    this.onNextStep = null;
-    this.world().animations = [];
+    // this.onNextStep = null;
+    // this.world().animations = [];
     this.openProjectString(projectXML);
 };
 

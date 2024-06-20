@@ -68,6 +68,7 @@ Currently the API consists of the following methods:
 
 * `IDE_Morph.prototype.setTranslation()`
 
+
 ## Referencing the IDE
 
 There are two ways in which Snap! can be used as an extension editor for other web applications: Either by directly embedding the Snap! IDE as a Canvas element in another web page, or by embedding Snap! in an iframe.

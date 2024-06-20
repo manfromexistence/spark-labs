@@ -1,92 +1,3 @@
-/*
-
-    gui.js
-
-    a programming environment
-    based on morphic.js, blocks.js, threads.js and objects.js
-    inspired by Scratch
-
-    written by Jens Mönig
-    jens@moenig.org
-
-    Copyright (C) 2024 by Jens Mönig
-
-    This file is part of Snap!.
-
-    Snap! is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of
-    the License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-    prerequisites:
-    --------------
-    needs blocks.js, threads.js, objects.js, cloud.jus and morphic.js
-
-
-    toc
-    ---
-    the following list shows the order in which all constructors are
-    defined. Use this list to locate code in this document:
-
-        IDE_Morph
-        ProjectDialogMorph
-        LibraryImportDialogMorph
-        SpriteIconMorph
-        TurtleIconMorph
-        CostumeIconMorph
-        WardrobeMorph
-        SoundIconMorph
-        JukeboxMorph
-        SceneIconMorph
-        SceneAlbumMorph
-        StageHandleMorph
-        PaletteHandleMorph
-        CamSnapshotDialogMorph
-        SoundRecorderDialogMorph
-
-
-    credits
-    -------
-    Nathan Dinsmore contributed saving and loading of projects,
-    ypr-Snap! project conversion and countless bugfixes
-    Ian Reynolds contributed handling and visualization of sounds
-    Michael Ball contributed the LibraryImportDialogMorph and countless
-    utilities to load libraries from relative urls
-    Bernat Romagosa contributed more things than I can mention,
-    including interfacing to the camera and microphone
-
-*/
-
-/*global modules, Morph, SpriteMorph, SyntaxElementMorph, Color, Cloud, Audio,
-ListWatcherMorph, TextMorph, newCanvas, useBlurredShadows, Sound, Scene, Note,
-StringMorph, Point, MenuMorph, morphicVersion, DialogBoxMorph, BlockEditorMorph,
-ToggleButtonMorph, contains, ScrollFrameMorph, StageMorph, PushButtonMorph, sb,
-InputFieldMorph, FrameMorph, Process, nop, SnapSerializer, ListMorph, detect,
-AlignmentMorph, TabMorph, Costume, MorphicPreferences,BlockMorph, ToggleMorph,
-InputSlotDialogMorph, ScriptsMorph, isNil, SymbolMorph, fontHeight, localize,
-BlockExportDialogMorph, BlockImportDialogMorph, SnapTranslator, List, ArgMorph,
-Uint8Array, HandleMorph, SVG_Costume, TableDialogMorph, CommentMorph, saveAs,
-CommandBlockMorph, BooleanSlotMorph, RingReporterSlotMorph, ScriptFocusMorph,
-BlockLabelPlaceHolderMorph, SpeechBubbleMorph, XML_Element, WatcherMorph, WHITE,
-BlockRemovalDialogMorph,TableMorph, isSnapObject, isRetinaEnabled, SliderMorph,
-disableRetinaSupport, enableRetinaSupport, isRetinaSupported, MediaRecorder,
-Animation, BoxMorph, BlockDialogMorph, RingMorph, Project, ZERO, BLACK,
-BlockVisibilityDialogMorph, ThreadManager, isString, SnapExtensions, snapEquals
-*/
-
-/*jshint esversion: 8*/
-
-// Global stuff ////////////////////////////////////////////////////////
-
 modules.gui = '2024-June-04';
 
 // Declarations
@@ -123,8 +34,8 @@ IDE_Morph.uber = Morph.prototype;
 
 IDE_Morph.prototype.setDefaultDesign = function () {
     MorphicPreferences.isFlat = false;
-    SpriteMorph.prototype.paletteColor = new Color(30, 30, 30);
-    SpriteMorph.prototype.paletteTextColor = new Color(230, 230, 230);
+    SpriteMorph.prototype.paletteColor = PRIMARY;
+    SpriteMorph.prototype.paletteTextColor = BLACK;
     StageMorph.prototype.paletteTextColor
         = SpriteMorph.prototype.paletteTextColor;
     StageMorph.prototype.paletteColor = SpriteMorph.prototype.paletteColor;
@@ -132,13 +43,13 @@ IDE_Morph.prototype.setDefaultDesign = function () {
         = SpriteMorph.prototype.paletteColor.lighter(30);
 
     IDE_Morph.prototype.buttonContrast = 30;
-    IDE_Morph.prototype.backgroundColor = new Color(10, 10, 10);
+    IDE_Morph.prototype.backgroundColor = BLACK;
     IDE_Morph.prototype.frameColor = SpriteMorph.prototype.paletteColor;
 
     IDE_Morph.prototype.groupColor
         = SpriteMorph.prototype.paletteColor.lighter(5);
     IDE_Morph.prototype.sliderColor = SpriteMorph.prototype.sliderColor;
-    IDE_Morph.prototype.buttonLabelColor = WHITE;
+    IDE_Morph.prototype.buttonLabelColor = BLACK;
     IDE_Morph.prototype.tabColors = [
         IDE_Morph.prototype.groupColor.darker(50),
         IDE_Morph.prototype.groupColor.darker(25),
@@ -161,25 +72,25 @@ IDE_Morph.prototype.setDefaultDesign = function () {
         = IDE_Morph.prototype.buttonLabelColor;
 
     SyntaxElementMorph.prototype.contrast = 65;
-    ScriptsMorph.prototype.feedbackColor = WHITE;
+    ScriptsMorph.prototype.feedbackColor = BLACK;
 };
 
 IDE_Morph.prototype.setFlatDesign = function () {
     MorphicPreferences.isFlat = true;
-    SpriteMorph.prototype.paletteColor = WHITE;
-    SpriteMorph.prototype.paletteTextColor = new Color(70, 70, 70);
+    SpriteMorph.prototype.paletteColor = BLACK;
+    SpriteMorph.prototype.paletteTextColor = BLACK;
     StageMorph.prototype.paletteTextColor
         = SpriteMorph.prototype.paletteTextColor;
     StageMorph.prototype.paletteColor = SpriteMorph.prototype.paletteColor;
     SpriteMorph.prototype.sliderColor = SpriteMorph.prototype.paletteColor;
 
     IDE_Morph.prototype.buttonContrast = 30;
-    IDE_Morph.prototype.backgroundColor = new Color(220, 220, 230);
-    IDE_Morph.prototype.frameColor = new Color(240, 240, 245);
+    IDE_Morph.prototype.backgroundColor = PRIMARY;
+    IDE_Morph.prototype.frameColor = SECONDARY;
 
-    IDE_Morph.prototype.groupColor = WHITE;
+    IDE_Morph.prototype.groupColor = BLACK;
     IDE_Morph.prototype.sliderColor = SpriteMorph.prototype.sliderColor;
-    IDE_Morph.prototype.buttonLabelColor = new Color(70, 70, 70);
+    IDE_Morph.prototype.buttonLabelColor = BLACK;
     IDE_Morph.prototype.tabColors = [
         IDE_Morph.prototype.frameColor,
         IDE_Morph.prototype.frameColor.lighter(50),
@@ -202,7 +113,7 @@ IDE_Morph.prototype.setFlatDesign = function () {
         = IDE_Morph.prototype.buttonLabelColor;
 
     SyntaxElementMorph.prototype.contrast = 25;
-    ScriptsMorph.prototype.feedbackColor = new Color(153, 255, 213);
+    ScriptsMorph.prototype.feedbackColor = PRIMARY;
 };
 
 IDE_Morph.prototype.scriptsTexture = function () {
@@ -257,7 +168,7 @@ function IDE_Morph(config = {}) {
         noExitWarning:  bool, do not show a browser warning when closing the IDE
                                 with unsaved changes
         preserveTitle:  bool, do not set the tab title dynamically to reflect
-                                the current Snap! version
+                                the current Spark Labs Workspaceversion
         blocksZoom:     num, zoom factor for blocks, e.g. 1.5
         blocksFade:     num, fading percentage for blocks, e.g. 85
         zebra:          num, contrast percentage for nesting same-color blocks
@@ -581,7 +492,7 @@ IDE_Morph.prototype.openIn = function (world) {
                                 this.shield.destroy();
                                 this.shield = null;
                                 msg.destroy();
-                                this.toggleAppMode(false);
+                                this.toggleAppMode(true);
                             }
                         ]);
                     }
@@ -818,14 +729,13 @@ IDE_Morph.prototype.applyConfigurations = function () {
                 this.getURL(
                     cnf.load,
                     projectData => {
-                        // if (projectData.indexOf('<snapdata') === 0) {
-                        //     this.rawOpenCloudDataString(projectData);
-                        // } else if (
-                        //     projectData.indexOf('<project') === 0
-                        // ) {
-                        //     this.rawOpenProjectString(projectData);
-                        // }
-                        this.rawOpenProjectString(projectData);
+                        if (projectData.indexOf('<snapdata') === 0) {
+                            this.rawOpenCloudDataString(projectData);
+                        } else if (
+                            projectData.indexOf('<project') === 0
+                        ) {
+                            this.rawOpenProjectString(projectData);
+                        }
                         this.hasChangedMedia = true;
                         this.applyPaneHidingConfigurations();
                         if (cnf.onload) {
@@ -855,7 +765,7 @@ IDE_Morph.prototype.applyConfigurations = function () {
         SpriteMorph.prototype.initBlocks();
     }
 
-    // interaction mode sumon
+    // interaction mode
     if (cnf.mode === "presentation") {
         this.toggleAppMode(true);
     } else {
@@ -1057,7 +967,7 @@ IDE_Morph.prototype.createLogo = function () {
                 this.width(),
                 0
             );
-        gradient.addColorStop(0, 'black');
+        gradient.addColorStop(0, PRIMARY);
         gradient.addColorStop(0.5, myself.frameColor.toString());
         ctx.fillStyle = MorphicPreferences.isFlat ?
                 myself.frameColor.toString() : gradient;
@@ -1108,7 +1018,7 @@ IDE_Morph.prototype.createControlBar = function () {
             this.frameColor.darker(50),
             this.frameColor.darker(50)
         ],
-        activeColor = new Color(153, 255, 213),
+        activeColor = BLACK,
         activeColors = [
             activeColor,
             activeColor.lighter(40),
@@ -1121,7 +1031,7 @@ IDE_Morph.prototype.createControlBar = function () {
     }
 
     this.controlBar = new Morph();
-    this.controlBar.color = this.frameColor;
+    this.controlBar.color = SECONDARY;
     this.controlBar.setHeight(this.logo.height()); // height is fixed
 
     // let users manually enforce re-layout when changing orientation
@@ -1149,15 +1059,15 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
-    button.pressColor = colors[0];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
+    button.pressColor = PRIMARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
     button.labelShadowColor = colors[1];
     button.labelColor = MorphicPreferences.isFlat ?
-        WHITE
+    BLACK
         : this.buttonLabelColor;
     button.contrast = this.buttonContrast;
     // button.hint = 'stage size\nsmall & normal';
@@ -1181,9 +1091,9 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
-    button.pressColor = colors[0];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
+    button.pressColor = PRIMARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
@@ -1210,9 +1120,9 @@ IDE_Morph.prototype.createControlBar = function () {
     );
 
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
-    button.pressColor = activeColor;
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
+    button.pressColor = SECONDARY;
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
     button.labelShadowOffset = new Point(-1, -1);
@@ -1242,8 +1152,8 @@ IDE_Morph.prototype.createControlBar = function () {
     );
 
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1276,8 +1186,8 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
     button.pressColor = colors[0];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1301,8 +1211,8 @@ IDE_Morph.prototype.createControlBar = function () {
         new SymbolMorph('flag', 14)
     );
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1372,8 +1282,8 @@ IDE_Morph.prototype.createControlBar = function () {
         //'\u270E'
     );
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1395,8 +1305,8 @@ IDE_Morph.prototype.createControlBar = function () {
         //'\u2699'
     );
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
     button.pressColor = colors[2];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1424,8 +1334,8 @@ IDE_Morph.prototype.createControlBar = function () {
 
     button.hasNeutralBackground = true;
     button.corner = 12;
-    button.color = colors[0];
-    button.highlightColor = colors[1];
+    button.color = PRIMARY;
+    button.highlightColor = BLACK;
     button.pressColor = colors[0];
     button.labelMinExtent = new Point(36, 18);
     button.padding = 0;
@@ -1548,7 +1458,7 @@ IDE_Morph.prototype.createControlBar = function () {
                 ' (' + myself.scene.name + ')' : '';
         name = (myself.getProjectName() || localize('untitled'));
         if (!myself.config.preserveTitle) {
-            document.title = "Snap! " +
+            document.title = "Spark Labs Workspace!" +
                 (myself.getProjectName() ? name : SnapVersion);
         }
         txt = new StringMorph(
@@ -1674,7 +1584,7 @@ IDE_Morph.prototype.createCategories = function () {
         button.labelShadowColor = colors[1];
         button.labelColor = myself.buttonLabelColor;
         if (MorphicPreferences.isFlat) {
-            button.labelPressColor = WHITE;
+            button.labelPressColor = BLACK;
         }
         button.fixLayout();
         button.refresh();
@@ -1711,7 +1621,7 @@ IDE_Morph.prototype.createCategories = function () {
         button.labelShadowColor = colors[1];
         button.labelColor = myself.buttonLabelColor;
         if (MorphicPreferences.isFlat) {
-            button.labelPressColor = WHITE;
+            button.labelPressColor = BLACK;
         }
         button.fixLayout();
         button.refresh();
@@ -2299,8 +2209,8 @@ IDE_Morph.prototype.createCorralBar = function () {
         new SymbolMorph("turtle", 14)
     );
     newbutton.corner = 12;
-    newbutton.color = colors[0];
-    newbutton.highlightColor = colors[1];
+    newbutton.color = PRIMARY;
+    newbutton.highlightColor = BLACK;
     newbutton.pressColor = colors[2];
     newbutton.labelMinExtent = new Point(36, 18);
     newbutton.padding = 0;
@@ -2320,8 +2230,8 @@ IDE_Morph.prototype.createCorralBar = function () {
         new SymbolMorph("brush", 15)
     );
     paintbutton.corner = 12;
-    paintbutton.color = colors[0];
-    paintbutton.highlightColor = colors[1];
+    paintbutton.color = PRIMARY;
+    paintbutton.highlightColor = BLACK;
     paintbutton.pressColor = colors[2];
     paintbutton.labelMinExtent = new Point(36, 18);
     paintbutton.padding = 0;
@@ -2344,8 +2254,8 @@ IDE_Morph.prototype.createCorralBar = function () {
                 new SymbolMorph("camera", 15)
                 );
         cambutton.corner = 12;
-        cambutton.color = colors[0];
-        cambutton.highlightColor = colors[1];
+        cambutton.color = PRIMARY;
+        cambutton.highlightColor = BLACK;
         cambutton.pressColor = colors[2];
         cambutton.labelMinExtent = new Point(36, 18);
         cambutton.padding = 0;
@@ -2383,8 +2293,8 @@ IDE_Morph.prototype.createCorralBar = function () {
         new SymbolMorph("trash", 18)
     );
     trashbutton.corner = 12;
-    trashbutton.color = colors[0];
-    trashbutton.highlightColor = colors[1];
+    trashbutton.color = PRIMARY;
+    trashbutton.highlightColor = BLACK;
     trashbutton.pressColor = colors[2];
     trashbutton.labelMinExtent = new Point(36, 18);
     trashbutton.padding = 0;
@@ -4032,7 +3942,7 @@ IDE_Morph.prototype.snapMenu = function () {
         }
     );
     menu.addItem(
-        'Snap! website',
+        'Spark Labs Workspacewebsite',
         () => window.open('https://snap.berkeley.edu/', 'SnapWebsite')
     );
     menu.addItem(
@@ -4049,7 +3959,7 @@ IDE_Morph.prototype.snapMenu = function () {
             'switchToUserMode',
             'disable deep-Morphic\ncontext menus'
                 + '\nand show user-friendly ones',
-            new Color(0, 100, 0)
+            PRIMARY
         );
     } else if (world.currentKey === 16) { // shift-click
         menu.addLine();
@@ -4058,7 +3968,7 @@ IDE_Morph.prototype.snapMenu = function () {
             'switchToDevMode',
             'enable Morphic\ncontext menus\nand inspectors,'
                 + '\nnot user-friendly!',
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.popup(world, this.logo.bottomLeft());
@@ -4081,7 +3991,7 @@ IDE_Morph.prototype.cloudMenu = function () {
             'url...',
             'setCloudURL',
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addLine();
     }
@@ -4145,7 +4055,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 }
             },
             null,
-            this.hasChangedMedia ? new Color(100, 0, 0) : new Color(0, 100, 0)
+            this.hasChangedMedia ? PRIMARY : new Color(0, 100, 0)
         );
         menu.addItem(
             'export project without media...',
@@ -4163,7 +4073,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 }
             },
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addItem(
             'export project as cloud data...',
@@ -4181,7 +4091,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 }
             },
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addLine();
         menu.addItem(
@@ -4234,7 +4144,7 @@ IDE_Morph.prototype.cloudMenu = function () {
                 );
             },
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.popup(world, pos);
@@ -4264,7 +4174,7 @@ IDE_Morph.prototype.settingsMenu = function () {
                 ],
                 toggle,
                 test ? onHint : offHint,
-                hide ? new Color(100, 0, 0) : null
+                hide ? PRIMARY : null
             );
         }
     }
@@ -4278,7 +4188,7 @@ IDE_Morph.prototype.settingsMenu = function () {
                 ],
                 toggle,
                 test ? onHint : offHint,
-                hide ? new Color(100, 0, 0) : null
+                hide ? PRIMARY : null
             );
         }
     }
@@ -4312,7 +4222,7 @@ IDE_Morph.prototype.settingsMenu = function () {
             'userSetDragThreshold',
             'specify the distance the hand has to move\n' +
                 'before it picks up an object',
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.addItem(
@@ -4831,14 +4741,14 @@ IDE_Morph.prototype.projectMenu = function () {
             'Restore unsaved project',
             'restore',
             backup,
-            shiftClicked ? new Color(100, 0, 0) : null
+            shiftClicked ? PRIMARY : null
         );
         if (shiftClicked) {
             menu.addItem(
                 'Clear backup',
                 'clearBackup',
                 backup,
-                new Color(100, 0, 0)
+                PRIMARY
             );
         }
     }
@@ -4878,13 +4788,13 @@ IDE_Morph.prototype.projectMenu = function () {
                 '\nwith a summary of this project' +
                 '\nwith drop-shadows on all pictures.' +
                 '\nnot supported by all browsers',
-            new Color(100, 0, 0)
+            PRIMARY
         );
         menu.addItem(
             'Export all scripts as pic...',
             () => this.exportScriptsPicture(),
             'show a picture of all scripts\nand block definitions',
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.addLine();
@@ -4987,11 +4897,11 @@ IDE_Morph.prototype.projectMenu = function () {
 IDE_Morph.prototype.resourceURL = function () {
     // Take in variadic inputs that represent an a nested folder structure.
     // Method can be easily overridden if running in a custom location.
-    // Default Snap! simply returns a path (relative to snap.html)
+    // Default Spark Labs Workspacesimply returns a path (relative to snap.html)
     // Note: You can specify a base path to the root directory in the
     // configuration object's "path" property that's passed when creating
     // an IDE instance, e.g. either a relative one: {path: '../' }
-    // or a full url, depending on where (your) Snap! distro ist hosted
+    // or a full url, depending on where (your) Spark Labs Workspacedistro ist hosted
     var args = Array.prototype.slice.call(arguments, 0),
         path = this.config.path ? [this.config.path] : [];
     return path.concat(args).join('/');
@@ -5310,22 +5220,22 @@ IDE_Morph.prototype.aboutSnap = function () {
         module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
         world = this.world();
 
-    aboutTxt = 'Snap! ' + SnapVersion + '\nBuild Your Own Blocks\n\n'
+    aboutTxt = 'Spark Labs Workspace!' + SnapVersion + '\nBuild Your Own Blocks\n\n'
         + 'Copyright \u24B8 2008-2024 Jens M\u00F6nig and '
         + 'Brian Harvey\n'
         + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'
-        + '        Snap! is developed by the University of California, '
+        + '        Spark Labs Workspaceis developed by the University of California, '
         + 'Berkeley and SAP        \n'
         + 'with support from the National Science Foundation (NSF),\n'
         + 'MIOsoft and YC Research.\n'
-        + 'The design of Snap! is influenced and inspired by Scratch,\n'
+        + 'The design of Spark Labs Workspaceis influenced and inspired by Scratch,\n'
         + 'from the Lifelong Kindergarten group at the MIT Media Lab\n\n'
 
         + 'for more information see https://snap.berkeley.edu';
 
     noticeTxt = localize('License')
         + '\n\n'
-        + 'Snap! is free software: you can redistribute it and/or modify\n'
+        + 'Spark Labs Workspaceis free software: you can redistribute it and/or modify\n'
         + 'it under the terms of the GNU Affero General Public License as\n'
         + 'published by the Free Software Foundation, either version 3 of\n'
         + 'the License, or (at your option) any later version.\n\n'
@@ -5339,7 +5249,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         + 'GNU Affero General Public License along with this program.\n'
         + 'If not, see http://www.gnu.org/licenses/\n\n'
 
-        + 'Want to use Snap! but scared by the open-source license?\n'
+        + 'Want to use Spark Labs Workspacebut scared by the open-source license?\n'
         + 'Get in touch with us, we\'ll make it work.';
 
     creditsTxt = localize('Contributors')
@@ -5377,7 +5287,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         + 'Jahrd, Derec, Jamet, Sarron, Aleassa, and Lirin costumes'
         + '\nare watercolor paintings by Meghan Taylor and represent'
         + '\n characters from her webcomic Prophecy of the Circle,'
-        + '\nlicensed to us only for use in Snap! projects.'
+        + '\nlicensed to us only for use in Spark Labs Workspaceprojects.'
         + '\nMeghan also painted the Tad costumes,'
         + '\nbut that character is in the public domain.';
 
@@ -5407,7 +5317,7 @@ IDE_Morph.prototype.aboutSnap = function () {
                 null,
                 null,
                 MorphicPreferences.isFlat ? null : new Point(1, 1),
-                WHITE
+                BLACK
             ),
             scroller,
             maxHeight = world.height() - dlg.titleFontSize * 10;
@@ -5418,7 +5328,7 @@ IDE_Morph.prototype.aboutSnap = function () {
             scroller.bounds.setWidth(tm.width());
             scroller.bounds.setHeight(maxHeight);
             scroller.addContents(tm);
-            scroller.color = new Color(0, 0, 0, 0);
+            scroller.color = BLACK;
             return scroller;
         }
         return tm;
@@ -5605,7 +5515,7 @@ IDE_Morph.prototype.createNewCategory = function () {
     ).promptCategory(
         "New Category",
         null,
-        new Color(0,116,143),
+        PRIMARY,
         this.world(),
         null, // pic
         'Blocks category name:' // msg
@@ -5686,7 +5596,7 @@ IDE_Morph.prototype.deletePaletteCategory = function (name) {
 
 IDE_Morph.prototype.save = function () {
     // temporary hack - only allow exporting projects to disk
-    // when running Snap! locally without a web server
+    // when running Spark Labs Workspacelocally without a web server
     var pn = this.getProjectName();
     if (location.protocol === 'file:') {
         if (pn) {
@@ -6317,7 +6227,7 @@ IDE_Morph.prototype.openProjectString = function (str, callback) {
 };
 
 IDE_Morph.prototype.rawOpenProjectString = function (str) {
-    this.toggleAppMode(false);
+    this.toggleAppMode(true);
     this.spriteBar.tabBar.tabTo('scripts');
     if (Process.prototype.isCatchingErrors) {
         try {
@@ -6400,7 +6310,7 @@ IDE_Morph.prototype.openBlocksString = function (str, name, silently) {
 IDE_Morph.prototype.rawOpenBlocksString = function (str, name, silently) {
     // name is optional (string), so is silently (bool)
     var blocks;
-    this.toggleAppMode(false);
+    this.toggleAppMode(true);
     this.spriteBar.tabBar.tabTo('scripts');
     if (Process.prototype.isCatchingErrors) {
         try {
@@ -6463,7 +6373,7 @@ IDE_Morph.prototype.openSpritesString = function (str) {
 };
 
 IDE_Morph.prototype.rawOpenSpritesString = function (str) {
-    this.toggleAppMode(false);
+    this.toggleAppMode(true);
     this.spriteBar.tabBar.tabTo('scripts');
     if (Process.prototype.isCatchingErrors) {
         try {
@@ -7330,7 +7240,7 @@ IDE_Morph.prototype.addScene = function () {
         // bypass the project import dialog and directly pop up
         // the local file picker.
         // this should not be necessary, we should be able
-        // to access the cloud even when running Snap! locally
+        // to access the cloud even when running Spark Labs Workspacelocally
         // to be worked on.... (jens)
         this.isAddingScenes = true;
         this.importLocalFile();
@@ -7345,7 +7255,7 @@ IDE_Morph.prototype.openProjectsBrowser = function () {
         // bypass the project import dialog and directly pop up
         // the local file picker.
         // this should not be necessary, we should be able
-        // to access the cloud even when running Snap! locally
+        // to access the cloud even when running Spark Labs Workspacelocally
         // to be worked on.... (jens)
         this.importLocalFile();
         return;
@@ -7355,7 +7265,7 @@ IDE_Morph.prototype.openProjectsBrowser = function () {
 
 IDE_Morph.prototype.saveProjectsBrowser = function () {
     // temporary hack - only allow exporting projects to disk
-    // when running Snap! locally without a web server
+    // when running Spark Labs Workspacelocally without a web server
     if (location.protocol === 'file:') {
         this.prompt(
             'Export Project As...',
@@ -8394,7 +8304,7 @@ IDE_Morph.prototype.warnAboutIE = function () {
         dlg = new DialogBoxMorph();
         txt = new TextMorph(
             'Please do not use Internet Explorer.\n' +
-                'Snap! runs best in a web-standards\n' +
+                'Spark Labs Workspaceruns best in a web-standards\n' +
                 'compliant browser',
             dlg.fontSize,
             dlg.fontStyle,
@@ -8404,7 +8314,7 @@ IDE_Morph.prototype.warnAboutIE = function () {
             null,
             null,
             MorphicPreferences.isFlat ? null : new Point(1, 1),
-            WHITE
+            BLACK
         );
 
         dlg.key = 'IE-Warning';
@@ -8430,13 +8340,13 @@ IDE_Morph.prototype.warnAboutDev = function () {
     }
     this.inform(
         "CAUTION! Development Version",
-        'This version of Snap! is being developed.\n' +
+        'This version of Spark Labs Workspaceis being developed.\n' +
             '*** It is NOT supported for end users. ***\n' +
             'Saving a project in THIS version is likely to\n' +
             'make it UNUSABLE or DEFECTIVE for current and\n' +
             'even future official versions!\n\n' +
             'visit https://snap.berkeley.edu/run\n' +
-            'for the official Snap! installation.'
+            'for the official Spark Labs Workspaceinstallation.'
     ).nag = true;
 };
 
@@ -8535,7 +8445,7 @@ ProjectDialogMorph.prototype.buildContents = function () {
             null, // width
             null, // font name
             new Point(1, 1), // shadow offset
-            WHITE // shadowColor
+            BLACK // shadowColor
         );
         notification.refresh = nop;
         this.srcBar.add(notification);
@@ -8752,7 +8662,7 @@ ProjectDialogMorph.prototype.addSourceButton = function (
             null,
             null,
             new Point(1, 1),
-            WHITE
+            BLACK
         ),
         lbl2 = new StringMorph(
             label,
@@ -8763,7 +8673,7 @@ ProjectDialogMorph.prototype.addSourceButton = function (
             null,
             new Point(-1, -1),
             this.titleBarColor.darker(50),
-            WHITE
+            BLACK
         ),
         l1 = new Morph(),
         l2 = new Morph(),
@@ -8786,7 +8696,7 @@ ProjectDialogMorph.prototype.addSourceButton = function (
     lbl2.add(new SymbolMorph(
         symbol,
         24,
-        WHITE,
+        BLACK,
         new Point(-1, -1),
         this.titleBarColor.darker(50)
     ));
@@ -10218,7 +10128,7 @@ SpriteIconMorph.uber = ToggleButtonMorph.prototype;
 SpriteIconMorph.prototype.thumbSize = new Point(40, 40);
 SpriteIconMorph.prototype.labelShadowOffset = null;
 SpriteIconMorph.prototype.labelShadowColor = null;
-SpriteIconMorph.prototype.labelColor = WHITE;
+SpriteIconMorph.prototype.labelColor = BLACK;
 SpriteIconMorph.prototype.fontSize = 9;
 
 // SpriteIconMorph instance creation:
@@ -10499,7 +10409,7 @@ SpriteIconMorph.prototype.userMenu = function () {
                 "parent...",
                 'chooseExemplar',
                 null,
-                new Color(100, 0, 0)
+                PRIMARY
             );
         }
         */
@@ -10758,7 +10668,7 @@ CostumeIconMorph.uber = ToggleButtonMorph.prototype;
 CostumeIconMorph.prototype.thumbSize = new Point(80, 60);
 CostumeIconMorph.prototype.labelShadowOffset = null;
 CostumeIconMorph.prototype.labelShadowColor = null;
-CostumeIconMorph.prototype.labelColor = WHITE;
+CostumeIconMorph.prototype.labelColor = BLACK;
 CostumeIconMorph.prototype.fontSize = 9;
 
 // CostumeIconMorph instance creation:
@@ -10875,7 +10785,7 @@ CostumeIconMorph.prototype.userMenu = function () {
             'edit rotation point only...',
             'editRotationPointOnly',
             null,
-            new Color(100, 0, 0)
+            PRIMARY
         );
     }
     menu.addItem("rename", "renameCostume");
@@ -11063,7 +10973,7 @@ TurtleIconMorph.uber = ToggleButtonMorph.prototype;
 TurtleIconMorph.prototype.thumbSize = new Point(80, 60);
 TurtleIconMorph.prototype.labelShadowOffset = null;
 TurtleIconMorph.prototype.labelShadowColor = null;
-TurtleIconMorph.prototype.labelColor = WHITE;
+TurtleIconMorph.prototype.labelColor = BLACK;
 TurtleIconMorph.prototype.fontSize = 9;
 
 // TurtleIconMorph instance creation:
@@ -11503,7 +11413,7 @@ SoundIconMorph.uber = ToggleButtonMorph.prototype;
 SoundIconMorph.prototype.thumbSize = new Point(80, 60);
 SoundIconMorph.prototype.labelShadowOffset = null;
 SoundIconMorph.prototype.labelShadowColor = null;
-SoundIconMorph.prototype.labelColor = WHITE;
+SoundIconMorph.prototype.labelColor = BLACK;
 SoundIconMorph.prototype.fontSize = 9;
 
 // SoundIconMorph instance creation:
@@ -11894,7 +11804,7 @@ SceneIconMorph.uber = ToggleButtonMorph.prototype;
 SceneIconMorph.prototype.thumbSize = new Point(40, 30);
 SceneIconMorph.prototype.labelShadowOffset = null;
 SceneIconMorph.prototype.labelShadowColor = null;
-SceneIconMorph.prototype.labelColor = WHITE;
+SceneIconMorph.prototype.labelColor = BLACK;
 SceneIconMorph.prototype.fontSize = 9;
 
 // SceneIconMorph instance creation:

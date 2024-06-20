@@ -220,6 +220,15 @@ declare var IDE_Morph: any;
 //     IDE_Morph: any;
 //   }
 // }
+declare global {
+    interface Window {
+        WorldMorph: any;
+        IDE_Morph: any;
+    }
+}
+
+window.WorldMorph = window.WorldMorph || {};
+window.IDE_Morph = window.IDE_Morph || {};
 
 export default function Page({ params }: { params: { slug: string } }) {
     function regexClassroomId(input: string, regex: RegExp): string | null {

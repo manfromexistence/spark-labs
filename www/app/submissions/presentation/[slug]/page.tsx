@@ -72,7 +72,7 @@ const auth = getAuth(app);
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 
-declare var WorldMorph:any;
+declare var WorldMorph: any;
 declare var IDE_Morph: any;
 
 // interface IDE_MorphOptions {

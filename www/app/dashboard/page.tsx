@@ -1356,7 +1356,7 @@ const Dashboard = () => {
                                                                                             return (
                                                                                                 <div key={user.id} className="hover:bg-primary hover:text-primary-foreground w-full flex flex-row space-x-3 justify-between items-center text-sm font-mono p-3">
                                                                                                     <span>{user.username}</span>
-                                                                                                    <Link href={`submissions/${student}`}>
+                                                                                                    <Link href={`submissions/${user.userId}`}>
                                                                                                         <CircleArrowOutUpRight className="h-4 w-4" />
                                                                                                     </Link>
                                                                                                 </div>

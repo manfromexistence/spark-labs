@@ -775,7 +775,7 @@ const Dashboard = ({ params }: { params: { slug: string } }) => {
                         </ ScrollArea>
                       </DialogContent>
                     </Dialog>
-                    <Link href={`submissions/presentation/${items.id}`}>
+                    <Link href={`/submissions/presentation/${items.id}`}>
                       <Button className="w-full bg-red-500 text-foreground hover:bg-red-600" variant="destructive">
                         Run This Project
                       </Button>

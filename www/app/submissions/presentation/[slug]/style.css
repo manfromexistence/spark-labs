@@ -1,4 +1,8 @@
-.navbar,
+/* .navbar, */
 .footer {
     display: none !important;
+}
+
+.navbar{
+    height: 7vh !important;
 }
